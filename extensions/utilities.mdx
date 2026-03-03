@@ -1,0 +1,362 @@
+---
+title: "Utilities"
+description: "Utility classes for common operations and debouncing"
+---
+
+## Overview
+
+Nebux Design System provides utility classes for common operations and patterns used throughout Flutter applications.
+
+## NebuxUtils
+
+A collection of static utility methods for string manipulation, validation, and platform detection.
+
+### String Operations
+
+<Tabs>
+  <Tab title="capitalize">
+    Capitalizes the first letter of a string.
+
+    ```dart
+    static String capitalize(String text)
+    ```
+
+    **Usage:**
+
+    ```dart
+    final result = NebuxUtils.capitalize('hello world');
+    // Returns: 'Hello world'
+
+    final empty = NebuxUtils.capitalize('');
+    // Returns: ''
+    ```
+  </Tab>
+
+  <Tab title="truncateText">
+    Truncates text to a specified length with ellipsis.
+
+    ```dart
+    static String truncateText(String text, int maxLength)
+    ```
+
+    **Usage:**
+
+    ```dart
+    final result = NebuxUtils.truncateText('This is a long text', 10);
+    // Returns: 'This is a ...'
+
+    final short = NebuxUtils.truncateText('Short', 10);
+    // Returns: 'Short'
+    ```
+  </Tab>
+
+  <Tab title="isValidString">
+    Validates if a string is not null, not empty, and not just whitespace.
+
+    ```dart
+    static bool isValidString(String? value)
+    ```
+
+    **Usage:**
+
+    ```dart
+    NebuxUtils.isValidString('hello');  // true
+    NebuxUtils.isValidString('');       // false
+    NebuxUtils.isValidString('   ');    // false
+    NebuxUtils.isValidString(null);     // false
+    ```
+  </Tab>
+</Tabs>
+
+### Time and Duration
+
+```dart
+static String formatDuration(Duration duration)
+```
+
+Formats a duration in a human-readable format.
+
+**Usage:**
+
+```dart
+final d1 = NebuxUtils.formatDuration(Duration(hours: 2, minutes: 30));
+// Returns: '2h 30m'
+
+final d2 = NebuxUtils.formatDuration(Duration(minutes: 5, seconds: 45));
+// Returns: '5m 45s'
+
+final d3 = NebuxUtils.formatDuration(Duration(seconds: 30));
+// Returns: '30s'
+```
+
+### Random Tag Generation
+
+```dart
+static String generateRandomTag([String? value])
+```
+
+Generates a random 6-digit tag, optionally suffixed with a value.
+
+**Usage:**
+
+```dart
+final tag1 = NebuxUtils.generateRandomTag();
+// Returns: '487562-'
+
+final tag2 = NebuxUtils.generateRandomTag('user');
+// Returns: '923481-user'
+```
+
+### Platform Detection
+
+<CodeGroup>
+
+```dart Web Detection
+static bool get isWeb
+
+// Usage
+if (NebuxUtils.isWeb) {
+  // Web-specific code
+  print('Running on web');
+}
+```
+
+```dart Mobile Detection
+static bool get isMobile
+
+// Usage
+if (NebuxUtils.isMobile) {
+  // Mobile-specific code
+  print('Running on mobile');
+}
+```
+
+</CodeGroup>
+
+<Note>
+`isWeb` uses Flutter's `kIsWeb` constant from `flutter/foundation.dart`. `isMobile` is simply `!isWeb`.
+</Note>
+
+## NebuxDebouncer
+
+A debouncer utility that delays the execution of a function until a specified duration has passed since the last call. Perfect for search inputs, API calls, and rate-limiting user actions.
+
+### Constructor
+
+```dart
+NebuxDebouncer({required int milliseconds})
+```
+
+**Parameters:**
+- `milliseconds`: The delay duration before the action fires
+
+### Methods
+
+<Tabs>
+  <Tab title="run">
+    Runs the provided action after the specified delay. If called again before the duration elapses, the timer resets.
+
+    ```dart
+    void run(VoidCallback action)
+    ```
+
+    **Usage:**
+
+    ```dart
+    final debouncer = NebuxDebouncer(milliseconds: 500);
+
+    // In a search field
+    debouncer.run(() {
+      performSearch(searchQuery);
+    });
+    ```
+  </Tab>
+
+  <Tab title="cancel">
+    Cancels the current timer if active.
+
+    ```dart
+    void cancel()
+    ```
+
+    **Usage:**
+
+    ```dart
+    debouncer.cancel();
+    ```
+  </Tab>
+
+  <Tab title="dispose">
+    Disposes the debouncer and cleans up resources.
+
+    ```dart
+    void dispose()
+    ```
+
+    **Usage:**
+
+    ```dart
+    @override
+    void dispose() {
+      debouncer.dispose();
+      super.dispose();
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Properties
+
+```dart
+// Check if the debouncer is currently waiting to fire
+bool get isActive
+
+// Set an optional callback that fires when the debounced action executes
+set onDebounce(VoidCallback? callback)
+```
+
+### Complete Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key});
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final _searchController = TextEditingController();
+  final _debouncer = NebuxDebouncer(milliseconds: 300);
+  List<String> _results = [];
+  bool _isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+    
+    // Optional: Get notified when search executes
+    _debouncer.onDebounce = () {
+      setState(() => _isSearching = false);
+    };
+  }
+
+  void _onSearchChanged() {
+    setState(() => _isSearching = true);
+    
+    _debouncer.run(() {
+      _performSearch(_searchController.text);
+    });
+  }
+
+  void _performSearch(String query) {
+    if (!NebuxUtils.isValidString(query)) {
+      setState(() => _results = []);
+      return;
+    }
+
+    // Simulate API call
+    setState(() {
+      _results = [
+        'Result 1 for: $query',
+        'Result 2 for: $query',
+        'Result 3 for: $query',
+      ];
+    });
+  }
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Search')),
+      body: Column(
+        children: [
+          NbxTextFieldWidget(
+            NbxInputParameters(
+              hintText: 'Search...',
+              inputType: NbxInputType.text,
+              suffixIconType: NbxSuffixIconType.cancel,
+            ),
+            controller: _searchController,
+          ).nbxPaddingAll(16.0),
+          
+          if (_isSearching && _debouncer.isActive)
+            const CircularProgressIndicator().nbxPaddingAll(16.0),
+          
+          Expanded(
+            child: ListView.builder(
+              itemCount: _results.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(_results[index]),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## NebuxDynamicPair
+
+A generic class to hold a pair of values of potentially different types.
+
+```dart
+class NebuxDynamicPair<A, B> {
+  final A aValue;
+  final B bValue;
+
+  NebuxDynamicPair({required this.aValue, required this.bValue});
+  
+  // Includes: copyWith, toString, operator==, hashCode
+}
+```
+
+**Usage:**
+
+```dart
+final pair = NebuxDynamicPair<String, int>(
+  aValue: 'age',
+  bValue: 25,
+);
+
+print(pair.aValue); // 'age'
+print(pair.bValue); // 25
+
+final updated = pair.copyWith(bValue: 26);
+```
+
+## Source Code Reference
+
+The utilities are defined in:
+
+- **NebuxUtils:** `lib/src/core/utils/nebux_utils.dart`
+- **NebuxDebouncer & NebuxDynamicPair:** `lib/src/core/utils/nebux_helpers.dart`
+
+## Related Pages
+
+<CardGroup cols={2}>
+  <Card title="Context Extensions" icon="link" href="/extensions/context">
+    Access theme properties from BuildContext
+  </Card>
+  <Card title="Widget Extensions" icon="wand-magic-sparkles" href="/extensions/widgets">
+    Padding and margin extensions for widgets
+  </Card>
+  <Card title="Advanced Usage" icon="code" href="/guides/advanced-usage">
+    Advanced patterns and techniques
+  </Card>
+</CardGroup>

@@ -1,0 +1,278 @@
+---
+title: 'Buttons'
+description: 'Button components with multiple variants and states'
+icon: 'hand-pointer'
+---
+
+## NbxButton
+
+A custom button widget that supports different variants, loading states, and comprehensive configuration.
+
+### Basic Usage
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+NbxButton(
+  text: 'Click Me',
+  onPressed: () {
+    // Handle button press
+  },
+)
+```
+
+## Button Variants
+
+NbxButton supports four visual variants:
+
+<Tabs>
+  <Tab title="Filled">
+    ```dart
+    NbxButton(
+      text: 'Filled Button',
+      onPressed: () {},
+      styleConfig: ButtonStyleConfig(
+        variant: ButtonVariant.filled,
+      ),
+    )
+    ```
+    
+    Filled buttons have a solid background color, ideal for primary actions.
+  </Tab>
+  
+  <Tab title="Outline">
+    ```dart
+    NbxButton(
+      text: 'Outline Button',
+      onPressed: () {},
+      styleConfig: ButtonStyleConfig(
+        variant: ButtonVariant.outline,
+      ),
+    )
+    ```
+    
+    Outline buttons have a border with transparent background, ideal for secondary actions.
+  </Tab>
+  
+  <Tab title="Text">
+    ```dart
+    NbxButton(
+      text: 'Text Button',
+      onPressed: () {},
+      styleConfig: ButtonStyleConfig(
+        variant: ButtonVariant.text,
+      ),
+    )
+    ```
+    
+    Text buttons are minimal with no background or border, ideal for tertiary actions.
+  </Tab>
+  
+  <Tab title="Danger">
+    ```dart
+    NbxButton(
+      text: 'Delete',
+      onPressed: () {},
+      styleConfig: ButtonStyleConfig(
+        variant: ButtonVariant.danger,
+      ),
+    )
+    ```
+    
+    Danger buttons use error colors to indicate destructive actions.
+  </Tab>
+</Tabs>
+
+## Configuration Options
+
+NbxButton uses four configuration classes to organize its properties:
+
+### ButtonStyleConfig
+
+Controls the visual appearance of the button.
+
+<ParamField path="variant" type="ButtonVariant" default="ButtonVariant.filled">
+  The visual variant: `filled`, `outline`, `text`, or `danger`
+</ParamField>
+
+<ParamField path="customBackgroundColor" type="Color?">
+  Custom background color (overrides theme color)
+</ParamField>
+
+<ParamField path="borderRadius" type="double?" default="8.0">
+  Border radius for the button shape
+</ParamField>
+
+<ParamField path="textStyle" type="TextStyle?">
+  Custom text style (overrides theme typography)
+</ParamField>
+
+<ParamField path="customBorderSide" type="BorderSide?">
+  Custom border configuration for outline buttons
+</ParamField>
+
+```dart
+NbxButton(
+  text: 'Custom Style',
+  onPressed: () {},
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.filled,
+    customBackgroundColor: Colors.purple,
+    borderRadius: 16.0,
+  ),
+)
+```
+
+### ButtonIconConfig
+
+Adds icons to the button with customizable colors.
+
+<ParamField path="icon" type="IconData?">
+  Leading icon displayed before the text
+</ParamField>
+
+<ParamField path="iconColor" type="Color?">
+  Color for the leading icon
+</ParamField>
+
+<ParamField path="trailingIcon" type="IconData?">
+  Trailing icon displayed after the text
+</ParamField>
+
+<ParamField path="trailingIconColor" type="Color?">
+  Color for the trailing icon
+</ParamField>
+
+```dart
+NbxButton(
+  text: 'Download',
+  onPressed: () {},
+  iconConfig: ButtonIconConfig(
+    icon: Icons.download,
+    iconColor: Colors.white,
+  ),
+)
+```
+
+### ButtonStateConfig
+
+Manages button state including loading, enabled, and selected.
+
+<ParamField path="isLoading" type="bool" default="false">
+  Shows a circular progress indicator instead of text
+</ParamField>
+
+<ParamField path="enabled" type="bool" default="true">
+  Whether the button is enabled
+</ParamField>
+
+<ParamField path="isSelected" type="bool" default="false">
+  Whether the button is in selected state (affects outline variant)
+</ParamField>
+
+<ParamField path="loadingColor" type="Color?">
+  Custom color for the loading spinner
+</ParamField>
+
+```dart
+NbxButton(
+  text: 'Save',
+  onPressed: () {},
+  stateConfig: ButtonStateConfig(
+    isLoading: true,
+  ),
+)
+```
+
+### ButtonLayoutConfig
+
+Controls the button's layout and sizing.
+
+<ParamField path="isExpanded" type="bool" default="true">
+  Whether the button expands to fill available width
+</ParamField>
+
+```dart
+NbxButton(
+  text: 'Compact Button',
+  onPressed: () {},
+  layoutConfig: ButtonLayoutConfig(
+    isExpanded: false,
+  ),
+)
+```
+
+## Advanced Examples
+
+### Loading Button
+
+```dart
+class LoadingButtonExample extends StatefulWidget {
+  @override
+  State<LoadingButtonExample> createState() => _LoadingButtonExampleState();
+}
+
+class _LoadingButtonExampleState extends State<LoadingButtonExample> {
+  bool _isLoading = false;
+
+  Future<void> _handleSubmit() async {
+    setState(() => _isLoading = true);
+    
+    // Simulate API call
+    await Future.delayed(Duration(seconds: 2));
+    
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NbxButton(
+      text: 'Submit',
+      onPressed: _handleSubmit,
+      stateConfig: ButtonStateConfig(
+        isLoading: _isLoading,
+      ),
+    );
+  }
+}
+```
+
+### Button with Icons
+
+```dart
+NbxButton(
+  text: 'Send Message',
+  onPressed: () {},
+  iconConfig: ButtonIconConfig(
+    icon: Icons.send,
+    trailingIcon: Icons.arrow_forward,
+  ),
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.filled,
+  ),
+)
+```
+
+### Disabled Button
+
+```dart
+NbxButton(
+  text: 'Disabled',
+  onPressed: () {},
+  stateConfig: ButtonStateConfig(
+    enabled: false,
+  ),
+)
+```
+
+## Best Practices
+
+<Note>
+  When a button is in loading state, it automatically disables the `onPressed` callback to prevent multiple submissions.
+</Note>
+
+<Note>
+  The button variant determines default text styles:
+  - `filled` and `danger` use `secondaryAction` typography
+  - `outline` and `text` use `content` typography
+</Note>

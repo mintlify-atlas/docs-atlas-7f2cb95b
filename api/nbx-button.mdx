@@ -1,0 +1,224 @@
+---
+title: 'NbxButton'
+description: 'A customizable button widget that supports different variants, icons, and loading states'
+icon: 'square'
+---
+
+## Overview
+
+`NbxButton` is a flexible button component that provides consistent styling and behavior across the Nebux Design System. It supports multiple visual variants, loading states, icons, and comprehensive configuration options.
+
+## Basic Usage
+
+```dart
+NbxButton(
+  text: 'Click Me',
+  onPressed: () {
+    print('Button pressed');
+  },
+)
+```
+
+## Widget Properties
+
+<ParamField path="text" type="String" required>
+  The text to display on the button.
+</ParamField>
+
+<ParamField path="onPressed" type="VoidCallback?" required>
+  Callback function called when the button is pressed. Will be null when button is disabled or loading.
+</ParamField>
+
+<ParamField path="iconConfig" type="ButtonIconConfig" default="const ButtonIconConfig()">
+  Configuration for button icons (leading and trailing).
+</ParamField>
+
+<ParamField path="styleConfig" type="ButtonStyleConfig" default="const ButtonStyleConfig()">
+  Configuration for button styling (variant, colors, text style).
+</ParamField>
+
+<ParamField path="stateConfig" type="ButtonStateConfig" default="const ButtonStateConfig()">
+  Configuration for button state (loading, enabled, selected).
+</ParamField>
+
+<ParamField path="layoutConfig" type="ButtonLayoutConfig" default="const ButtonLayoutConfig()">
+  Configuration for button layout (expanded width).
+</ParamField>
+
+## Button Variants
+
+The button supports four visual variants through `ButtonVariant` enum:
+
+- `ButtonVariant.filled` - Filled button with solid background (default)
+- `ButtonVariant.text` - Text button with underline decoration
+- `ButtonVariant.outline` - Outlined button with border
+- `ButtonVariant.danger` - Danger button with error color
+
+## Configuration Classes
+
+### ButtonIconConfig
+
+Controls icon display and styling.
+
+<ParamField path="icon" type="IconData?">
+  Icon to display before the text.
+</ParamField>
+
+<ParamField path="iconColor" type="Color?">
+  The color of the leading icon.
+</ParamField>
+
+<ParamField path="trailingIcon" type="IconData?">
+  Icon to display after the text.
+</ParamField>
+
+<ParamField path="trailingIconColor" type="Color?">
+  The color of the trailing icon.
+</ParamField>
+
+### ButtonStyleConfig
+
+Controls visual styling and appearance.
+
+<ParamField path="variant" type="ButtonVariant" default="ButtonVariant.filled">
+  The visual variant of the button.
+</ParamField>
+
+<ParamField path="customBackgroundColor" type="Color?">
+  Custom background color for the button.
+</ParamField>
+
+<ParamField path="borderRadius" type="double?" default="8.0">
+  Custom border radius for the button.
+</ParamField>
+
+<ParamField path="textStyle" type="TextStyle?">
+  Custom text style for the button.
+</ParamField>
+
+<ParamField path="customBorderSide" type="BorderSide?">
+  Custom border configuration for outline variant.
+</ParamField>
+
+### ButtonStateConfig
+
+Manages button state and behavior.
+
+<ParamField path="isLoading" type="bool" default="false">
+  Whether to show a loading indicator instead of text.
+</ParamField>
+
+<ParamField path="enabled" type="bool" default="true">
+  Whether the button is enabled.
+</ParamField>
+
+<ParamField path="isSelected" type="bool" default="false">
+  Whether the button is selected (affects outline variant appearance).
+</ParamField>
+
+<ParamField path="loadingColor" type="Color?">
+  Custom color for the loading spinner. When null, the spinner color is derived from the button variant.
+</ParamField>
+
+### ButtonLayoutConfig
+
+Controls button layout properties.
+
+<ParamField path="isExpanded" type="bool" default="true">
+  Whether the button should expand to fill available width.
+</ParamField>
+
+## Examples
+
+### Filled Button
+
+```dart
+NbxButton(
+  text: 'Save',
+  onPressed: () => _handleSave(),
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.filled,
+  ),
+)
+```
+
+### Outlined Button with Icon
+
+```dart
+NbxButton(
+  text: 'Edit Profile',
+  onPressed: () => _editProfile(),
+  iconConfig: ButtonIconConfig(
+    icon: Icons.edit,
+    iconColor: Colors.blue,
+  ),
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.outline,
+  ),
+)
+```
+
+### Loading Button
+
+```dart
+NbxButton(
+  text: 'Submit',
+  onPressed: () => _submit(),
+  stateConfig: ButtonStateConfig(
+    isLoading: true,
+  ),
+)
+```
+
+### Danger Button
+
+```dart
+NbxButton(
+  text: 'Delete Account',
+  onPressed: () => _deleteAccount(),
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.danger,
+  ),
+)
+```
+
+### Button with Trailing Icon
+
+```dart
+NbxButton(
+  text: 'Next',
+  onPressed: () => _goNext(),
+  iconConfig: ButtonIconConfig(
+    trailingIcon: Icons.arrow_forward,
+  ),
+)
+```
+
+### Disabled Button
+
+```dart
+NbxButton(
+  text: 'Submit',
+  onPressed: () => _submit(),
+  stateConfig: ButtonStateConfig(
+    enabled: false,
+  ),
+)
+```
+
+### Compact Button (Not Expanded)
+
+```dart
+NbxButton(
+  text: 'Cancel',
+  onPressed: () => _cancel(),
+  layoutConfig: ButtonLayoutConfig(
+    isExpanded: false,
+  ),
+)
+```
+
+## See Also
+
+- [ButtonVariant enum](https://github.com/joicodev/nebux_design_system/tree/main)
+- [Button configuration classes](/api/button-configs)

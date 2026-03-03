@@ -1,0 +1,299 @@
+---
+title: 'Layout'
+description: 'Scaffold and layout components for consistent app structure'
+icon: 'columns'
+---
+
+## NbxScaffold
+
+A custom scaffold widget that provides a consistent layout structure with enhanced functionality for Nebux applications.
+
+### Basic Usage
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+NbxScaffold(
+  widgetName: 'HomeScreen',
+  body: Column(
+    children: [
+      Text('Hello World'),
+    ],
+  ),
+)
+```
+
+## Core Properties
+
+<ParamField path="body" type="Widget" required>
+  The main content widget to be displayed in the scaffold body
+</ParamField>
+
+<ParamField path="widgetName" type="String" required>
+  Name of the widget for debugging purposes
+</ParamField>
+
+<ParamField path="appBar" type="PreferredSizeWidget?">
+  Custom app bar widget (overrides built-in app bar)
+</ParamField>
+
+<ParamField path="appBarConfig" type="AppBarConfig?">
+  Configuration for the built-in app bar
+</ParamField>
+
+<ParamField path="safeAreaConfig" type="SafeAreaConfig?">
+  Configuration for safe area properties
+</ParamField>
+
+<ParamField path="bodyConfig" type="BodyConfig?">
+  Configuration for body properties
+</ParamField>
+
+<ParamField path="bottomNavigationBar" type="Widget?">
+  Bottom navigation bar widget
+</ParamField>
+
+<ParamField path="floatingActionButton" type="Widget?">
+  Floating action button widget
+</ParamField>
+
+<ParamField path="backgroundColor" type="Color?">
+  Background color for the scaffold
+</ParamField>
+
+<ParamField path="decoration" type="Decoration?">
+  Gradient or custom decoration for the scaffold background
+</ParamField>
+
+## AppBarConfig
+
+Configuration for the built-in app bar:
+
+<ParamField path="title" type="String?">
+  Title text to display in the app bar
+</ParamField>
+
+<ParamField path="actions" type="List<Widget>?">
+  Action widgets to display in the app bar
+</ParamField>
+
+<ParamField path="leadingButton" type="Widget?">
+  Custom leading button widget for the app bar
+</ParamField>
+
+<ParamField path="centerTitle" type="bool" default="false">
+  Whether to center the title in the app bar
+</ParamField>
+
+<ParamField path="showDivider" type="bool" default="false">
+  Whether to show a divider below the app bar
+</ParamField>
+
+<ParamField path="dividerThickness" type="double" default="0.2">
+  Thickness of the divider below the app bar
+</ParamField>
+
+<ParamField path="backgroundColor" type="Color?">
+  Background color for the app bar
+</ParamField>
+
+### Example with App Bar
+
+```dart
+NbxScaffold(
+  widgetName: 'ProfileScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Profile',
+    centerTitle: true,
+    showDivider: true,
+    actions: [
+      IconButton(
+        icon: Icon(Icons.settings),
+        onPressed: () {},
+      ),
+    ],
+  ),
+  body: ProfileContent(),
+)
+```
+
+## SafeAreaConfig
+
+Configuration for safe area behavior:
+
+<ParamField path="top" type="bool" default="true">
+  Whether to apply safe area to the top of the screen
+</ParamField>
+
+<ParamField path="bottom" type="bool" default="true">
+  Whether to apply safe area to the bottom of the screen
+</ParamField>
+
+<ParamField path="minimum" type="EdgeInsets?" default="EdgeInsets.only(bottom: 20)">
+  Minimum padding for the safe area
+</ParamField>
+
+### Example with Custom Safe Area
+
+```dart
+NbxScaffold(
+  widgetName: 'FullScreenView',
+  safeAreaConfig: SafeAreaConfig(
+    top: false,
+    bottom: true,
+    minimum: EdgeInsets.only(bottom: 32),
+  ),
+  body: FullScreenContent(),
+)
+```
+
+## BodyConfig
+
+Configuration for body layout and behavior:
+
+<ParamField path="wrapInContainer" type="bool" default="true">
+  Whether to wrap the body in a container with default horizontal padding
+</ParamField>
+
+<ParamField path="decoration" type="Decoration?">
+  Decoration to apply to the body container when `wrapInContainer` is true
+</ParamField>
+
+<ParamField path="resizeToAvoidBottomInset" type="bool" default="false">
+  Whether the body should resize to avoid the keyboard
+</ParamField>
+
+<ParamField path="extendBodyBehindAppBar" type="bool" default="true">
+  Whether the body should extend behind the app bar
+</ParamField>
+
+<ParamField path="exitMessage" type="String?">
+  Message to display when user presses back button twice to exit
+</ParamField>
+
+### Example with Custom Body Config
+
+```dart
+NbxScaffold(
+  widgetName: 'FormScreen',
+  bodyConfig: BodyConfig(
+    wrapInContainer: true,
+    resizeToAvoidBottomInset: true,
+    extendBodyBehindAppBar: false,
+  ),
+  body: FormContent(),
+)
+```
+
+## Advanced Examples
+
+### Full-Width Layout
+
+For content that should span the full width without default padding:
+
+```dart
+NbxScaffold(
+  widgetName: 'ImageGallery',
+  bodyConfig: BodyConfig(
+    wrapInContainer: false,
+  ),
+  body: GridView.builder(
+    // Full-width grid
+  ),
+)
+```
+
+### Double Back to Exit
+
+Enable double back press to exit the app:
+
+```dart
+NbxScaffold(
+  widgetName: 'HomeScreen',
+  bodyConfig: BodyConfig(
+    exitMessage: 'Press back again to exit',
+  ),
+  body: HomeContent(),
+)
+```
+
+### With Gradient Background
+
+```dart
+NbxScaffold(
+  widgetName: 'SplashScreen',
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.blue.shade900,
+        Colors.blue.shade600,
+      ],
+    ),
+  ),
+  body: SplashContent(),
+)
+```
+
+### With Bottom Navigation
+
+```dart
+NbxScaffold(
+  widgetName: 'MainScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Dashboard',
+  ),
+  body: DashboardContent(),
+  bottomNavigationBar: BottomNavigationBar(
+    items: [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.search),
+        label: 'Search',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: 'Profile',
+      ),
+    ],
+  ),
+)
+```
+
+### Keyboard-Aware Form
+
+```dart
+NbxScaffold(
+  widgetName: 'LoginScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Sign In',
+  ),
+  bodyConfig: BodyConfig(
+    wrapInContainer: true,
+    resizeToAvoidBottomInset: true,
+  ),
+  body: LoginForm(),
+)
+```
+
+## Best Practices
+
+<Note>
+  Set `wrapInContainer: false` in `BodyConfig` when your content needs full-width layout (e.g., images, maps, lists with their own padding).
+</Note>
+
+<Note>
+  Enable `resizeToAvoidBottomInset: true` for screens with input fields to ensure they're visible when the keyboard appears.
+</Note>
+
+<Note>
+  The default horizontal padding when `wrapInContainer: true` is `defaultPaddingSize` from the design system.
+</Note>
+
+<Note>
+  When using custom `appBar`, the `appBarConfig` is ignored. Use one or the other, not both.
+</Note>

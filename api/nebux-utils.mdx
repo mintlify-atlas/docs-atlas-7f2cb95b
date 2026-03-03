@@ -1,0 +1,397 @@
+---
+title: 'NebuxUtils'
+description: 'Complete API reference for NebuxUtils utility class'
+---
+
+# NebuxUtils
+
+General-purpose utility class providing helper methods for common operations in the Nebux Design System. All methods are static and can be called directly without instantiation.
+
+## Overview
+
+`NebuxUtils` provides a collection of utility functions for string manipulation, validation, formatting, and platform detection. These utilities are designed to support common patterns in Flutter applications.
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+// Use utilities directly
+final tag = NebuxUtils.generateRandomTag('user');
+final isValid = NebuxUtils.isValidString(input);
+```
+
+## Methods
+
+### generateRandomTag
+
+Generates a random 6-digit tag, optionally suffixed with a custom value.
+
+<ParamField path="value" type="String?" default="null">
+  Optional suffix to append to the generated tag. When null, only the random number is returned.
+</ParamField>
+
+<ResponseField name="returns" type="String">
+  A string in the format `XXXXXX-{value}` where XXXXXX is a random 6-digit number between 100000 and 999999.
+</ResponseField>
+
+```dart
+// Generate random tag without suffix
+final tag1 = NebuxUtils.generateRandomTag();
+// Returns: "842156-"
+
+// Generate random tag with suffix
+final tag2 = NebuxUtils.generateRandomTag('user');
+// Returns: "395847-user"
+
+// Use case: Unique identifiers
+final userId = NebuxUtils.generateRandomTag('usr');
+final sessionId = NebuxUtils.generateRandomTag('session');
+```
+
+---
+
+### isValidString
+
+Validates if a string is not null, not empty, and not just whitespace.
+
+<ParamField path="value" type="String?">
+  The string to validate. Can be null.
+</ParamField>
+
+<ResponseField name="returns" type="bool">
+  Returns `true` if the string is not null and contains at least one non-whitespace character, `false` otherwise.
+</ResponseField>
+
+```dart
+// Valid strings
+NebuxUtils.isValidString('hello');        // true
+NebuxUtils.isValidString('  text  ');     // true (has non-whitespace)
+NebuxUtils.isValidString('a');            // true
+
+// Invalid strings
+NebuxUtils.isValidString(null);           // false
+NebuxUtils.isValidString('');             // false
+NebuxUtils.isValidString('   ');          // false (only whitespace)
+NebuxUtils.isValidString('\t\n');         // false (only whitespace chars)
+
+// Use case: Form validation
+if (NebuxUtils.isValidString(nameController.text)) {
+  // Process valid input
+} else {
+  // Show error message
+}
+```
+
+---
+
+### formatDuration
+
+Formats a duration in a human-readable format with appropriate units.
+
+<ParamField path="duration" type="Duration">
+  The duration to format.
+</ParamField>
+
+<ResponseField name="returns" type="String">
+  A formatted string showing the duration in hours/minutes, minutes/seconds, or just seconds depending on the duration length.
+</ResponseField>
+
+Formatting rules:
+- Durations ≥ 1 hour: `Xh Ym` format
+- Durations ≥ 1 minute: `Xm Ys` format  
+- Durations < 1 minute: `Xs` format
+
+```dart
+// Hours and minutes
+final duration1 = Duration(hours: 2, minutes: 30, seconds: 45);
+NebuxUtils.formatDuration(duration1);
+// Returns: "2h 30m"
+
+// Minutes and seconds
+final duration2 = Duration(minutes: 5, seconds: 42);
+NebuxUtils.formatDuration(duration2);
+// Returns: "5m 42s"
+
+// Only seconds
+final duration3 = Duration(seconds: 45);
+NebuxUtils.formatDuration(duration3);
+// Returns: "45s"
+
+// Use case: Display elapsed time
+final elapsed = stopwatch.elapsed;
+final formatted = NebuxUtils.formatDuration(elapsed);
+Text('Time: $formatted');
+```
+
+---
+
+### capitalize
+
+Capitalizes the first letter of a string and converts the rest to lowercase.
+
+<ParamField path="text" type="String">
+  The string to capitalize.
+</ParamField>
+
+<ResponseField name="returns" type="String">
+  The string with first letter uppercase and remaining letters lowercase. Returns empty string if input is empty.
+</ResponseField>
+
+```dart
+// Basic capitalization
+NebuxUtils.capitalize('hello');           // Returns: "Hello"
+NebuxUtils.capitalize('WORLD');           // Returns: "World"
+NebuxUtils.capitalize('mixedCase');       // Returns: "Mixedcase"
+
+// Edge cases
+NebuxUtils.capitalize('');                // Returns: ""
+NebuxUtils.capitalize('a');               // Returns: "A"
+NebuxUtils.capitalize('ABC DEF');         // Returns: "Abc def"
+
+// Use case: Display names
+final firstName = 'john';
+final lastName = 'DOE';
+final displayName = '${NebuxUtils.capitalize(firstName)} ${NebuxUtils.capitalize(lastName)}';
+// Result: "John Doe"
+```
+
+---
+
+### truncateText
+
+Truncates text to a specified length and appends ellipsis if truncated.
+
+<ParamField path="text" type="String">
+  The text to truncate.
+</ParamField>
+
+<ParamField path="maxLength" type="int">
+  Maximum length of the text before truncation. Must be positive.
+</ParamField>
+
+<ResponseField name="returns" type="String">
+  The original text if length ≤ maxLength, otherwise text truncated to maxLength with "..." appended.
+</ResponseField>
+
+```dart
+// Text shorter than max length
+NebuxUtils.truncateText('Hello', 10);
+// Returns: "Hello"
+
+// Text exactly at max length
+NebuxUtils.truncateText('Hello World', 11);
+// Returns: "Hello World"
+
+// Text longer than max length
+NebuxUtils.truncateText('Hello World from Nebux', 15);
+// Returns: "Hello World fro..."
+
+// Use case: Preview text in cards
+class ArticleCard extends StatelessWidget {
+  final String content;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Text(
+            NebuxUtils.truncateText(content, 100),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+---
+
+### isWeb
+
+Getter that checks if the current platform is web.
+
+<ResponseField name="returns" type="bool">
+  Returns `true` if running on web platform, `false` otherwise.
+</ResponseField>
+
+```dart
+// Check if running on web
+if (NebuxUtils.isWeb) {
+  // Web-specific code
+  print('Running on web browser');
+} else {
+  // Native platform code
+  print('Running on mobile/desktop');
+}
+
+// Use case: Conditional rendering
+Widget buildDownloadButton() {
+  if (NebuxUtils.isWeb) {
+    return ElevatedButton(
+      onPressed: () => html.window.open(url, '_blank'),
+      child: Text('Open in new tab'),
+    );
+  } else {
+    return ElevatedButton(
+      onPressed: () => downloadFile(url),
+      child: Text('Download'),
+    );
+  }
+}
+```
+
+---
+
+### isMobile
+
+Getter that checks if the current platform is mobile (inverse of isWeb).
+
+<ResponseField name="returns" type="bool">
+  Returns `true` if NOT running on web platform (i.e., running on mobile or desktop native), `false` if on web.
+</ResponseField>
+
+```dart
+// Check if running on native platform
+if (NebuxUtils.isMobile) {
+  // Native-specific code
+  print('Running on native platform');
+} else {
+  // Web-specific code
+  print('Running on web');
+}
+
+// Use case: Platform-specific features
+Widget buildShareButton() {
+  if (NebuxUtils.isMobile) {
+    return IconButton(
+      icon: Icon(Icons.share),
+      onPressed: () => Share.share(content), // Native share
+    );
+  } else {
+    return IconButton(
+      icon: Icon(Icons.link),
+      onPressed: () => copyToClipboard(url), // Web fallback
+    );
+  }
+}
+```
+
+<Tip>
+  Note: `isMobile` returns true for both mobile AND desktop native platforms. It's named this way because it represents "not web". For more specific platform detection, use Flutter's `Platform` class or `defaultTargetPlatform`.
+</Tip>
+
+## Complete Example
+
+Here's a comprehensive example using multiple `NebuxUtils` methods:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+class UserProfileCard extends StatelessWidget {
+  final String? username;
+  final String? bio;
+  final DateTime registeredAt;
+
+  const UserProfileCard({
+    required this.username,
+    required this.bio,
+    required this.registeredAt,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Validate and format username
+    final displayName = NebuxUtils.isValidString(username)
+        ? NebuxUtils.capitalize(username!)
+        : 'Anonymous User';
+
+    // Generate unique user tag
+    final userTag = NebuxUtils.generateRandomTag('user');
+
+    // Calculate membership duration
+    final membershipDuration = DateTime.now().difference(registeredAt);
+    final formattedDuration = NebuxUtils.formatDuration(membershipDuration);
+
+    // Truncate bio for preview
+    final bioPreview = NebuxUtils.isValidString(bio)
+        ? NebuxUtils.truncateText(bio!, 100)
+        : 'No bio available';
+
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Username with tag
+            Text(
+              displayName,
+              style: context.nebuxTypography.heading,
+            ),
+            Text(
+              'ID: $userTag',
+              style: context.nebuxTypography.caption,
+            ),
+            heightSpace16,
+            
+            // Bio preview
+            Text(
+              bioPreview,
+              style: context.nebuxTypography.paragraph,
+            ),
+            heightSpace8,
+            
+            // Membership duration
+            Row(
+              children: [
+                Icon(Icons.calendar_today, size: 16),
+                widthSpace8,
+                Text(
+                  'Member for $formattedDuration',
+                  style: context.nebuxTypography.caption,
+                ),
+              ],
+            ),
+            heightSpace16,
+            
+            // Platform-specific actions
+            Row(
+              children: [
+                if (NebuxUtils.isMobile)
+                  ElevatedButton.icon(
+                    onPressed: () => shareProfile(),
+                    icon: Icon(Icons.share),
+                    label: Text('Share'),
+                  ),
+                if (NebuxUtils.isWeb)
+                  ElevatedButton.icon(
+                    onPressed: () => copyProfileLink(),
+                    icon: Icon(Icons.link),
+                    label: Text('Copy Link'),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void shareProfile() {
+    // Native share implementation
+  }
+
+  void copyProfileLink() {
+    // Web clipboard implementation
+  }
+}
+```
+
+## Related Documentation
+
+- [NebuxDebouncer](/api/nebux-debouncer) - Debouncing utility for delayed actions
+- [Spacing Constants](/api/spacing-constants) - Pre-defined spacing values
+- [Theme Extensions](/extensions/context) - Theme utility extensions

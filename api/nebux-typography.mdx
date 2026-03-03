@@ -1,0 +1,634 @@
+---
+title: 'NebuxTypography'
+description: 'Typography system with text styles for headings, paragraphs, labels, and actions'
+---
+
+## Overview
+
+The `NebuxTypography` class defines the complete typography system for the NebuX Design System. It provides semantic text styles for all UI elements including headings, paragraphs, captions, labels, actions, and form inputs.
+
+Built with Freezed and integrated with Google Fonts (Montserrat by default), it provides a Material Design 3 aligned type scale with proper line heights and letter spacing.
+
+**Source:** `lib/src/core/theme/typography/nebux_typography.dart`
+
+---
+
+## Class Definition
+
+```dart
+@Freezed(fromJson: false, toJson: false)
+abstract class NebuxTypography with _$NebuxTypography
+```
+
+---
+
+## Properties
+
+All text styles include explicit `height` (line-height multiplier) and `letterSpacing` values aligned with Material Design 3.
+
+### Content Text Styles
+
+<ParamField path="content" type="TextStyle" required>
+  Style for main content text (e.g., articles, descriptions)
+  
+  **Font size:** 12px
+  
+  **Font weight:** 400 (Regular)
+  
+  **Line height:** 1.4
+  
+  **Letter spacing:** 0.0
+</ParamField>
+
+<ParamField path="paragraph" type="TextStyle" required>
+  Style for regular paragraph text (e.g., default content, paragraphs)
+  
+  **Font size:** 14px
+  
+  **Font weight:** 400 (Regular)
+  
+  **Line height:** 1.5
+  
+  **Letter spacing:** 0.15
+</ParamField>
+
+<ParamField path="caption" type="TextStyle" required>
+  Style for small supporting text (e.g., captions, metadata)
+  
+  **Font size:** 10px
+  
+  **Font weight:** 400 (Regular)
+  
+  **Line height:** 1.3
+  
+  **Letter spacing:** 0.1
+</ParamField>
+
+### Heading Styles
+
+<ParamField path="heading" type="TextStyle" required>
+  Style for main headings (e.g., page titles, primary headers)
+  
+  **Font size:** 18px
+  
+  **Font weight:** 600 (SemiBold)
+  
+  **Line height:** 1.2
+  
+  **Letter spacing:** -0.5
+</ParamField>
+
+<ParamField path="section" type="TextStyle" required>
+  Style for section headers (e.g., content sections)
+  
+  **Font size:** 14px
+  
+  **Font weight:** 500 (Medium)
+  
+  **Line height:** 1.25
+  
+  **Letter spacing:** -0.25
+</ParamField>
+
+### Label Styles
+
+<ParamField path="label" type="TextStyle" required>
+  Style for small labels (e.g., timestamps, status indicators)
+  
+  **Font size:** 10px
+  
+  **Font weight:** 500 (Medium)
+  
+  **Line height:** 1.3
+  
+  **Letter spacing:** 0.1
+</ParamField>
+
+### Action Styles
+
+<ParamField path="primaryAction" type="TextStyle" required>
+  Style for primary action buttons
+  
+  **Font size:** 14px
+  
+  **Font weight:** 700 (Bold)
+  
+  **Line height:** 1.2
+  
+  **Letter spacing:** 0.5
+</ParamField>
+
+<ParamField path="secondaryAction" type="TextStyle" required>
+  Style for secondary action buttons
+  
+  **Font size:** 14px
+  
+  **Font weight:** 600 (SemiBold)
+  
+  **Line height:** 1.2
+  
+  **Letter spacing:** 0.5
+</ParamField>
+
+### Form Input Styles
+
+<ParamField path="formInput" type="TextStyle" required>
+  Style for form input text fields
+  
+  **Font size:** 14px
+  
+  **Font weight:** 400 (Regular)
+  
+  **Line height:** 1.4
+  
+  **Letter spacing:** 0.15
+</ParamField>
+
+<ParamField path="placeholder" type="TextStyle" required>
+  Style for placeholder text in inputs
+  
+  **Font size:** 14px
+  
+  **Font weight:** 400 (Regular)
+  
+  **Font style:** Italic
+  
+  **Line height:** 1.4
+  
+  **Letter spacing:** 0.15
+</ParamField>
+
+---
+
+## Constructors
+
+### NebuxTypography (default)
+
+Creates a new `NebuxTypography` instance with all text style properties.
+
+```dart
+const factory NebuxTypography({
+  required TextStyle content,
+  required TextStyle paragraph,
+  required TextStyle caption,
+  required TextStyle heading,
+  required TextStyle section,
+  required TextStyle label,
+  required TextStyle primaryAction,
+  required TextStyle secondaryAction,
+  required TextStyle formInput,
+  required TextStyle placeholder,
+})
+```
+
+---
+
+## Factory Constructors
+
+### standard
+
+Creates a standard set of text styles using Google Fonts Montserrat with Material Design 3 type scale.
+
+```dart
+factory NebuxTypography.standard()
+```
+
+Each TextStyle includes:
+- Google Fonts Montserrat font family
+- Appropriate font size from `NebuxFontSize.standard()`
+- Explicit `height` (line-height multiplier)
+- `letterSpacing` values aligned with Material Design 3
+
+#### Example
+
+```dart
+final typography = NebuxTypography.standard();
+Text(
+  'Hello World',
+  style: typography.heading,
+);
+```
+
+### custom
+
+Creates a `NebuxTypography` instance with a custom font family and package.
+
+```dart
+factory NebuxTypography.custom(String fontFamily, String? package)
+```
+
+<ParamField path="fontFamily" type="String" required>
+  The custom font family name to use for all text styles
+</ParamField>
+
+<ParamField path="package" type="String">
+  Optional package name if the font is bundled in a package
+</ParamField>
+
+All text styles use the same font sizes, weights, line heights, and letter spacing as the standard typography.
+
+#### Example
+
+```dart
+final customTypography = NebuxTypography.custom('Roboto', null);
+```
+
+### fromThemeData
+
+Creates `NebuxTypography` from a Material `ThemeData`. Maps Material's TextTheme to NebuX typography roles.
+
+```dart
+factory NebuxTypography.fromThemeData(ThemeData themeData)
+```
+
+<ParamField path="themeData" type="ThemeData" required>
+  The Material ThemeData to extract text styles from
+</ParamField>
+
+<Expandable title="Material TextTheme → NebuX Typography Mapping">
+  - `heading` ← `headlineMedium` (page titles, primary headers)
+  - `section` ← `titleLarge` (section headers)
+  - `content` ← `bodyLarge` (articles, descriptions)
+  - `paragraph` ← `bodyMedium` (default body text)
+  - `caption` ← `bodySmall` (captions, metadata)
+  - `label` ← `labelLarge` (small labels, status)
+  - `primaryAction` ← `labelLarge` with FontWeight.w700
+  - `secondaryAction` ← `labelLarge` with FontWeight.w600
+  - `formInput` ← `bodyMedium` (input text)
+  - `placeholder` ← `bodyMedium` with FontStyle.italic
+</Expandable>
+
+#### Example
+
+```dart
+final materialTheme = ThemeData.light();
+final typography = NebuxTypography.fromThemeData(materialTheme);
+```
+
+### withOverrides
+
+Creates a custom `NebuxTypography` with individual TextStyle overrides. All parameters are optional.
+
+```dart
+factory NebuxTypography.withOverrides({
+  TextStyle? content,
+  TextStyle? paragraph,
+  TextStyle? caption,
+  TextStyle? heading,
+  TextStyle? section,
+  TextStyle? label,
+  TextStyle? primaryAction,
+  TextStyle? secondaryAction,
+  TextStyle? formInput,
+  TextStyle? placeholder,
+  NebuxTypography? base,
+})
+```
+
+<ParamField path="content" type="TextStyle">
+  Optional override for content text style
+</ParamField>
+
+<ParamField path="paragraph" type="TextStyle">
+  Optional override for paragraph text style
+</ParamField>
+
+<ParamField path="caption" type="TextStyle">
+  Optional override for caption text style
+</ParamField>
+
+<ParamField path="heading" type="TextStyle">
+  Optional override for heading text style
+</ParamField>
+
+<ParamField path="section" type="TextStyle">
+  Optional override for section text style
+</ParamField>
+
+<ParamField path="label" type="TextStyle">
+  Optional override for label text style
+</ParamField>
+
+<ParamField path="primaryAction" type="TextStyle">
+  Optional override for primary action text style
+</ParamField>
+
+<ParamField path="secondaryAction" type="TextStyle">
+  Optional override for secondary action text style
+</ParamField>
+
+<ParamField path="formInput" type="TextStyle">
+  Optional override for form input text style
+</ParamField>
+
+<ParamField path="placeholder" type="TextStyle">
+  Optional override for placeholder text style
+</ParamField>
+
+<ParamField path="base" type="NebuxTypography">
+  Optional base typography to start from. Defaults to `NebuxTypography.standard()` if not provided. Useful in tests to avoid Google Fonts network calls.
+</ParamField>
+
+#### Example
+
+```dart
+final customTypography = NebuxTypography.withOverrides(
+  heading: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  ),
+  paragraph: TextStyle(
+    fontSize: 16,
+  ),
+);
+```
+
+---
+
+## Instance Methods
+
+### copyWith
+
+Creates a copy with optional property overrides. Generated by Freezed.
+
+```dart
+NebuxTypography copyWith({
+  TextStyle? content,
+  TextStyle? paragraph,
+  TextStyle? caption,
+  TextStyle? heading,
+  TextStyle? section,
+  TextStyle? label,
+  TextStyle? primaryAction,
+  TextStyle? secondaryAction,
+  TextStyle? formInput,
+  TextStyle? placeholder,
+})
+```
+
+#### Example
+
+```dart
+final original = NebuxTypography.standard();
+final modified = original.copyWith(
+  heading: original.heading.copyWith(
+    color: Colors.blue,
+    fontSize: 20,
+  ),
+);
+```
+
+### merge
+
+Merges this typography scheme with another `NebuxTypography`. Styles from the other typography take precedence.
+
+```dart
+NebuxTypography merge(NebuxTypography? other)
+```
+
+<ParamField path="other" type="NebuxTypography">
+  The typography to merge with. If null, returns this instance unchanged.
+</ParamField>
+
+#### Example
+
+```dart
+final baseTypography = NebuxTypography.standard();
+final overrideTypography = NebuxTypography.withOverrides(
+  heading: TextStyle(fontSize: 24),
+);
+
+final merged = baseTypography.merge(overrideTypography);
+// merged.heading will have fontSize 24, other styles from baseTypography
+```
+
+---
+
+## Usage Examples
+
+### Basic Text Styling
+
+```dart
+class TypographyExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final typography = NebuxTypography.standard();
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Page Title', style: typography.heading),
+        SizedBox(height: 16),
+        Text('Section Header', style: typography.section),
+        SizedBox(height: 8),
+        Text(
+          'This is a paragraph with regular body text. '
+          'It uses the paragraph style with appropriate '
+          'line height and letter spacing.',
+          style: typography.paragraph,
+        ),
+        SizedBox(height: 8),
+        Text(
+          'This is caption text for metadata',
+          style: typography.caption,
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Button Text Styling
+
+```dart
+class ButtonExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final typography = NebuxTypography.standard();
+    final colors = NebuxColors.standardLight();
+    
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colors.actionPrimary,
+          ),
+          child: Text(
+            'Primary Action',
+            style: typography.primaryAction.copyWith(
+              color: colors.white,
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+        OutlinedButton(
+          onPressed: () {},
+          child: Text(
+            'Secondary Action',
+            style: typography.secondaryAction.copyWith(
+              color: colors.actionSecondary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Form Input Styling
+
+```dart
+class FormExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final typography = NebuxTypography.standard();
+    final colors = NebuxColors.standardLight();
+    
+    return TextField(
+      style: typography.formInput.copyWith(
+        color: colors.textPrimary,
+      ),
+      decoration: InputDecoration(
+        labelText: 'Email',
+        labelStyle: typography.label.copyWith(
+          color: colors.textSecondary,
+        ),
+        hintText: 'Enter your email',
+        hintStyle: typography.placeholder.copyWith(
+          color: colors.textSecondary,
+        ),
+      ),
+    );
+  }
+}
+```
+
+### Custom Font Family
+
+```dart
+class CustomFontExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Use Roboto instead of Montserrat
+    final typography = NebuxTypography.custom('Roboto', null);
+    
+    return Text(
+      'Custom Font Family',
+      style: typography.heading,
+    );
+  }
+}
+```
+
+### Using with NebuxTheme
+
+```dart
+class ThemeExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final nebuxTheme = Theme.of(context).extension<NebuxTheme>()!;
+    final typography = nebuxTheme.typography;
+    
+    return Column(
+      children: [
+        Text(
+          'Themed Heading',
+          style: typography.heading.copyWith(
+            color: nebuxTheme.colors.textPrimary,
+          ),
+        ),
+        Text(
+          'Themed paragraph text.',
+          style: typography.paragraph.copyWith(
+            color: nebuxTheme.colors.textPrimary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Typography with Color Variations
+
+```dart
+class ColoredTypography extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final typography = NebuxTypography.standard();
+    final colors = NebuxColors.standardLight();
+    
+    return Column(
+      children: [
+        Text(
+          'Primary Text',
+          style: typography.heading.copyWith(color: colors.textPrimary),
+        ),
+        Text(
+          'Secondary Text',
+          style: typography.paragraph.copyWith(color: colors.textSecondary),
+        ),
+        Text(
+          'Success Message',
+          style: typography.label.copyWith(color: colors.success),
+        ),
+        Text(
+          'Error Message',
+          style: typography.label.copyWith(color: colors.error),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Responsive Typography
+
+```dart
+class ResponsiveTypography extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final typography = NebuxTypography.standard();
+    final screenWidth = MediaQuery.of(context).size.width;
+    
+    // Scale font sizes for larger screens
+    final scale = screenWidth > 600 ? 1.2 : 1.0;
+    
+    return Text(
+      'Responsive Text',
+      style: typography.heading.copyWith(
+        fontSize: typography.heading.fontSize! * scale,
+      ),
+    );
+  }
+}
+```
+
+---
+
+## Typography Hierarchy
+
+Recommended usage for each text style:
+
+| Style | Use Cases | Font Size | Weight |
+|-------|-----------|-----------|--------|
+| `heading` | Page titles, main headers, screen titles | 18px | 600 |
+| `section` | Section headers, card titles, dialog titles | 14px | 500 |
+| `paragraph` | Body text, descriptions, default content | 14px | 400 |
+| `content` | Dense text, list items, secondary content | 12px | 400 |
+| `caption` | Metadata, timestamps, supporting text | 10px | 400 |
+| `label` | Small labels, badges, status indicators | 10px | 500 |
+| `primaryAction` | Primary buttons, main CTAs | 14px | 700 |
+| `secondaryAction` | Secondary buttons, tertiary actions | 14px | 600 |
+| `formInput` | Text field content, user input | 14px | 400 |
+| `placeholder` | Input placeholders, hints | 14px | 400 (italic) |
+
+---
+
+## See Also
+
+- [NebuxTheme](/api/nebux-theme) - Main theme integration
+- [NebuxColors](/api/nebux-colors) - Color system
+- [NebuxFontSize](/api/nebux-font-size) - Font size scale

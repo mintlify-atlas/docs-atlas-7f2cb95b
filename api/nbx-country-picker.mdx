@@ -1,0 +1,344 @@
+---
+title: 'NbxCountryPickerInput'
+description: 'A read-only input widget that opens a country picker dialog'
+icon: 'globe'
+---
+
+## Overview
+
+`NbxCountryPickerInput` is a read-only input field that opens a country selection dialog when tapped. It wraps `NbxTextFormFieldWidget` and delegates country selection to a customizable modal dialog.
+
+## Basic Usage
+
+```dart
+final controller = TextEditingController();
+
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: controller,
+    labelText: 'Country',
+    hintText: 'Select a country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    onSelect: (country) {
+      controller.text = country.name;
+      print('Selected: ${country.name}');
+    },
+  ),
+)
+```
+
+## Widget Properties
+
+<ParamField path="inputParameters" type="NbxCountryPickerParameters" required>
+  Configuration for the input field appearance and behavior.
+</ParamField>
+
+<ParamField path="modal" type="NbxCountryPickerModalParameters" required>
+  Configuration for the country picker modal/list dialog.
+</ParamField>
+
+<ParamField path="onBeforeOpen" type="Future<bool> Function()?">
+  Callback to validate if the picker should open. Returns true to open, false to prevent opening. If null, the picker opens by default.
+</ParamField>
+
+<ParamField path="showErrorText" type="bool" default="true">
+  Whether to show the error text inside the input field.
+</ParamField>
+
+<ParamField path="validator" type="String? Function(String?)?">
+  Pure validator for the input field (native Flutter contract).
+</ParamField>
+
+<ParamField path="onValidationResult" type="void Function(String?)?">
+  Notification callback called with the final error after validation (null = valid).
+</ParamField>
+
+<ParamField path="enabledBorder" type="InputBorder?">
+  Custom enabled border for the input field.
+</ParamField>
+
+<ParamField path="focusedBorder" type="InputBorder?">
+  Custom focused border for the input field.
+</ParamField>
+
+<ParamField path="border" type="InputBorder?">
+  Custom default border for the input field.
+</ParamField>
+
+## NbxCountryPickerParameters
+
+Configuration object for the country picker input field.
+
+<ParamField path="isRequired" type="bool" required>
+  Whether the country field is required. If true, `requiredErrorMessage` must be provided.
+</ParamField>
+
+<ParamField path="inputType" type="NbxInputType" required>
+  The input type. Typically `NbxInputType.dropdownMenu` for country pickers.
+</ParamField>
+
+<ParamField path="decorationStyle" type="NbxInputDecorationStyle" required>
+  The visual decoration style for the input field.
+</ParamField>
+
+<ParamField path="controller" type="TextEditingController" required>
+  Controller for managing the input field text.
+</ParamField>
+
+<ParamField path="labelText" type="String?">
+  Label text displayed for the input field.
+</ParamField>
+
+<ParamField path="hintText" type="String?">
+  Placeholder text shown when the field is empty.
+</ParamField>
+
+<ParamField path="requiredErrorMessage" type="String?">
+  Error message displayed when required field is not filled.
+</ParamField>
+
+<ParamField path="prefixIcon" type="Widget?">
+  Widget displayed at the start of the input field.
+</ParamField>
+
+<ParamField path="maxLines" type="int?">
+  Maximum number of lines for the input field.
+</ParamField>
+
+## NbxCountryPickerModalParameters
+
+Configuration for the country picker modal dialog. See [NbxPhoneFieldWidget documentation](/api/nbx-phone-field) for complete parameter details.
+
+### Essential Parameters
+
+<ParamField path="appBarTitle" type="String" required>
+  Title displayed in the country picker modal.
+</ParamField>
+
+<ParamField path="onSelect" type="void Function(Country)" required>
+  Callback function invoked when a country is selected.
+</ParamField>
+
+<ParamField path="showPhoneCode" type="bool" default="false">
+  Whether to display phone codes alongside country names.
+</ParamField>
+
+<ParamField path="showSearchBox" type="bool" default="true">
+  Whether to show the search functionality in the modal.
+</ParamField>
+
+<ParamField path="countries" type="List<Country>?">
+  Optional list of countries to display. If null, all countries are shown.
+</ParamField>
+
+### Styling Parameters
+
+The modal supports extensive customization including colors, fonts, search bar styling, and more. See the complete list in the [NbxPhoneFieldWidget documentation](/api/nbx-phone-field).
+
+## Examples
+
+### Basic Country Picker
+
+```dart
+final countryController = TextEditingController();
+
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Select Country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Countries',
+    onSelect: (country) {
+      countryController.text = country.name;
+    },
+  ),
+)
+```
+
+### With Phone Codes Displayed
+
+```dart
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    prefixIcon: Icon(Icons.flag),
+    requiredErrorMessage: 'Please select a country',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    showPhoneCode: true,
+    onSelect: (country) {
+      countryController.text = '${country.name} (+${country.phoneCode})';
+    },
+  ),
+)
+```
+
+### With Validation Callback
+
+```dart
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    onSelect: (country) {
+      countryController.text = country.name;
+    },
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return 'Please select a country';
+    }
+    return null;
+  },
+  onValidationResult: (error) {
+    if (error != null) {
+      print('Validation error: $error');
+    }
+  },
+)
+```
+
+### With Conditional Opening
+
+```dart
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    onSelect: (country) {
+      countryController.text = country.name;
+    },
+  ),
+  onBeforeOpen: () async {
+    // Check if user is allowed to change country
+    bool canChange = await checkPermission();
+    if (!canChange) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Not Allowed'),
+          content: Text('You cannot change country at this time'),
+        ),
+      );
+    }
+    return canChange;
+  },
+)
+```
+
+### With Custom Styling
+
+```dart
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    prefixIcon: Icon(Icons.public, color: Colors.blue),
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Choose Country',
+    appBarBackgroundColour: Colors.blue,
+    appBarTextColour: Colors.white,
+    countryTextColour: Colors.black87,
+    searchBarBorderColor: Colors.blue,
+    searchBarTextColor: Colors.black87,
+    searchBarAutofocus: true,
+    onSelect: (country) {
+      countryController.text = country.name;
+    },
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blue),
+    borderRadius: BorderRadius.circular(8),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: Colors.blue, width: 2),
+    borderRadius: BorderRadius.circular(8),
+  ),
+)
+```
+
+### With Limited Country List
+
+```dart
+final allowedCountries = [
+  // Get specific Country objects
+  usaCountry,
+  canadaCountry,
+  ukCountry,
+  australiaCountry,
+];
+
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    countries: allowedCountries,
+    showSearchBox: false, // Disable search for small lists
+    onSelect: (country) {
+      countryController.text = country.name;
+    },
+  ),
+)
+```
+
+## Behavior Notes
+
+### Read-Only Input
+
+The input field is always read-only (`isReadOnly: true`). Users cannot type directly; they must select from the modal.
+
+### Automatic Suffix Icon
+
+A dropdown arrow icon is automatically added as a suffix to indicate the field is interactive.
+
+### Controller Management
+
+The widget does not auto-dispose the controller (`autoDisposeController: false`), allowing external management of the controller lifecycle.
+
+## See Also
+
+- [NbxPhoneFieldWidget](/api/nbx-phone-field) - Combined country and phone input
+- [Country Picker Pro](https://github.com/joicodev/nebux_design_system/tree/main) - Underlying country picker implementation
+- [NbxInputParameters](/api/input-parameters) - Input field configuration

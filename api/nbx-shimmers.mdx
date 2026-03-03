@@ -1,0 +1,542 @@
+---
+title: 'Shimmer Components'
+description: 'Comprehensive shimmer/skeleton loading components for professional loading states'
+icon: 'spinner'
+---
+
+## Overview
+
+The Nebux Design System provides a complete set of shimmer/skeleton loading components for creating professional loading states in Flutter applications. These components use gradient-based shimmer animations to indicate loading content.
+
+## Components
+
+- `NbxShimmerAnimation` - Base animation wrapper
+- `NbxShimmerContainer` - Basic shimmer container
+- `NbxShimmerContainerExpanded` - Expanded shimmer container
+- `NbxShimmerContainerList` - List of shimmer containers
+- `NbxShimmerTwiceContainerList` - Two-row shimmer container list
+- `NbxShimmerListTile` - Shimmer list tile with multiple elements
+- `NbxShimmerListTileListView` - Scrollable list of shimmer tiles
+- `NbxShimmerGrid` - Grid of shimmer items
+
+## ShimmerSkeletonStyle
+
+All shimmer components use `ShimmerSkeletonStyle` for configuration.
+
+<ParamField path="width" type="double" required>
+  Width of the shimmer container.
+</ParamField>
+
+<ParamField path="height" type="double?">
+  Height of the shimmer container. If null, container will size to content.
+</ParamField>
+
+<ParamField path="borderRadiusDouble" type="double" default="8.0">
+  Border radius for rectangular containers.
+</ParamField>
+
+<ParamField path="boxShape" type="BoxShape" default="BoxShape.rectangle">
+  Shape of the container (BoxShape.rectangle or BoxShape.circle).
+</ParamField>
+
+<ParamField path="customColor" type="Color?">
+  Custom color override for the shimmer container.
+</ParamField>
+
+## NbxShimmerAnimation
+
+Base animation wrapper that provides shimmer effect to any child widget.
+
+### Properties
+
+<ParamField path="child" type="Widget" required>
+  Child widget to be wrapped with shimmer animation.
+</ParamField>
+
+<ParamField path="gradient" type="LinearGradient?">
+  Custom gradient for the shimmer effect. If null, uses default gradient.
+</ParamField>
+
+### Example
+
+```dart
+NbxShimmerAnimation(
+  child: Container(
+    width: 200,
+    height: 100,
+    color: Colors.grey[300],
+  ),
+)
+```
+
+## NbxShimmerContainer
+
+A basic shimmer container with customizable styling.
+
+### Properties
+
+<ParamField path="style" type="ShimmerSkeletonStyle" required>
+  Style configuration for the shimmer container.
+</ParamField>
+
+### Examples
+
+```dart
+// Rectangle shimmer
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 200,
+    height: 100,
+    borderRadiusDouble: 12,
+  ),
+)
+
+// Circular shimmer
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 50,
+    height: 50,
+    boxShape: BoxShape.circle,
+  ),
+)
+```
+
+## NbxShimmerContainerList
+
+Displays a list of shimmer containers in horizontal or vertical layout.
+
+### Properties
+
+<ParamField path="style" type="ShimmerSkeletonStyle" required>
+  Style configuration for the shimmer containers.
+</ParamField>
+
+<ParamField path="itemCount" type="int" required>
+  Number of containers to display in the list.
+</ParamField>
+
+<ParamField path="isColumn" type="bool" required>
+  Whether to display containers in a column (vertical) layout. If false, displays horizontally.
+</ParamField>
+
+### Examples
+
+```dart
+// Vertical list
+NbxShimmerContainerList(
+  style: ShimmerSkeletonStyle(
+    width: double.infinity,
+    height: 60,
+  ),
+  itemCount: 5,
+  isColumn: true,
+)
+
+// Horizontal list
+NbxShimmerContainerList(
+  style: ShimmerSkeletonStyle(
+    width: 120,
+    height: 80,
+    borderRadiusDouble: 8,
+  ),
+  itemCount: 4,
+  isColumn: false,
+)
+```
+
+## NbxShimmerListTile
+
+A shimmer widget that simulates a list tile with customizable elements.
+
+### Properties
+
+<ParamField path="titleStyle" type="ShimmerSkeletonStyle" required>
+  Style configuration for the title element.
+</ParamField>
+
+<ParamField path="leadingStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the leading element (e.g., avatar).
+</ParamField>
+
+<ParamField path="subtitleStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the subtitle element.
+</ParamField>
+
+<ParamField path="paragraphStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the paragraph element.
+</ParamField>
+
+<ParamField path="trailingStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the trailing element.
+</ParamField>
+
+<ParamField path="padding" type="EdgeInsetsGeometry?">
+  Padding around the entire list tile.
+</ParamField>
+
+<ParamField path="contentSpacing" type="double?">
+  Spacing between content elements horizontally.
+</ParamField>
+
+<ParamField path="verticalSpacing" type="double?">
+  Vertical spacing between elements.
+</ParamField>
+
+<ParamField path="hasContainer" type="bool?">
+  Whether to wrap the tile in a container with background.
+</ParamField>
+
+### Examples
+
+```dart
+// Simple list tile
+NbxShimmerListTile(
+  leadingStyle: ShimmerSkeletonStyle(
+    width: 50,
+    height: 50,
+    boxShape: BoxShape.circle,
+  ),
+  titleStyle: ShimmerSkeletonStyle(
+    width: 150,
+    height: 20,
+  ),
+  subtitleStyle: ShimmerSkeletonStyle(
+    width: 100,
+    height: 16,
+  ),
+)
+
+// List tile with container
+NbxShimmerListTile(
+  hasContainer: true,
+  leadingStyle: ShimmerSkeletonStyle(
+    width: 60,
+    height: 60,
+    borderRadiusDouble: 8,
+  ),
+  titleStyle: ShimmerSkeletonStyle(
+    width: 200,
+    height: 18,
+  ),
+  subtitleStyle: ShimmerSkeletonStyle(
+    width: 150,
+    height: 14,
+  ),
+  paragraphStyle: ShimmerSkeletonStyle(
+    width: double.infinity,
+    height: 12,
+  ),
+  trailingStyle: ShimmerSkeletonStyle(
+    width: 24,
+    height: 24,
+    boxShape: BoxShape.circle,
+  ),
+  padding: EdgeInsets.all(16),
+  contentSpacing: 12,
+  verticalSpacing: 8,
+)
+```
+
+## NbxShimmerListTileListView
+
+A scrollable list of shimmer list tiles with separators.
+
+### Properties
+
+<ParamField path="itemCount" type="int" required>
+  Number of list tiles to display.
+</ParamField>
+
+<ParamField path="titleStyle" type="ShimmerSkeletonStyle" required>
+  Style for title elements in each tile.
+</ParamField>
+
+<ParamField path="heightFull" type="double?">
+  Total height of the list view.
+</ParamField>
+
+<ParamField path="leadingStyle" type="ShimmerSkeletonStyle?">
+  Style for leading elements in each tile.
+</ParamField>
+
+<ParamField path="subtitleStyle" type="ShimmerSkeletonStyle?">
+  Style for subtitle elements in each tile.
+</ParamField>
+
+<ParamField path="paragraphStyle" type="ShimmerSkeletonStyle?">
+  Style for paragraph elements in each tile.
+</ParamField>
+
+<ParamField path="trailingStyle" type="ShimmerSkeletonStyle?">
+  Style for trailing elements in each tile.
+</ParamField>
+
+<ParamField path="padding" type="EdgeInsetsGeometry?">
+  Padding around each list tile.
+</ParamField>
+
+<ParamField path="contentSpacing" type="double?">
+  Spacing between content elements in each tile.
+</ParamField>
+
+<ParamField path="verticalSpacing" type="double?">
+  Vertical spacing between elements in each tile.
+</ParamField>
+
+<ParamField path="hasContainer" type="bool?">
+  Whether to add container background to each tile.
+</ParamField>
+
+<ParamField path="dividerWidget" type="Widget?">
+  Custom divider widget between tiles. If null, uses default divider.
+</ParamField>
+
+### Example
+
+```dart
+NbxShimmerListTileListView(
+  itemCount: 10,
+  heightFull: 600,
+  leadingStyle: ShimmerSkeletonStyle(
+    width: 50,
+    height: 50,
+    boxShape: BoxShape.circle,
+  ),
+  titleStyle: ShimmerSkeletonStyle(
+    width: 180,
+    height: 18,
+  ),
+  subtitleStyle: ShimmerSkeletonStyle(
+    width: 120,
+    height: 14,
+  ),
+  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+)
+```
+
+## NbxShimmerGrid
+
+Displays a grid of shimmer skeleton items, typically for icon-based content.
+
+### Properties
+
+<ParamField path="itemCount" type="int" required>
+  Number of grid items to display.
+</ParamField>
+
+### Example
+
+```dart
+NbxShimmerGrid(
+  itemCount: 9,
+)
+```
+
+The grid uses a 3-column layout with fixed aspect ratio and displays icon placeholders.
+
+## Usage Patterns
+
+### Product List Loading
+
+```dart
+class ProductListShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return NbxShimmerListTileListView(
+      itemCount: 5,
+      leadingStyle: ShimmerSkeletonStyle(
+        width: 80,
+        height: 80,
+        borderRadiusDouble: 8,
+      ),
+      titleStyle: ShimmerSkeletonStyle(
+        width: 150,
+        height: 20,
+      ),
+      subtitleStyle: ShimmerSkeletonStyle(
+        width: 100,
+        height: 16,
+      ),
+      paragraphStyle: ShimmerSkeletonStyle(
+        width: double.infinity,
+        height: 14,
+      ),
+      hasContainer: true,
+      padding: EdgeInsets.all(12),
+    );
+  }
+}
+```
+
+### Profile Header Shimmer
+
+```dart
+class ProfileHeaderShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Avatar
+        NbxShimmerContainer(
+          style: ShimmerSkeletonStyle(
+            width: 100,
+            height: 100,
+            boxShape: BoxShape.circle,
+          ),
+        ),
+        SizedBox(height: 16),
+        // Name
+        NbxShimmerContainer(
+          style: ShimmerSkeletonStyle(
+            width: 200,
+            height: 24,
+            borderRadiusDouble: 4,
+          ),
+        ),
+        SizedBox(height: 8),
+        // Bio
+        NbxShimmerContainer(
+          style: ShimmerSkeletonStyle(
+            width: 150,
+            height: 16,
+            borderRadiusDouble: 4,
+          ),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Card Grid Shimmer
+
+```dart
+class CardGridShimmer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
+        childAspectRatio: 0.75,
+      ),
+      itemCount: 6,
+      itemBuilder: (context, index) {
+        return NbxShimmerAnimation(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+              Container(
+                height: 16,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              SizedBox(height: 4),
+              Container(
+                height: 14,
+                width: 100,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+```
+
+### Conditional Loading
+
+```dart
+class ProductList extends StatelessWidget {
+  final bool isLoading;
+  final List<Product> products;
+
+  const ProductList({
+    required this.isLoading,
+    required this.products,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isLoading) {
+      return NbxShimmerListTileListView(
+        itemCount: 5,
+        titleStyle: ShimmerSkeletonStyle(width: 150, height: 20),
+        leadingStyle: ShimmerSkeletonStyle(
+          width: 60,
+          height: 60,
+          borderRadiusDouble: 8,
+        ),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        return ProductTile(product: products[index]);
+      },
+    );
+  }
+}
+```
+
+## Customization
+
+### Custom Gradient
+
+```dart
+NbxShimmerAnimation(
+  gradient: LinearGradient(
+    colors: [
+      Colors.grey[300]!,
+      Colors.grey[100]!,
+      Colors.grey[300]!,
+    ],
+    stops: [0.0, 0.5, 1.0],
+  ),
+  child: YourWidget(),
+)
+```
+
+### Custom Colors
+
+```dart
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 200,
+    height: 100,
+    customColor: Colors.blue[100],
+  ),
+)
+```
+
+## Best Practices
+
+1. **Match Layout**: Design shimmers to match the actual content layout
+2. **Appropriate Count**: Show a reasonable number of shimmer items (3-5 for lists)
+3. **Consistent Sizing**: Use dimensions similar to real content
+4. **Loading State**: Always show shimmer when fetching data
+5. **Quick Transitions**: Ensure smooth transitions between shimmer and real content
+
+## See Also
+
+- [Shimmer constants](https://github.com/joicodev/nebux_design_system/tree/main) - Default values
+- [Shimmer models](https://github.com/joicodev/nebux_design_system/tree/main) - Style configurations

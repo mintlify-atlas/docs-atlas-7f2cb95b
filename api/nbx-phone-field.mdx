@@ -1,0 +1,381 @@
+---
+title: 'NbxPhoneFieldWidget'
+description: 'A widget that combines country picker and phone number input with validation'
+icon: 'phone'
+---
+
+## Overview
+
+`NbxPhoneFieldWidget` provides a user-friendly interface for selecting a country and entering a phone number, with automatic validation based on the selected country's phone number length requirements.
+
+## Basic Usage
+
+```dart
+NbxPhoneFieldWidget(
+  countrySelected: null,
+  countryCodeInputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    hintText: 'Select country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  phoneNumberInputParameters: NbxInputParameters(
+    isRequired: true,
+    inputType: NbxInputType.phone,
+    labelText: 'Phone Number',
+    hintText: 'Enter phone number',
+    requiredErrorMessage: 'Phone number is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    onSelect: (country) => print('Selected: ${country.name}'),
+  ),
+)
+```
+
+## Widget Properties
+
+<ParamField path="countrySelected" type="Country?" required>
+  The currently selected country. Can be null if no country is selected yet.
+</ParamField>
+
+<ParamField path="countryCodeInputParameters" type="NbxCountryPickerParameters" required>
+  Configuration for the country picker input field.
+</ParamField>
+
+<ParamField path="phoneNumberInputParameters" type="NbxInputParameters" required>
+  Configuration for the phone number input field.
+</ParamField>
+
+<ParamField path="modal" type="NbxCountryPickerModalParameters" required>
+  Configuration for the country picker modal/list dialog.
+</ParamField>
+
+<ParamField path="noCountryHelperText" type="String?" default="'Select a country first'">
+  Helper text shown when no country is selected to indicate why the input is read-only.
+</ParamField>
+
+## NbxCountryPickerParameters
+
+Configuration object for the country picker input.
+
+<ParamField path="isRequired" type="bool" required>
+  Whether the country field is required. If true, `requiredErrorMessage` must be provided.
+</ParamField>
+
+<ParamField path="inputType" type="NbxInputType" required>
+  The input type. Typically `NbxInputType.dropdownMenu` for country pickers.
+</ParamField>
+
+<ParamField path="decorationStyle" type="NbxInputDecorationStyle" required>
+  The visual decoration style for the input field.
+</ParamField>
+
+<ParamField path="controller" type="TextEditingController" required>
+  Controller for the country input field.
+</ParamField>
+
+<ParamField path="labelText" type="String?">
+  Label text for the country field.
+</ParamField>
+
+<ParamField path="hintText" type="String?">
+  Placeholder text for the country field.
+</ParamField>
+
+<ParamField path="requiredErrorMessage" type="String?">
+  Error message when required country is not selected.
+</ParamField>
+
+<ParamField path="prefixIcon" type="Widget?">
+  Widget displayed at the start of the country input.
+</ParamField>
+
+<ParamField path="maxLines" type="int?">
+  Maximum number of lines for the country field.
+</ParamField>
+
+## NbxCountryPickerModalParameters
+
+Configuration for the country picker modal dialog.
+
+### Required Parameters
+
+<ParamField path="appBarTitle" type="String" required>
+  Title displayed in the country picker modal app bar.
+</ParamField>
+
+<ParamField path="onSelect" type="void Function(Country)" required>
+  Callback function called when a country is selected.
+</ParamField>
+
+### Appearance Options
+
+<ParamField path="countryTextColour" type="Color?">
+  Text color for country names in the list.
+</ParamField>
+
+<ParamField path="appBarBackgroundColour" type="Color?">
+  Background color for the modal app bar.
+</ParamField>
+
+<ParamField path="backgroundColour" type="Color" default="Colors.white">
+  Background color for the modal content.
+</ParamField>
+
+<ParamField path="appBarTextColour" type="Color" default="Colors.white">
+  Text color for the app bar title.
+</ParamField>
+
+<ParamField path="backIconColour" type="Color" default="Colors.white">
+  Color for the back button icon.
+</ParamField>
+
+<ParamField path="dividerColour" type="Color" default="Colors.black12">
+  Color for dividers between countries.
+</ParamField>
+
+### Typography Options
+
+<ParamField path="appBarFontStyle" type="FontStyle" default="FontStyle.normal">
+  Font style for the app bar title.
+</ParamField>
+
+<ParamField path="countryFontStyle" type="FontStyle" default="FontStyle.normal">
+  Font style for country names.
+</ParamField>
+
+<ParamField path="appBarFontSize" type="double" default="20">
+  Font size for the app bar title.
+</ParamField>
+
+<ParamField path="countryTitleSize" type="double" default="16">
+  Font size for country names.
+</ParamField>
+
+<ParamField path="appBarFontWeight" type="FontWeight" default="FontWeight.bold">
+  Font weight for the app bar title.
+</ParamField>
+
+<ParamField path="countryFontWeight" type="FontWeight?" default="FontWeight.bold">
+  Font weight for country names.
+</ParamField>
+
+### Search Bar Options
+
+<ParamField path="searchBarBackgroundColor" type="Color" default="Colors.white">
+  Background color for the search bar.
+</ParamField>
+
+<ParamField path="searchBarBorderColor" type="Color?">
+  Border color for the search bar.
+</ParamField>
+
+<ParamField path="searchBarTextColor" type="Color?">
+  Text color for search input.
+</ParamField>
+
+<ParamField path="searchBarHintColor" type="Color?">
+  Hint text color for search input.
+</ParamField>
+
+<ParamField path="searchBarOuterBackgroundColor" type="Color" default="Colors.white">
+  Outer background color for the search bar container.
+</ParamField>
+
+<ParamField path="searchBarBorderWidth" type="double" default="0.5">
+  Border width for the search bar.
+</ParamField>
+
+<ParamField path="searchBarAutofocus" type="bool" default="false">
+  Whether to autofocus the search bar when modal opens.
+</ParamField>
+
+<ParamField path="searchBarIcon" type="IconData" default="Icons.search">
+  Icon displayed in the search bar.
+</ParamField>
+
+<ParamField path="showSearchBox" type="bool" default="true">
+  Whether to show the search bar in the modal.
+</ParamField>
+
+### Display Options
+
+<ParamField path="appBarTextCenterAlign" type="bool" default="true">
+  Whether to center-align the app bar title.
+</ParamField>
+
+<ParamField path="showPhoneCode" type="bool" default="false">
+  Whether to display phone codes alongside country names.
+</ParamField>
+
+<ParamField path="backIcon" type="IconData" default="Icons.arrow_back">
+  Icon for the back button in the app bar.
+</ParamField>
+
+<ParamField path="listType" type="ListType" default="ListType.list">
+  Type of list display for countries.
+</ParamField>
+
+<ParamField path="countryTheme" type="CountryThemeData" default="CountryThemeData(appBarBorderRadius: 10)">
+  Theme configuration for the country picker.
+</ParamField>
+
+<ParamField path="countries" type="List<Country>?">
+  Optional list of countries to display. If null, all countries are shown.
+</ParamField>
+
+## Country Object
+
+The `Country` object contains information about the selected country:
+
+- `name` - Country name
+- `phoneCode` - International dialing code
+- `countryCode` - ISO country code
+- `minLength` - Minimum phone number length
+- `maxLength` - Maximum phone number length
+
+## Behavior
+
+### Automatic Validation
+
+The phone number input automatically validates based on the selected country:
+- Minimum length validation using `country.minLength`
+- Maximum length validation using `country.maxLength`
+- The `maxLength` property is applied to the text field
+
+### Read-Only State
+
+The phone number input becomes read-only when no country is selected, preventing users from entering a phone number without context.
+
+### State Management
+
+When a country is selected:
+1. The phone number input is cleared
+2. The original `onSelect` callback is called
+3. The input becomes enabled for phone number entry
+
+## Examples
+
+### Basic Phone Field
+
+```dart
+final countryController = TextEditingController();
+final phoneController = TextEditingController();
+Country? selectedCountry;
+
+NbxPhoneFieldWidget(
+  countrySelected: selectedCountry,
+  countryCodeInputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    requiredErrorMessage: 'Please select a country',
+  ),
+  phoneNumberInputParameters: NbxInputParameters(
+    isRequired: true,
+    inputType: NbxInputType.phone,
+    controller: phoneController,
+    labelText: 'Phone Number',
+    hintText: 'Enter phone number',
+    requiredErrorMessage: 'Phone number is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    onSelect: (country) {
+      setState(() {
+        selectedCountry = country;
+        countryController.text = country.name;
+      });
+    },
+  ),
+)
+```
+
+### With Custom Styling
+
+```dart
+NbxPhoneFieldWidget(
+  countrySelected: selectedCountry,
+  countryCodeInputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    prefixIcon: Icon(Icons.flag),
+    requiredErrorMessage: 'Country required',
+  ),
+  phoneNumberInputParameters: NbxInputParameters(
+    isRequired: true,
+    inputType: NbxInputType.phone,
+    controller: phoneController,
+    labelText: 'Mobile Number',
+    prefixIcon: Icon(Icons.phone),
+    requiredErrorMessage: 'Phone required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Choose Your Country',
+    showPhoneCode: true,
+    searchBarAutofocus: true,
+    appBarBackgroundColour: Colors.blue,
+    countryTextColour: Colors.black87,
+    onSelect: (country) {
+      setState(() {
+        selectedCountry = country;
+        countryController.text = '${country.name} (+${country.phoneCode})';
+      });
+    },
+  ),
+  noCountryHelperText: 'Please select a country first',
+)
+```
+
+### With Limited Countries
+
+```dart
+NbxPhoneFieldWidget(
+  countrySelected: selectedCountry,
+  countryCodeInputParameters: NbxCountryPickerParameters(
+    isRequired: true,
+    inputType: NbxInputType.dropdownMenu,
+    decorationStyle: NbxInputDecorationStyle.outlined,
+    controller: countryController,
+    labelText: 'Country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  phoneNumberInputParameters: NbxInputParameters(
+    isRequired: true,
+    inputType: NbxInputType.phone,
+    controller: phoneController,
+    labelText: 'Phone',
+    requiredErrorMessage: 'Phone is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    appBarTitle: 'Select Country',
+    countries: [
+      // Provide specific countries only
+      usCountry,
+      ukCountry,
+      canadaCountry,
+    ],
+    onSelect: (country) {
+      setState(() {
+        selectedCountry = country;
+        countryController.text = country.name;
+      });
+    },
+  ),
+)
+```
+
+## See Also
+
+- [NbxCountryPickerInput](/api/nbx-country-picker) - Standalone country picker
+- [NbxTextFieldWidget](/api/nbx-text-field) - Basic text input
+- [NbxInputParameters](/api/input-parameters) - Input configuration

@@ -1,0 +1,291 @@
+---
+title: "Widget Extensions"
+description: "Convenient padding and margin extensions for Flutter widgets"
+---
+
+## Overview
+
+Nebux Design System provides extension methods on `Widget` to quickly add padding and margin without verbose `Padding` or `Container` wrappers.
+
+## Padding Extensions
+
+All padding extensions return a `Widget` wrapped in a `Padding` widget.
+
+### Individual Sides
+
+<CodeGroup>
+
+```dart Left Padding
+Widget nbxPaddingLeft(double padding)
+
+// Usage
+Text('Hello').nbxPaddingLeft(16.0)
+```
+
+```dart Right Padding
+Widget nbxPaddingRight(double padding)
+
+// Usage
+Text('Hello').nbxPaddingRight(16.0)
+```
+
+```dart Top Padding
+Widget nbxPaddingTop(double padding)
+
+// Usage
+Text('Hello').nbxPaddingTop(16.0)
+```
+
+```dart Bottom Padding
+Widget nbxPaddingBottom(double padding)
+
+// Usage
+Text('Hello').nbxPaddingBottom(16.0)
+```
+
+</CodeGroup>
+
+### Symmetric Padding
+
+```dart
+Widget nbxPaddingSymmetric({double horizontal = 0.0, double vertical = 0.0})
+```
+
+**Usage:**
+
+```dart
+Text('Hello').nbxPaddingSymmetric(horizontal: 16.0, vertical: 8.0)
+```
+
+**Convenience methods:**
+
+```dart
+// Horizontal only
+Widget nbxPaddingHorizontal(double padding)
+Text('Hello').nbxPaddingHorizontal(16.0)
+
+// Vertical only
+Widget nbxPaddingVertical(double padding)
+Text('Hello').nbxPaddingVertical(16.0)
+```
+
+### Custom Padding
+
+```dart
+Widget nbxPaddingOnly({
+  double left = 0.0,
+  double top = 0.0,
+  double right = 0.0,
+  double bottom = 0.0,
+})
+```
+
+**Usage:**
+
+```dart
+Text('Hello').nbxPaddingOnly(
+  left: 16.0,
+  top: 8.0,
+  right: 16.0,
+  bottom: 24.0,
+)
+```
+
+### Zero Padding
+
+```dart
+Widget get paddingZero
+```
+
+**Usage:**
+
+```dart
+Text('Hello').paddingZero
+```
+
+## Margin Extensions
+
+All margin extensions return a `Widget` wrapped in a `Container` with the specified margin.
+
+### Individual Sides
+
+<CodeGroup>
+
+```dart All Sides
+Widget marginAll(double margin)
+
+// Usage
+Text('Hello').marginAll(16.0)
+```
+
+```dart Left Margin
+Widget marginLeft(double margin)
+
+// Usage
+Text('Hello').marginLeft(16.0)
+```
+
+```dart Right Margin
+Widget marginRight(double margin)
+
+// Usage
+Text('Hello').marginRight(16.0)
+```
+
+```dart Top Margin
+Widget marginTop(double margin)
+
+// Usage
+Text('Hello').marginTop(16.0)
+```
+
+```dart Bottom Margin
+Widget marginBottom(double margin)
+
+// Usage
+Text('Hello').marginBottom(16.0)
+```
+
+</CodeGroup>
+
+### Symmetric Margin
+
+```dart
+Widget marginSymmetric({double horizontal = 0.0, double vertical = 0.0})
+```
+
+**Usage:**
+
+```dart
+Text('Hello').marginSymmetric(horizontal: 16.0, vertical: 8.0)
+```
+
+### Custom Margin
+
+```dart
+Widget marginOnly({
+  double left = 0.0,
+  double top = 0.0,
+  double right = 0.0,
+  double bottom = 0.0,
+})
+```
+
+**Usage:**
+
+```dart
+Text('Hello').marginOnly(
+  left: 16.0,
+  top: 8.0,
+  right: 16.0,
+  bottom: 24.0,
+)
+```
+
+### Zero Margin
+
+```dart
+Widget get marginZero
+```
+
+**Usage:**
+
+```dart
+Text('Hello').marginZero
+```
+
+## Complete Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+class SpacingExampleScreen extends StatelessWidget {
+  const SpacingExampleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          // Horizontal padding
+          Text('Padded text')
+              .nbxPaddingHorizontal(24.0)
+              .marginTop(16.0),
+
+          // All sides padding and margin
+          Container(
+            color: context.nebuxColors.cardColor,
+            child: Text('Card content')
+                .nbxPaddingSymmetric(horizontal: 16.0, vertical: 12.0),
+          ).marginAll(16.0),
+
+          // Custom padding on each side
+          Text('Custom spacing')
+              .nbxPaddingOnly(
+                left: 8.0,
+                top: 12.0,
+                right: 8.0,
+                bottom: 16.0,
+              )
+              .marginOnly(
+                left: 16.0,
+                right: 16.0,
+                bottom: 24.0,
+              ),
+
+          // Chaining multiple extensions
+          Text('Chained')
+              .nbxPaddingVertical(8.0)
+              .marginHorizontal(16.0)
+              .marginTop(8.0),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## Combining with Spacing Constants
+
+Nebux provides pre-defined spacing constants that work great with these extensions:
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+// Using spacing constants
+Text('Hello')
+    .nbxPaddingSymmetric(horizontal: defaultPaddingSize, vertical: 8.0)
+    .marginBottom(16.0);
+
+// Available spacing constants:
+// defaultPaddingSize = 16.0
+// heightSpace2, heightSpace4, heightSpace8, heightSpace12, etc.
+// widthSpace2, widthSpace4, widthSpace8, widthSpace12, etc.
+```
+
+<Tip>
+See the full list of spacing constants in the [NebuxSpacing reference](/api-reference/core/spacing).
+</Tip>
+
+## Source Code Reference
+
+The widget extensions are defined in:
+
+- **Padding:** `lib/src/core/extensions/padding_extensions.dart`
+- **Margin:** `lib/src/core/extensions/margin_extensions.dart`
+
+<Note>
+**Performance Note:** These extensions create wrapper widgets (`Padding` or `Container`). Use them judiciously in performance-critical areas like list items that render thousands of times.
+</Note>
+
+## Related Pages
+
+<CardGroup cols={2}>
+  <Card title="Context Extensions" icon="link" href="/extensions/context">
+    Access theme properties from BuildContext
+  </Card>
+  <Card title="Utilities" icon="wrench" href="/extensions/utilities">
+    NebuxUtils and NebuxDebouncer classes
+  </Card>
+</CardGroup>

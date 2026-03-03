@@ -1,0 +1,154 @@
+---
+title: Introduction
+description: A comprehensive Flutter design system that provides consistent theming, typography, spacing, and UI components for modern applications
+---
+
+# Nebux Design System
+
+A production-ready Flutter design system that provides consistent theming, typography, spacing, and UI components for modern applications. Built with Material 3 and powered by Google Fonts.
+
+## What is Nebux Design System?
+
+Nebux Design System is a comprehensive Flutter package that gives you everything you need to build beautiful, consistent user interfaces:
+
+- **Complete theme system** with light/dark mode support
+- **Semantic color tokens** that adapt to your brand
+- **Typography system** powered by Google Fonts (Montserrat)
+- **Pre-built components** ready to use out of the box
+- **Flexible and customizable** to match your design needs
+
+## Key features
+
+<CardGroup cols={2}>
+  <Card title="Theme system" icon="palette">
+    Complete Material 3 theming with light/dark modes, semantic color tokens, and custom theme support via JSON/TOML
+  </Card>
+  
+  <Card title="Typography" icon="font">
+    Role-based text styles (heading, section, content, paragraph, caption, label) with Google Fonts integration
+  </Card>
+  
+  <Card title="UI components" icon="cube">
+    Production-ready widgets including buttons, text fields, scaffolds, network images, and skeleton loaders
+  </Card>
+  
+  <Card title="Developer experience" icon="code">
+    BuildContext extensions, spacing constants, padding/margin helpers, and utility functions
+  </Card>
+</CardGroup>
+
+## Theme preview
+
+Here's a quick look at how the theme system works:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: NebuxTheme.createThemeData(
+        isDark: false,
+        colors: NebuxColors.standardLight(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      darkTheme: NebuxTheme.createThemeData(
+        isDark: true,
+        colors: NebuxColors.standardDark(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      themeMode: ThemeMode.system,
+      home: MyHomePage(),
+    );
+  }
+}
+```
+
+## Semantic color system
+
+Access theme colors via intuitive context extensions:
+
+```dart
+final colors = context.nebuxColors;
+
+// Brand colors
+colors.primary           // Main brand color
+colors.secondary         // Secondary actions
+colors.accent            // Highlights
+
+// State colors
+colors.success           // Positive states
+colors.warning           // Caution states
+colors.error             // Error states
+colors.info              // Informational
+
+// Surface colors
+colors.background        // App background
+colors.surface           // Card/surface backgrounds
+colors.textPrimary       // Primary text
+colors.textSecondary     // Secondary text
+
+// Visual enhancements
+colors.primaryGradient   // Brand gradient
+colors.secondaryGradient // Secondary gradient
+```
+
+## Get started
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Add Nebux Design System to your Flutter project
+  </Card>
+  
+  <Card title="Quick start" icon="rocket" href="/quickstart">
+    Build your first screen with the design system
+  </Card>
+  
+  <Card title="Components" icon="grid" href="/core/components/buttons">
+    Explore all available UI components
+  </Card>
+  
+  <Card title="Theming" icon="paint-brush" href="/core/theming">
+    Learn how to customize colors and typography
+  </Card>
+</CardGroup>
+
+## Why Nebux Design System?
+
+<AccordionGroup>
+  <Accordion title="Consistent design language">
+    All components follow the same design principles, ensuring visual consistency across your entire application.
+  </Accordion>
+  
+  <Accordion title="Developer productivity">
+    Pre-built components and utilities let you focus on building features instead of reinventing UI patterns.
+  </Accordion>
+  
+  <Accordion title="Production ready">
+    Used in production applications with comprehensive testing and continuous integration.
+  </Accordion>
+  
+  <Accordion title="Customizable">
+    Every aspect can be customized - from colors and typography to component behavior.
+  </Accordion>
+  
+  <Accordion title="Type safe">
+    Built with full Dart null safety and uses Freezed for immutable data models.
+  </Accordion>
+</AccordionGroup>
+
+## Community and support
+
+- **GitHub**: [joicodev/nebux_design_system](https://github.com/joicodev/nebux_design_system)
+- **Issues**: [Report bugs or request features](https://github.com/joicodev/nebux_design_system/issues)
+- **License**: MIT - free to use in commercial and open source projects

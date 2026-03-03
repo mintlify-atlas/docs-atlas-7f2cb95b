@@ -1,0 +1,452 @@
+---
+title: 'Loading States'
+description: 'Shimmer components for professional skeleton screens'
+icon: 'spinner'
+---
+
+## Shimmer Components
+
+Nebux provides a comprehensive set of shimmer/skeleton loading components for creating professional loading states.
+
+## Overview
+
+Shimmer components display animated placeholder content while data is loading, providing visual feedback and improving perceived performance.
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+```
+
+## NbxShimmerContainer
+
+The basic building block for shimmer effects. Creates a skeleton container with customizable styling.
+
+### Basic Usage
+
+```dart
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 200,
+    height: 100,
+  ),
+)
+```
+
+### ShimmerSkeletonStyle
+
+Configuration class for shimmer appearance:
+
+<ParamField path="width" type="double" required>
+  Width of the shimmer container
+</ParamField>
+
+<ParamField path="height" type="double?">
+  Height of the container. If null, container sizes to content
+</ParamField>
+
+<ParamField path="borderRadiusDouble" type="double" default="8.0">
+  Border radius for rectangular containers
+</ParamField>
+
+<ParamField path="boxShape" type="BoxShape" default="BoxShape.rectangle">
+  Shape of the container: `rectangle` or `circle`
+</ParamField>
+
+<ParamField path="customColor" type="Color?">
+  Custom color override for the shimmer container
+</ParamField>
+
+## Common Patterns
+
+### Circular Shimmer
+
+Perfect for avatars or profile images:
+
+```dart
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 60,
+    height: 60,
+    boxShape: BoxShape.circle,
+  ),
+)
+```
+
+### Rounded Rectangle
+
+Ideal for images or cards:
+
+```dart
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 300,
+    height: 200,
+    borderRadiusDouble: 12,
+  ),
+)
+```
+
+### Text Line Shimmer
+
+Simulate text content:
+
+```dart
+NbxShimmerContainer(
+  style: ShimmerSkeletonStyle(
+    width: 250,
+    height: 16,
+    borderRadiusDouble: 4,
+  ),
+)
+```
+
+## NbxShimmerListTile
+
+A shimmer widget that simulates a list tile with optional leading, title, subtitle, paragraph, and trailing elements.
+
+### Basic Usage
+
+```dart
+NbxShimmerListTile(
+  titleStyle: ShimmerSkeletonStyle(
+    width: 150,
+    height: 20,
+  ),
+)
+```
+
+### Properties
+
+<ParamField path="leadingStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the leading element (e.g., avatar)
+</ParamField>
+
+<ParamField path="titleStyle" type="ShimmerSkeletonStyle" required>
+  Style configuration for the title element
+</ParamField>
+
+<ParamField path="subtitleStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the subtitle element
+</ParamField>
+
+<ParamField path="paragraphStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the paragraph element
+</ParamField>
+
+<ParamField path="trailingStyle" type="ShimmerSkeletonStyle?">
+  Style configuration for the trailing element
+</ParamField>
+
+<ParamField path="padding" type="EdgeInsetsGeometry?">
+  Padding around the entire list tile
+</ParamField>
+
+<ParamField path="contentSpacing" type="double?">
+  Spacing between content elements
+</ParamField>
+
+<ParamField path="verticalSpacing" type="double?">
+  Vertical spacing between elements
+</ParamField>
+
+<ParamField path="hasContainer" type="bool?">
+  Whether to wrap the tile in a container with background
+</ParamField>
+
+### Complete List Tile
+
+```dart
+NbxShimmerListTile(
+  leadingStyle: ShimmerSkeletonStyle(
+    width: 50,
+    height: 50,
+    boxShape: BoxShape.circle,
+  ),
+  titleStyle: ShimmerSkeletonStyle(
+    width: 180,
+    height: 20,
+  ),
+  subtitleStyle: ShimmerSkeletonStyle(
+    width: 140,
+    height: 16,
+  ),
+  trailingStyle: ShimmerSkeletonStyle(
+    width: 24,
+    height: 24,
+  ),
+  contentSpacing: 12,
+  verticalSpacing: 8,
+)
+```
+
+### With Container
+
+```dart
+NbxShimmerListTile(
+  hasContainer: true,
+  leadingStyle: ShimmerSkeletonStyle(
+    width: 50,
+    height: 50,
+    boxShape: BoxShape.circle,
+  ),
+  titleStyle: ShimmerSkeletonStyle(
+    width: 150,
+    height: 18,
+  ),
+  subtitleStyle: ShimmerSkeletonStyle(
+    width: 120,
+    height: 14,
+  ),
+)
+```
+
+## NbxShimmerGrid
+
+A shimmer widget that displays a grid of skeleton icons, ideal for loading dashboard items or icon grids.
+
+### Basic Usage
+
+```dart
+NbxShimmerGrid(
+  itemCount: 9,
+)
+```
+
+<ParamField path="itemCount" type="int" required>
+  Number of grid items to display
+</ParamField>
+
+The grid uses a 3-column layout with fixed cross-axis count and is perfect for simulating icon-based menus or feature grids.
+
+## Advanced Examples
+
+### User Profile Loading
+
+```dart
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    // Avatar and name
+    Row(
+      children: [
+        NbxShimmerContainer(
+          style: ShimmerSkeletonStyle(
+            width: 80,
+            height: 80,
+            boxShape: BoxShape.circle,
+          ),
+        ),
+        SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            NbxShimmerContainer(
+              style: ShimmerSkeletonStyle(
+                width: 150,
+                height: 24,
+              ),
+            ),
+            SizedBox(height: 8),
+            NbxShimmerContainer(
+              style: ShimmerSkeletonStyle(
+                width: 100,
+                height: 16,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+    SizedBox(height: 24),
+    // Bio
+    NbxShimmerContainer(
+      style: ShimmerSkeletonStyle(
+        width: double.infinity,
+        height: 16,
+      ),
+    ),
+    SizedBox(height: 8),
+    NbxShimmerContainer(
+      style: ShimmerSkeletonStyle(
+        width: 250,
+        height: 16,
+      ),
+    ),
+  ],
+)
+```
+
+### List of Items
+
+```dart
+ListView.separated(
+  itemCount: 5,
+  separatorBuilder: (context, index) => SizedBox(height: 16),
+  itemBuilder: (context, index) {
+    return NbxShimmerListTile(
+      leadingStyle: ShimmerSkeletonStyle(
+        width: 60,
+        height: 60,
+        borderRadiusDouble: 8,
+      ),
+      titleStyle: ShimmerSkeletonStyle(
+        width: 180,
+        height: 18,
+      ),
+      subtitleStyle: ShimmerSkeletonStyle(
+        width: 140,
+        height: 14,
+      ),
+      paragraphStyle: ShimmerSkeletonStyle(
+        width: 200,
+        height: 14,
+      ),
+    );
+  },
+)
+```
+
+### Card Grid Loading
+
+```dart
+GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    crossAxisSpacing: 16,
+    mainAxisSpacing: 16,
+    childAspectRatio: 0.75,
+  ),
+  itemCount: 6,
+  itemBuilder: (context, index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: NbxShimmerContainer(
+            style: ShimmerSkeletonStyle(
+              width: double.infinity,
+              height: double.infinity,
+              borderRadiusDouble: 12,
+            ),
+          ),
+        ),
+        SizedBox(height: 8),
+        NbxShimmerContainer(
+          style: ShimmerSkeletonStyle(
+            width: double.infinity,
+            height: 16,
+          ),
+        ),
+        SizedBox(height: 4),
+        NbxShimmerContainer(
+          style: ShimmerSkeletonStyle(
+            width: 80,
+            height: 14,
+          ),
+        ),
+      ],
+    );
+  },
+)
+```
+
+### Feed with Mixed Content
+
+```dart
+ListView.builder(
+  itemCount: 3,
+  itemBuilder: (context, index) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          NbxShimmerListTile(
+            leadingStyle: ShimmerSkeletonStyle(
+              width: 40,
+              height: 40,
+              boxShape: BoxShape.circle,
+            ),
+            titleStyle: ShimmerSkeletonStyle(
+              width: 120,
+              height: 16,
+            ),
+            subtitleStyle: ShimmerSkeletonStyle(
+              width: 80,
+              height: 12,
+            ),
+          ),
+          SizedBox(height: 12),
+          // Image
+          NbxShimmerContainer(
+            style: ShimmerSkeletonStyle(
+              width: double.infinity,
+              height: 250,
+              borderRadiusDouble: 8,
+            ),
+          ),
+          SizedBox(height: 12),
+          // Text lines
+          NbxShimmerContainer(
+            style: ShimmerSkeletonStyle(
+              width: double.infinity,
+              height: 14,
+            ),
+          ),
+          SizedBox(height: 6),
+          NbxShimmerContainer(
+            style: ShimmerSkeletonStyle(
+              width: 200,
+              height: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  },
+)
+```
+
+### Dashboard Icons Grid
+
+```dart
+Column(
+  children: [
+    // Title
+    Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: NbxShimmerContainer(
+        style: ShimmerSkeletonStyle(
+          width: 150,
+          height: 24,
+        ),
+      ),
+    ),
+    SizedBox(height: 16),
+    // Grid
+    NbxShimmerGrid(itemCount: 9),
+  ],
+)
+```
+
+## Best Practices
+
+<Note>
+  Match shimmer dimensions to your actual content as closely as possible for a smooth transition.
+</Note>
+
+<Note>
+  Use circular shimmers for avatars and profile pictures, rectangular for images and cards.
+</Note>
+
+<Note>
+  Keep shimmer animations consistent across your app by using the same style configurations.
+</Note>
+
+<Note>
+  Consider using `hasContainer: true` on `NbxShimmerListTile` when your actual list items have card-style backgrounds.
+</Note>
+
+<Note>
+  The shimmer animation is automatically applied by `NbxShimmerAnimation` wrapper - you don't need to manage animation controllers.
+</Note>

@@ -1,0 +1,374 @@
+---
+title: Typography
+description: Comprehensive text style system with semantic type scales for consistent typography
+---
+
+The NebuxTypography class provides a complete typography system with semantic text styles designed for different UI elements and content hierarchies.
+
+## Overview
+
+NebuxTypography uses Google Fonts Montserrat by default and provides 10 semantic text styles, each optimized for specific use cases with appropriate font size, weight, line height, and letter spacing.
+
+## Text styles
+
+All text styles include explicit `height` (line-height multiplier) and `letterSpacing` values aligned with Material Design 3 type scale:
+
+<ParamField path="heading" type="TextStyle">
+  Style for main headings (e.g., page titles, primary headers)
+  
+  - Font size: 18px
+  - Font weight: 600
+  - Line height: 1.2
+  - Letter spacing: -0.5
+</ParamField>
+
+<ParamField path="section" type="TextStyle">
+  Style for section headers (e.g., content sections)
+  
+  - Font size: 14px
+  - Font weight: 500
+  - Line height: 1.25
+  - Letter spacing: -0.25
+</ParamField>
+
+<ParamField path="content" type="TextStyle">
+  Style for main content text (e.g., articles, descriptions)
+  
+  - Font size: 12px
+  - Font weight: 400
+  - Line height: 1.4
+  - Letter spacing: 0.0
+</ParamField>
+
+<ParamField path="paragraph" type="TextStyle">
+  Style for regular paragraph text (e.g., default content, paragraphs)
+  
+  - Font size: 14px
+  - Font weight: 400
+  - Line height: 1.5
+  - Letter spacing: 0.15
+</ParamField>
+
+<ParamField path="caption" type="TextStyle">
+  Style for small supporting text (e.g., captions, metadata)
+  
+  - Font size: 10px
+  - Font weight: 400
+  - Line height: 1.3
+  - Letter spacing: 0.1
+</ParamField>
+
+<ParamField path="label" type="TextStyle">
+  Style for small labels (e.g., timestamps, status)
+  
+  - Font size: 10px
+  - Font weight: 500
+  - Line height: 1.3
+  - Letter spacing: 0.1
+</ParamField>
+
+<ParamField path="primaryAction" type="TextStyle">
+  Style for primary action buttons
+  
+  - Font size: 14px
+  - Font weight: 700
+  - Line height: 1.2
+  - Letter spacing: 0.5
+</ParamField>
+
+<ParamField path="secondaryAction" type="TextStyle">
+  Style for secondary action buttons
+  
+  - Font size: 14px
+  - Font weight: 600
+  - Line height: 1.2
+  - Letter spacing: 0.5
+</ParamField>
+
+<ParamField path="formInput" type="TextStyle">
+  Style for form input text fields
+  
+  - Font size: 14px
+  - Font weight: 400
+  - Line height: 1.4
+  - Letter spacing: 0.15
+</ParamField>
+
+<ParamField path="placeholder" type="TextStyle">
+  Style for placeholder text in inputs
+  
+  - Font size: 14px
+  - Font weight: 400
+  - Font style: italic
+  - Line height: 1.4
+  - Letter spacing: 0.15
+</ParamField>
+
+## Standard typography
+
+The `standard()` factory method creates a complete typography system using Google Fonts Montserrat:
+
+```dart
+final typography = NebuxTypography.standard();
+
+// Use in theme
+final theme = NebuxTheme.createThemeData(
+  isDark: false,
+  colors: NebuxColors.standardLight(),
+  fontSize: NebuxFontSize.standard(),
+  typography: NebuxTypography.standard(),
+);
+```
+
+## Accessing typography
+
+Use the BuildContext extension to access typography styles in your widgets:
+
+```dart
+class TypographyExample extends StatelessWidget {
+  const TypographyExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Page Title',
+          style: context.nebuxTypography.heading,
+        ),
+        Text(
+          'Section Header',
+          style: context.nebuxTypography.section,
+        ),
+        Text(
+          'This is content text for articles and descriptions.',
+          style: context.nebuxTypography.content,
+        ),
+        Text(
+          'This is paragraph text for default body content.',
+          style: context.nebuxTypography.paragraph,
+        ),
+        Text(
+          'Caption or metadata',
+          style: context.nebuxTypography.caption,
+        ),
+        Text(
+          'Label',
+          style: context.nebuxTypography.label,
+        ),
+      ],
+    );
+  }
+}
+```
+
+## Real-world example
+
+Here's a complete example from the Nebux Design System showcase:
+
+```dart
+class ExampleScreen extends StatelessWidget {
+  const ExampleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Typography Roles', style: context.nebuxTypography.heading),
+            heightSpace8,
+            Text('Section header', style: context.nebuxTypography.section),
+            heightSpace4,
+            Text(
+              'Content text for articles and descriptions.',
+              style: context.nebuxTypography.content,
+            ),
+            heightSpace4,
+            Text(
+              'Paragraph text for default body content.',
+              style: context.nebuxTypography.paragraph,
+            ),
+            heightSpace4,
+            Text('Caption / metadata', style: context.nebuxTypography.caption),
+            heightSpace4,
+            Text('Label text', style: context.nebuxTypography.label),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+<Note>
+The spacing constants (`heightSpace8`, `heightSpace4`, etc.) are part of the [Spacing system](/core/spacing) and provide consistent vertical spacing.
+</Note>
+
+## Custom typography
+
+Create custom typography with a different font family:
+
+```dart
+final customTypography = NebuxTypography.custom('Roboto', null);
+
+// Use in theme
+final theme = NebuxTheme.createThemeData(
+  isDark: false,
+  colors: NebuxColors.standardLight(),
+  fontSize: NebuxFontSize.standard(),
+  typography: NebuxTypography.custom('Roboto', null),
+);
+```
+
+### With package font
+
+If your font is from a package, specify the package name:
+
+```dart
+final packageTypography = NebuxTypography.custom(
+  'CustomFont',
+  'my_package',
+);
+```
+
+## Typography overrides
+
+Override specific text styles while keeping others standard:
+
+```dart
+final customTypography = NebuxTypography.withOverrides(
+  heading: GoogleFonts.playfair(
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    height: 1.2,
+    letterSpacing: -0.5,
+  ),
+  paragraph: GoogleFonts.roboto(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.6,
+    letterSpacing: 0.15,
+  ),
+);
+```
+
+All other styles will use the standard values.
+
+## From Material theme
+
+Create NebuxTypography from an existing Material ThemeData:
+
+```dart
+final materialTheme = ThemeData.light();
+final typography = NebuxTypography.fromThemeData(materialTheme);
+```
+
+### Material mapping
+
+Nebux typography roles map to Material TextTheme:
+
+| Nebux Style | Material TextTheme | Use Case |
+|-------------|-------------------|----------|
+| heading | headlineMedium | Page titles, primary headers |
+| section | titleLarge | Section headers |
+| content | bodyLarge | Articles, descriptions |
+| paragraph | bodyMedium | Default body text |
+| caption | bodySmall | Captions, metadata |
+| label | labelLarge | Small labels, status |
+| primaryAction | labelLarge (w700) | Primary button text |
+| secondaryAction | labelLarge (w600) | Secondary button text |
+| formInput | bodyMedium | Input field text |
+| placeholder | bodyMedium (italic) | Placeholder text |
+
+## Merging typography
+
+Merge two typography schemes, with the second taking precedence:
+
+```dart
+final baseTypography = NebuxTypography.standard();
+final overrideTypography = NebuxTypography.withOverrides(
+  heading: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+  ),
+);
+
+final mergedTypography = baseTypography.merge(overrideTypography);
+```
+
+## Customizing text styles
+
+All TextStyle objects can be customized using Flutter's `copyWith` method:
+
+```dart
+Text(
+  'Custom Heading',
+  style: context.nebuxTypography.heading.copyWith(
+    color: context.nebuxColors.primary,
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+  ),
+)
+```
+
+## Typography best practices
+
+<Tabs>
+  <Tab title="Content hierarchy">
+    Use typography styles to establish clear content hierarchy:
+    
+    - **heading**: Page titles and primary headers
+    - **section**: Section headers and subheadings
+    - **paragraph**: Body text and paragraphs
+    - **content**: Article content and descriptions
+    - **caption**: Supporting text and metadata
+    - **label**: Small labels and status indicators
+  </Tab>
+  
+  <Tab title="Action buttons">
+    Use appropriate action styles for buttons:
+    
+    - **primaryAction**: Primary call-to-action buttons
+    - **secondaryAction**: Secondary and less prominent actions
+    
+    These styles have higher font weights and letter spacing for better readability in buttons.
+  </Tab>
+  
+  <Tab title="Form inputs">
+    Use form-specific styles for input fields:
+    
+    - **formInput**: Text entered by users
+    - **placeholder**: Hint text in empty fields
+    
+    The placeholder style uses italic font style to differentiate from actual input.
+  </Tab>
+  
+  <Tab title="Accessibility">
+    Typography styles include appropriate line heights and letter spacing for accessibility:
+    
+    - Body text has 1.4-1.5 line height for easy reading
+    - Headings have tighter line height (1.2) for visual impact
+    - Letter spacing improves legibility at different font sizes
+  </Tab>
+</Tabs>
+
+## Font size scale
+
+NebuxTypography uses NebuxFontSize for consistent sizing:
+
+| Size Name | Value | Used In |
+|-----------|-------|--------|
+| small | 10px | caption, label |
+| medium | 12px | content |
+| large | 14px | paragraph, section, actions, forms |
+| heading4 | 18px | heading |
+
+See the font size system for the complete scale from 8px to 36px.
+
+<Warning>
+When using Google Fonts in production, ensure fonts are properly cached or bundled with your app to avoid network requests and improve performance.
+</Warning>

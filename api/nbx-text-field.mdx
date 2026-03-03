@@ -1,0 +1,325 @@
+---
+title: 'NbxTextFieldWidget'
+description: 'A standalone text input widget without Form integration'
+icon: 'input-text'
+---
+
+## Overview
+
+`NbxTextFieldWidget` is a text input component designed for standalone use cases that don't require Form integration. It's ideal for search fields, filters, or simple inputs that manage their own state via `onChanged` callbacks.
+
+For Form-integrated validation, use `NbxTextFormFieldWidget` instead.
+
+## Basic Usage
+
+```dart
+NbxTextFieldWidget(
+  NbxInputParameters(
+    controller: myController,
+    isRequired: false,
+    inputType: NbxInputType.text,
+    labelText: 'Search',
+    hintText: 'Enter search term',
+    onChanged: (value) => print('Changed: $value'),
+  ),
+)
+```
+
+## Widget Properties
+
+<ParamField path="inputParameters" type="NbxInputParameters" required>
+  The configuration parameters for this text field. All customization is done through this parameter object.
+</ParamField>
+
+## NbxInputParameters
+
+Immutable configuration object that groups all parameters needed by text input widgets.
+
+### Required Parameters
+
+<ParamField path="isRequired" type="bool" required>
+  Whether the field is required. If true, `requiredErrorMessage` must also be provided.
+</ParamField>
+
+<ParamField path="inputType" type="NbxInputType" required>
+  The logical type of the input field, determines keyboard type, input formatters, and validation behavior.
+</ParamField>
+
+### Text Labels
+
+<ParamField path="hintText" type="String?">
+  Placeholder text shown when the field is empty. Either `hintText` or `labelText` must be provided.
+</ParamField>
+
+<ParamField path="labelText" type="String?">
+  Label text for the input field. Either `hintText` or `labelText` must be provided.
+</ParamField>
+
+<ParamField path="helperText" type="String?">
+  Supporting text displayed below the input field.
+</ParamField>
+
+### Input Behavior
+
+<ParamField path="obscureText" type="bool" default="false">
+  Whether to obscure the text (for password fields).
+</ParamField>
+
+<ParamField path="isReadOnly" type="bool" default="false">
+  Whether the field is read-only.
+</ParamField>
+
+<ParamField path="isEnabled" type="bool" default="true">
+  Whether the field is enabled.
+</ParamField>
+
+<ParamField path="autoDisposeController" type="bool" default="true">
+  Whether to automatically dispose the controller when the widget is disposed.
+</ParamField>
+
+### Input Constraints
+
+<ParamField path="minLines" type="int?">
+  Minimum number of lines for the input field.
+</ParamField>
+
+<ParamField path="maxLines" type="int?" default="1">
+  Maximum number of lines for the input field.
+</ParamField>
+
+<ParamField path="maxLength" type="int?">
+  Maximum number of characters allowed.
+</ParamField>
+
+### Validation
+
+<ParamField path="requiredErrorMessage" type="String?">
+  Error message to display when required field is empty. Required if `isRequired` is true.
+</ParamField>
+
+<ParamField path="validator" type="String? Function(String? value)?">
+  Pure validator function that receives input value and returns error message or null.
+</ParamField>
+
+<ParamField path="onValidationResult" type="void Function(String? errorMessage)?">
+  Notification callback called with the final error post-validation (null means valid).
+</ParamField>
+
+<ParamField path="autovalidateMode" type="AutovalidateMode" default="AutovalidateMode.onUserInteraction">
+  When to trigger validation automatically.
+</ParamField>
+
+<ParamField path="showErrorText" type="bool" default="true">
+  Whether to show error text below the input field.
+</ParamField>
+
+### Styling and Decoration
+
+<ParamField path="decorationStyle" type="NbxInputDecorationStyle" default="NbxInputDecorationStyle.outlined">
+  Visual style of the input field decoration.
+</ParamField>
+
+<ParamField path="inputState" type="NbxInputState" default="NbxInputState.neutral">
+  Visual state of the input field (neutral, success, error).
+</ParamField>
+
+<ParamField path="suffixIcon" type="Widget?">
+  Custom suffix widget - takes priority over `suffixIconType`.
+</ParamField>
+
+<ParamField path="prefixIcon" type="Widget?">
+  Widget displayed at the start of the input field.
+</ParamField>
+
+<ParamField path="suffixIconType" type="NbxSuffixIconType" default="NbxSuffixIconType.none">
+  Automatic suffix icon type. Ignored when `suffixIcon` is provided.
+</ParamField>
+
+<ParamField path="fillColor" type="Color?">
+  Background fill color for the input field.
+</ParamField>
+
+<ParamField path="floatingLabelBehavior" type="FloatingLabelBehavior?">
+  How the label should behave when the field gains focus.
+</ParamField>
+
+### Border Customization
+
+<ParamField path="border" type="InputBorder?">
+  Default border for the input field.
+</ParamField>
+
+<ParamField path="enabledBorder" type="InputBorder?">
+  Border when the field is enabled.
+</ParamField>
+
+<ParamField path="focusedBorder" type="InputBorder?">
+  Border when the field has focus.
+</ParamField>
+
+<ParamField path="errorBorder" type="InputBorder?">
+  Border when the field has an error.
+</ParamField>
+
+<ParamField path="focusedErrorBorder" type="InputBorder?">
+  Border when the field has an error and focus.
+</ParamField>
+
+<ParamField path="disabledBorder" type="InputBorder?">
+  Border when the field is disabled.
+</ParamField>
+
+### Callbacks
+
+<ParamField path="onChanged" type="ValueChanged<String>?">
+  Called whenever the text changes.
+</ParamField>
+
+<ParamField path="onSubmitted" type="ValueChanged<String>?">
+  Called when the user submits the field.
+</ParamField>
+
+<ParamField path="onTap" type="void Function()?">
+  Called when the input field is tapped.
+</ParamField>
+
+<ParamField path="suffixOnPressed" type="VoidCallback?">
+  Called when the suffix icon is pressed.
+</ParamField>
+
+### Other Properties
+
+<ParamField path="controller" type="TextEditingController?">
+  Controller for the text input. If not provided, one will be created automatically.
+</ParamField>
+
+<ParamField path="textInputAction" type="TextInputAction?">
+  The type of action button to use for the keyboard.
+</ParamField>
+
+<ParamField path="inputFormatters" type="List<TextInputFormatter>?">
+  Input formatters to apply to the text.
+</ParamField>
+
+<ParamField path="showCharacterCounter" type="bool" default="false">
+  Whether to show a character counter when `maxLength` is set.
+</ParamField>
+
+## NbxInputType Enum
+
+Defines the logical type of input field:
+
+- `NbxInputType.text` - General text input
+- `NbxInputType.free` - Free-form input with no validation
+- `NbxInputType.onlyText` - Alphabetic characters only
+- `NbxInputType.textAndNumbers` - Alphanumeric characters
+- `NbxInputType.dropdownMenu` - Read-only dropdown-style input
+- `NbxInputType.alphabet` - Alphabetic characters with spaces
+- `NbxInputType.number` - Numeric input
+- `NbxInputType.phone` - Phone number input
+- `NbxInputType.password` - Password input (obscured by default)
+- `NbxInputType.decimalNumber` - Decimal number input
+- `NbxInputType.email` - Email address input
+
+## NbxInputDecorationStyle Enum
+
+Defines the visual appearance of the input field:
+
+- `NbxInputDecorationStyle.floating` - Label appears inside and floats above when focused
+- `NbxInputDecorationStyle.outlined` - Label appears above the input field
+- `NbxInputDecorationStyle.filled` - Only hint text is shown, no label
+
+## NbxSuffixIconType Enum
+
+Automatic suffix icon types:
+
+- `NbxSuffixIconType.none` - No automatic suffix icon
+- `NbxSuffixIconType.eye` - Toggles password visibility
+- `NbxSuffixIconType.cancel` - Clears the input field content
+
+## NbxInputState Enum
+
+Visual state of the input field:
+
+- `NbxInputState.neutral` - Default state with no indicators
+- `NbxInputState.success` - Valid field with success border
+- `NbxInputState.error` - Field has errors
+
+## Examples
+
+### Basic Text Field
+
+```dart
+NbxTextFieldWidget(
+  NbxInputParameters(
+    isRequired: false,
+    inputType: NbxInputType.text,
+    labelText: 'Username',
+    hintText: 'Enter your username',
+  ),
+)
+```
+
+### Search Field
+
+```dart
+NbxTextFieldWidget(
+  NbxInputParameters(
+    isRequired: false,
+    inputType: NbxInputType.text,
+    hintText: 'Search...',
+    prefixIcon: Icon(Icons.search),
+    onChanged: (value) => _performSearch(value),
+  ),
+)
+```
+
+### Email Input
+
+```dart
+NbxTextFieldWidget(
+  NbxInputParameters(
+    isRequired: true,
+    inputType: NbxInputType.email,
+    labelText: 'Email',
+    hintText: 'your.email@example.com',
+    requiredErrorMessage: 'Email is required',
+  ),
+)
+```
+
+### Password Field
+
+```dart
+NbxTextFieldWidget(
+  NbxInputParameters(
+    isRequired: true,
+    inputType: NbxInputType.password,
+    labelText: 'Password',
+    obscureText: true,
+    suffixIconType: NbxSuffixIconType.eye,
+    requiredErrorMessage: 'Password is required',
+  ),
+)
+```
+
+### Multiline Text Area
+
+```dart
+NbxTextFieldWidget(
+  NbxInputParameters(
+    isRequired: false,
+    inputType: NbxInputType.text,
+    labelText: 'Description',
+    hintText: 'Enter description',
+    minLines: 3,
+    maxLines: 5,
+  ),
+)
+```
+
+## See Also
+
+- [NbxTextFormFieldWidget](/api/nbx-text-field) - For Form-integrated inputs
+- [NbxPhoneFieldWidget](/api/nbx-phone-field) - For phone number inputs
+- [NbxInputParameters](https://github.com/joicodev/nebux_design_system/tree/main)

@@ -1,0 +1,169 @@
+---
+title: "BuildContext Extensions"
+description: "Access Nebux theme, colors, and typography from any BuildContext"
+---
+
+## Overview
+
+Nebux Design System provides convenient BuildContext extensions that allow you to access theme properties anywhere in your widget tree without manually retrieving the theme extension.
+
+## Available Extensions
+
+The `NebuxBuildContextExtension` adds three getter methods to `BuildContext`:
+
+### nebuxTheme
+
+Access the complete `NebuxTheme` instance from the current context.
+
+```dart
+NebuxTheme get nebuxTheme
+```
+
+**Usage:**
+
+```dart
+Widget build(BuildContext context) {
+  final theme = context.nebuxTheme;
+  
+  return Container(
+    color: theme.colors.background,
+  );
+}
+```
+
+### nebuxColors
+
+Directly access the `NebuxColors` palette from the current context.
+
+```dart
+NebuxColors get nebuxColors
+```
+
+**Usage:**
+
+```dart
+Widget build(BuildContext context) {
+  return Container(
+    decoration: BoxDecoration(
+      color: context.nebuxColors.surface,
+      border: Border.all(color: context.nebuxColors.divider),
+    ),
+  );
+}
+```
+
+<Tip>
+This is equivalent to `context.nebuxTheme.colors` but more concise.
+</Tip>
+
+### nebuxTypography
+
+Directly access the `NebuxTypography` styles from the current context.
+
+```dart
+NebuxTypography get nebuxTypography
+```
+
+**Usage:**
+
+```dart
+Widget build(BuildContext context) {
+  return Column(
+    children: [
+      Text('Heading', style: context.nebuxTypography.heading),
+      Text('Body content', style: context.nebuxTypography.paragraph),
+      Text('Caption', style: context.nebuxTypography.caption),
+    ],
+  );
+}
+```
+
+<Tip>
+This is equivalent to `context.nebuxTheme.typography` but more concise.
+</Tip>
+
+## Complete Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+class ProfileCard extends StatelessWidget {
+  const ProfileCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: context.nebuxColors.cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: context.nebuxColors.divider),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'John Doe',
+            style: context.nebuxTypography.heading,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Software Engineer',
+            style: context.nebuxTypography.section.copyWith(
+              color: context.nebuxColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Building amazing Flutter applications with Nebux Design System.',
+            style: context.nebuxTypography.paragraph,
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## NebuxColorThemes Extension
+
+The package also provides an extension on `NebuxColorThemes` for brightness-based color selection:
+
+```dart
+NebuxColors getColorsByBrightness(Brightness brightness)
+```
+
+**Usage:**
+
+```dart
+final colorThemes = NebuxColorThemes.standard();
+final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+final colors = colorThemes.getColorsByBrightness(
+  isDark ? Brightness.dark : Brightness.light,
+);
+```
+
+## Source Code Reference
+
+The context extensions are defined in:
+
+**File:** `lib/src/core/theme/extensions/nebux_extension.dart`
+
+<Note>
+These extensions require that `NebuxTheme` is registered as a `ThemeExtension` in your `MaterialApp`'s `theme` or `darkTheme`. See the [Quickstart Guide](/quickstart) for setup instructions.
+</Note>
+
+## Related Pages
+
+<CardGroup cols={2}>
+  <Card title="Widget Extensions" icon="wand-magic-sparkles" href="/extensions/widgets">
+    Padding and margin extensions for widgets
+  </Card>
+  <Card title="Utilities" icon="wrench" href="/extensions/utilities">
+    NebuxUtils and NebuxDebouncer classes
+  </Card>
+  <Card title="Customization Guide" icon="palette" href="/guides/customization">
+    Learn how to customize themes and colors
+  </Card>
+</CardGroup>

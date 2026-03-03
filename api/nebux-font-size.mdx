@@ -1,0 +1,609 @@
+---
+title: 'NebuxFontSize'
+description: 'Font size scale system from 8px to 36px for consistent typography sizing'
+---
+
+## Overview
+
+The `NebuxFontSize` class defines a comprehensive font size scale for the NebuX Design System. It provides 13 predefined font sizes ranging from 8px (extraSmall) to 36px (display1), ensuring consistent typography sizing across the application.
+
+Built with Freezed for immutability and type safety, it can be customized with overrides while maintaining a standard baseline.
+
+**Source:** `lib/src/core/theme/font_size/nebux_font_size.dart`
+
+---
+
+## Class Definition
+
+```dart
+@Freezed(fromJson: false, toJson: false)
+abstract class NebuxFontSize with _$NebuxFontSize
+```
+
+---
+
+## Properties
+
+All font sizes are defined as `double` values representing pixels.
+
+### Small Sizes
+
+<ParamField path="extraSmall" type="double" required>
+  Extra small font size
+  
+  **Default:** `8.0` (8px)
+  
+  **Use cases:** Tiny labels, micro text, badges
+</ParamField>
+
+<ParamField path="small" type="double" required>
+  Small font size
+  
+  **Default:** `10.0` (10px)
+  
+  **Use cases:** Captions, metadata, timestamps, small labels
+</ParamField>
+
+<ParamField path="medium" type="double" required>
+  Medium font size
+  
+  **Default:** `12.0` (12px)
+  
+  **Use cases:** Dense content, list items, secondary text
+</ParamField>
+
+### Medium-Large Sizes
+
+<ParamField path="mediumLarge" type="double" required>
+  Medium-large font size (between medium and large)
+  
+  **Default:** `13.0` (13px)
+  
+  **Use cases:** Intermediate text sizes, specialized components
+</ParamField>
+
+<ParamField path="large" type="double" required>
+  Large font size
+  
+  **Default:** `14.0` (14px)
+  
+  **Use cases:** Body text, paragraphs, buttons, form inputs (most common size)
+</ParamField>
+
+<ParamField path="extraLarge" type="double" required>
+  Extra large font size
+  
+  **Default:** `16.0` (16px)
+  
+  **Use cases:** Emphasized body text, larger buttons, prominent labels
+</ParamField>
+
+### Heading Sizes
+
+<ParamField path="heading4" type="double" required>
+  Heading 4 font size
+  
+  **Default:** `18.0` (18px)
+  
+  **Use cases:** Small headings, card titles, section headers
+</ParamField>
+
+<ParamField path="heading3" type="double" required>
+  Heading 3 font size
+  
+  **Default:** `20.0` (20px)
+  
+  **Use cases:** Medium headings, page subtitles
+</ParamField>
+
+<ParamField path="heading2" type="double" required>
+  Heading 2 font size
+  
+  **Default:** `22.0` (22px)
+  
+  **Use cases:** Large headings, main section titles
+</ParamField>
+
+<ParamField path="heading1" type="double" required>
+  Heading 1 font size
+  
+  **Default:** `24.0` (24px)
+  
+  **Use cases:** Page titles, primary headers, main headings
+</ParamField>
+
+### Display Sizes
+
+<ParamField path="display3" type="double" required>
+  Display 3 font size
+  
+  **Default:** `28.0` (28px)
+  
+  **Use cases:** Small display text, hero numbers
+</ParamField>
+
+<ParamField path="display2" type="double" required>
+  Display 2 font size
+  
+  **Default:** `32.0` (32px)
+  
+  **Use cases:** Medium display text, prominent statistics
+</ParamField>
+
+<ParamField path="display1" type="double" required>
+  Display 1 font size (largest)
+  
+  **Default:** `36.0` (36px)
+  
+  **Use cases:** Large display text, hero headings, splash screens
+</ParamField>
+
+---
+
+## Constructors
+
+### NebuxFontSize (default)
+
+Creates a new `NebuxFontSize` instance with all font size properties.
+
+```dart
+const factory NebuxFontSize({
+  required double extraSmall,
+  required double small,
+  required double medium,
+  required double mediumLarge,
+  required double large,
+  required double extraLarge,
+  required double heading4,
+  required double heading3,
+  required double heading2,
+  required double heading1,
+  required double display3,
+  required double display2,
+  required double display1,
+})
+```
+
+---
+
+## Factory Constructors
+
+### standard
+
+Creates a standard set of font sizes for the NebuX design system.
+
+```dart
+factory NebuxFontSize.standard()
+```
+
+Returns a font size scale with these values:
+- extraSmall: 8px
+- small: 10px
+- medium: 12px
+- mediumLarge: 13px
+- large: 14px
+- extraLarge: 16px
+- heading4: 18px
+- heading3: 20px
+- heading2: 22px
+- heading1: 24px
+- display3: 28px
+- display2: 32px
+- display1: 36px
+
+#### Example
+
+```dart
+final fontSizes = NebuxFontSize.standard();
+print(fontSizes.large); // 14.0
+```
+
+### custom
+
+Creates a custom set of font sizes with optional overrides. Any unspecified values default to standard sizes.
+
+```dart
+factory NebuxFontSize.custom({
+  double? extraSmall,
+  double? small,
+  double? medium,
+  double? mediumLarge,
+  double? large,
+  double? extraLarge,
+  double? heading4,
+  double? heading3,
+  double? heading2,
+  double? heading1,
+  double? display3,
+  double? display2,
+  double? display1,
+})
+```
+
+<ParamField path="extraSmall" type="double">
+  Custom extra small size (defaults to 8.0)
+</ParamField>
+
+<ParamField path="small" type="double">
+  Custom small size (defaults to 10.0)
+</ParamField>
+
+<ParamField path="medium" type="double">
+  Custom medium size (defaults to 12.0)
+</ParamField>
+
+<ParamField path="mediumLarge" type="double">
+  Custom medium-large size (defaults to 13.0)
+</ParamField>
+
+<ParamField path="large" type="double">
+  Custom large size (defaults to 14.0)
+</ParamField>
+
+<ParamField path="extraLarge" type="double">
+  Custom extra large size (defaults to 16.0)
+</ParamField>
+
+<ParamField path="heading4" type="double">
+  Custom heading 4 size (defaults to 18.0)
+</ParamField>
+
+<ParamField path="heading3" type="double">
+  Custom heading 3 size (defaults to 20.0)
+</ParamField>
+
+<ParamField path="heading2" type="double">
+  Custom heading 2 size (defaults to 22.0)
+</ParamField>
+
+<ParamField path="heading1" type="double">
+  Custom heading 1 size (defaults to 24.0)
+</ParamField>
+
+<ParamField path="display3" type="double">
+  Custom display 3 size (defaults to 28.0)
+</ParamField>
+
+<ParamField path="display2" type="double">
+  Custom display 2 size (defaults to 32.0)
+</ParamField>
+
+<ParamField path="display1" type="double">
+  Custom display 1 size (defaults to 36.0)
+</ParamField>
+
+#### Example
+
+```dart
+// Increase all sizes by 2px
+final largerFontSizes = NebuxFontSize.custom(
+  large: 16.0,
+  heading1: 26.0,
+  display1: 38.0,
+);
+
+// All other sizes remain standard
+print(largerFontSizes.small); // 10.0 (standard)
+print(largerFontSizes.large); // 16.0 (custom)
+```
+
+---
+
+## Instance Methods
+
+### copyWith
+
+Creates a copy with optional property overrides. Generated by Freezed.
+
+```dart
+NebuxFontSize copyWith({
+  double? extraSmall,
+  double? small,
+  double? medium,
+  double? mediumLarge,
+  double? large,
+  double? extraLarge,
+  double? heading4,
+  double? heading3,
+  double? heading2,
+  double? heading1,
+  double? display3,
+  double? display2,
+  double? display1,
+})
+```
+
+#### Example
+
+```dart
+final standard = NebuxFontSize.standard();
+final modified = standard.copyWith(
+  large: 16.0,
+  heading1: 26.0,
+);
+
+print(modified.large); // 16.0
+print(modified.heading1); // 26.0
+print(modified.small); // 10.0 (unchanged)
+```
+
+### merge
+
+Merges this font size scheme with another `NebuxFontSize`. Sizes from the other scheme take precedence.
+
+```dart
+NebuxFontSize merge(NebuxFontSize? other)
+```
+
+<ParamField path="other" type="NebuxFontSize">
+  The font size scheme to merge with. If null, returns this instance unchanged.
+</ParamField>
+
+#### Example
+
+```dart
+final base = NebuxFontSize.standard();
+final override = NebuxFontSize.custom(
+  large: 16.0,
+  heading1: 26.0,
+);
+
+final merged = base.merge(override);
+print(merged.large); // 16.0 (from override)
+print(merged.heading1); // 26.0 (from override)
+print(merged.small); // 10.0 (from base)
+```
+
+---
+
+## Usage Examples
+
+### Basic Usage with TextStyle
+
+```dart
+class FontSizeExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final fontSizes = NebuxFontSize.standard();
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Display Heading',
+          style: TextStyle(fontSize: fontSizes.display1),
+        ),
+        Text(
+          'Main Heading',
+          style: TextStyle(fontSize: fontSizes.heading1),
+        ),
+        Text(
+          'Section Title',
+          style: TextStyle(fontSize: fontSizes.heading4),
+        ),
+        Text(
+          'Body text paragraph',
+          style: TextStyle(fontSize: fontSizes.large),
+        ),
+        Text(
+          'Caption text',
+          style: TextStyle(fontSize: fontSizes.small),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Integration with NebuxTypography
+
+```dart
+class TypographyIntegration extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final fontSizes = NebuxFontSize.standard();
+    
+    // NebuxTypography uses NebuxFontSize internally
+    final typography = NebuxTypography.standard();
+    
+    // Font sizes are automatically applied
+    return Column(
+      children: [
+        Text(
+          'Heading uses fontSizes.heading4',
+          style: typography.heading, // fontSize: 18px
+        ),
+        Text(
+          'Paragraph uses fontSizes.large',
+          style: typography.paragraph, // fontSize: 14px
+        ),
+        Text(
+          'Caption uses fontSizes.small',
+          style: typography.caption, // fontSize: 10px
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Custom Font Scale
+
+```dart
+class CustomScaleExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Create a larger font scale for accessibility
+    final accessibleFontSizes = NebuxFontSize.custom(
+      extraSmall: 10.0,  // +2px
+      small: 12.0,       // +2px
+      medium: 14.0,      // +2px
+      large: 16.0,       // +2px
+      heading4: 20.0,    // +2px
+      heading1: 26.0,    // +2px
+      display1: 40.0,    // +4px
+    );
+    
+    return Text(
+      'Accessible Text',
+      style: TextStyle(fontSize: accessibleFontSizes.large),
+    );
+  }
+}
+```
+
+### Responsive Font Sizing
+
+```dart
+class ResponsiveFontSize extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    
+    // Use smaller fonts on mobile, larger on tablet/desktop
+    final fontSizes = screenWidth < 600
+        ? NebuxFontSize.standard()
+        : NebuxFontSize.custom(
+            large: 16.0,
+            heading1: 28.0,
+            display1: 42.0,
+          );
+    
+    return Text(
+      'Responsive Text',
+      style: TextStyle(fontSize: fontSizes.heading1),
+    );
+  }
+}
+```
+
+### Scaling All Sizes Proportionally
+
+```dart
+class ScaledFontSize extends StatelessWidget {
+  NebuxFontSize scaleAllSizes(NebuxFontSize base, double scale) {
+    return base.copyWith(
+      extraSmall: base.extraSmall * scale,
+      small: base.small * scale,
+      medium: base.medium * scale,
+      mediumLarge: base.mediumLarge * scale,
+      large: base.large * scale,
+      extraLarge: base.extraLarge * scale,
+      heading4: base.heading4 * scale,
+      heading3: base.heading3 * scale,
+      heading2: base.heading2 * scale,
+      heading1: base.heading1 * scale,
+      display3: base.display3 * scale,
+      display2: base.display2 * scale,
+      display1: base.display1 * scale,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final standard = NebuxFontSize.standard();
+    final scaled = scaleAllSizes(standard, 1.25); // 125% larger
+    
+    return Text(
+      'Scaled Text',
+      style: TextStyle(fontSize: scaled.heading1), // 30px instead of 24px
+    );
+  }
+}
+```
+
+### Using with Theme
+
+```dart
+class ThemeIntegration extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final nebuxTheme = Theme.of(context).extension<NebuxTheme>()!;
+    final fontSizes = nebuxTheme.fontSize;
+    
+    return Column(
+      children: [
+        Text(
+          'Heading from theme',
+          style: TextStyle(fontSize: fontSizes.heading1),
+        ),
+        Text(
+          'Body from theme',
+          style: TextStyle(fontSize: fontSizes.large),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Custom Size Presets
+
+```dart
+// Create predefined size presets
+class FontSizePresets {
+  static NebuxFontSize get compact => NebuxFontSize.custom(
+    small: 9.0,
+    medium: 11.0,
+    large: 13.0,
+    heading4: 16.0,
+    heading1: 20.0,
+  );
+  
+  static NebuxFontSize get comfortable => NebuxFontSize.custom(
+    small: 11.0,
+    medium: 13.0,
+    large: 15.0,
+    heading4: 20.0,
+    heading1: 26.0,
+  );
+  
+  static NebuxFontSize get spacious => NebuxFontSize.custom(
+    small: 12.0,
+    medium: 15.0,
+    large: 17.0,
+    heading4: 22.0,
+    heading1: 30.0,
+  );
+}
+
+class PresetExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final fontSizes = FontSizePresets.comfortable;
+    
+    return Text(
+      'Comfortable Reading',
+      style: TextStyle(fontSize: fontSizes.large),
+    );
+  }
+}
+```
+
+---
+
+## Font Size Scale Reference
+
+| Property | Default | Common Use Cases |
+|----------|---------|------------------|
+| `extraSmall` | 8px | Tiny badges, micro labels |
+| `small` | 10px | Captions, timestamps, metadata, labels |
+| `medium` | 12px | Dense content, list items |
+| `mediumLarge` | 13px | Intermediate sizes |
+| `large` | 14px | Body text, buttons, inputs (primary size) |
+| `extraLarge` | 16px | Emphasized body text, large buttons |
+| `heading4` | 18px | Card titles, small headings |
+| `heading3` | 20px | Section headings |
+| `heading2` | 22px | Page subtitles |
+| `heading1` | 24px | Page titles, main headings |
+| `display3` | 28px | Hero numbers, statistics |
+| `display2` | 32px | Large display text |
+| `display1` | 36px | Hero headings, splash screens |
+
+---
+
+## See Also
+
+- [NebuxTheme](/api/nebux-theme) - Main theme integration
+- [NebuxColors](/api/nebux-colors) - Color system
+- [NebuxTypography](/api/nebux-typography) - Typography system that uses font sizes

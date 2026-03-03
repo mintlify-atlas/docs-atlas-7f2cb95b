@@ -1,0 +1,490 @@
+---
+title: "Migration Guide"
+description: "Migrate from other design systems and between Nebux versions"
+---
+
+## Overview
+
+This guide helps you migrate from other design systems to Nebux, and also covers migration between different versions of Nebux Design System.
+
+## Migrating from Material Design
+
+Nebux is built on top of Flutter's Material Design but provides additional theming capabilities.
+
+### Theme Setup
+
+<CodeGroup>
+
+```dart Before (Material)
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        colorScheme: ColorScheme.light(
+          primary: Colors.blue,
+          secondary: Colors.cyan,
+        ),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+```
+
+```dart After (Nebux)
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: NebuxTheme.createThemeData(
+        isDark: false,
+        colors: NebuxColors.standardLight(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+```
+
+</CodeGroup>
+
+### Accessing Theme Colors
+
+<CodeGroup>
+
+```dart Before (Material)
+Widget build(BuildContext context) {
+  final colorScheme = Theme.of(context).colorScheme;
+  
+  return Container(
+    color: colorScheme.primary,
+    child: Text(
+      'Hello',
+      style: Theme.of(context).textTheme.headlineMedium,
+    ),
+  );
+}
+```
+
+```dart After (Nebux)
+Widget build(BuildContext context) {
+  return Container(
+    color: context.nebuxColors.primary,
+    child: Text(
+      'Hello',
+      style: context.nebuxTypography.heading,
+    ),
+  );
+}
+```
+
+</CodeGroup>
+
+### Typography Mapping
+
+| Material TextTheme | Nebux Typography | Notes |
+|-------------------|------------------|-------|
+| `headlineMedium` | `heading` | Page titles, primary headers |
+| `titleLarge` | `section` | Section headers |
+| `bodyLarge` | `content` | Articles, descriptions |
+| `bodyMedium` | `paragraph` | Default body text |
+| `bodySmall` | `caption` | Captions, metadata |
+| `labelLarge` | `label` | Small labels, status |
+| `labelLarge` (bold) | `primaryAction` | Button text |
+| `labelLarge` (semibold) | `secondaryAction` | Secondary button text |
+| `bodyMedium` | `formInput` | Input text |
+| `bodyMedium` (italic) | `placeholder` | Placeholder text |
+
+## Migrating from Custom Themes
+
+### From Theme Classes
+
+If you have custom theme classes:
+
+```dart
+// Your existing custom theme
+class MyCustomTheme {
+  final Color primaryColor;
+  final Color backgroundColor;
+  final TextStyle headingStyle;
+  // ...
+}
+
+// Convert to Nebux
+final nebuxColors = NebuxColors(
+  primary: myCustomTheme.primaryColor,
+  background: myCustomTheme.backgroundColor,
+  secondary: myCustomTheme.secondaryColor,
+  // Map remaining colors
+  // ...
+);
+
+final nebuxTypography = NebuxTypography.withOverrides(
+  heading: myCustomTheme.headingStyle,
+  paragraph: myCustomTheme.bodyStyle,
+  // Map remaining styles
+);
+```
+
+### From JSON/YAML Configuration
+
+Nebux supports JSON configuration out of the box. See the [Advanced Usage Guide](/guides/advanced-usage) for TOML support.
+
+```dart
+// Load your existing JSON theme
+final colors = NebuxColors.fromJson(yourJsonMap);
+
+final theme = NebuxTheme.createThemeData(
+  isDark: false,
+  colors: colors,
+  fontSize: NebuxFontSize.standard(),
+  typography: NebuxTypography.standard(),
+);
+```
+
+## Version Migration
+
+### v0.3.1 → v1.0.0
+
+**Typography Changes:**
+
+All typography roles now include `height` and `letterSpacing` values aligned with Material Design 3.
+
+```dart
+// Before (v0.3.1)
+final typography = NebuxTypography.withOverrides(
+  heading: GoogleFonts.montserrat(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+  ),
+);
+
+// After (v1.0.0)
+// height and letterSpacing are now included by default
+final typography = NebuxTypography.withOverrides(
+  heading: GoogleFonts.montserrat(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    height: 1.2,          // Now included
+    letterSpacing: -0.5,  // Now included
+  ),
+);
+```
+
+**Typography Mapping Fixes:**
+
+```dart
+// The following mappings were corrected in v1.0.0:
+// heading: labelLarge → headlineMedium
+// section: labelMedium → titleLarge
+// label: labelSmall → labelLarge
+
+// No action needed if using standard factories
+final typography = NebuxTypography.standard();
+
+// If using fromThemeData(), verify mappings:
+final typography = NebuxTypography.fromThemeData(themeData);
+```
+
+### v0.2.0 → v0.3.0
+
+**Translation Loading (Country Picker):**
+
+Translation loading is now async, but the public API is unchanged.
+
+```dart
+// Before and After - No changes needed
+MaterialApp(
+  localizationsDelegates: [
+    CountryLocalizations.delegate,
+    // ...other delegates
+  ],
+)
+```
+
+**Removed APIs:**
+
+- `CountryProvider` → Use `CountryDecoder` instead
+- `AlphaScroller` widget → Removed (was unused)
+
+### v0.1.18 → v0.2.0
+
+**InputParameters Context Removal:**
+
+<CodeGroup>
+
+```dart Before (v0.1.18)
+NbxTextFieldWidget(
+  NbxInputParameters(
+    context: context,  // ❌ Removed
+    isRequired: false,
+    inputType: NbxInputType.text,
+    labelText: 'Search',
+  ),
+)
+```
+
+```dart After (v0.2.0)
+NbxTextFieldWidget(
+  NbxInputParameters(
+    // context is now passed internally
+    isRequired: false,
+    inputType: NbxInputType.text,
+    labelText: 'Search',
+  ),
+)
+```
+
+</CodeGroup>
+
+**NbxNetworkImage Restructuring:**
+
+<CodeGroup>
+
+```dart Before (v0.1.18)
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.png',
+  memCacheWidth: 100,
+  memCacheHeight: 100,
+  fadeInDuration: Duration(milliseconds: 500),
+  borderRadius: BorderRadius.circular(8),
+  // ... 29 more parameters
+)
+```
+
+```dart After (v0.2.0)
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.png',
+  cacheConfig: NbxImageCacheConfig(
+    memCacheWidth: 100,
+    memCacheHeight: 100,
+  ),
+  animationConfig: NbxImageAnimationConfig(
+    fadeInDuration: Duration(milliseconds: 500),
+  ),
+  styleConfig: NbxImageStyleConfig(
+    borderRadius: BorderRadius.circular(8),
+  ),
+)
+```
+
+</CodeGroup>
+
+### v0.1.17 → v0.1.18
+
+**Validation API Changes:**
+
+<CodeGroup>
+
+```dart Before (v0.1.17)
+NbxTextFieldWidget(
+  parameters: NbxInputParameters(
+    customValidator: (value) => 
+        value?.isEmpty == true ? 'Required' : null,
+    showEyeIcon: true,
+  ),
+);
+```
+
+```dart After (v0.1.18+)
+NbxTextFieldWidget(
+  parameters: NbxInputParameters(
+    validator: (value) => 
+        value?.isEmpty == true ? 'Required' : null,
+    onValidationResult: (error) => print(error ?? 'Valid'),
+    suffixIconType: NbxSuffixIconType.eye,
+  ),
+);
+```
+
+</CodeGroup>
+
+**Suffix Icon Changes:**
+
+| Old API | New API | Notes |
+|---------|---------|-------|
+| `showEyeIcon: true` | `suffixIconType: NbxSuffixIconType.eye` | For password fields |
+| `showCancelIcon: true` | `suffixIconType: NbxSuffixIconType.cancel` | Clear button |
+| `showSuffixIcon: true` | `suffixIconType: NbxSuffixIconType.eye` or `.cancel` | Choose specific type |
+| `forceShowSuffixIcon: true` | N/A | Suffix icon now always visible when type is set |
+
+### v0.0.11 → v0.0.12
+
+**Button Component Refactoring:**
+
+<CodeGroup>
+
+```dart Before (v0.0.11)
+NbxButton(
+  text: 'Submit',
+  onPressed: () {},
+  variant: ButtonVariant.filled,
+  backgroundColor: Colors.blue,
+  foregroundColor: Colors.white,
+  borderRadius: BorderRadius.circular(12),
+  isLoading: false,
+  enabled: true,
+  isSelected: false,
+  isExpanded: true,
+)
+```
+
+```dart After (v0.0.12+)
+NbxButton(
+  text: 'Submit',
+  onPressed: () {},
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.filled,
+    backgroundColor: Colors.blue,
+    foregroundColor: Colors.white,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  stateConfig: ButtonStateConfig(
+    loading: false,
+    enabled: true,
+    selected: false,
+  ),
+  layoutConfig: ButtonLayoutConfig(
+    isExpanded: true,
+  ),
+)
+```
+
+</CodeGroup>
+
+<Note>
+The legacy constructor `NbxButton.legacy()` is available for backward compatibility but is deprecated.
+</Note>
+
+## Breaking Changes Summary
+
+<Steps>
+  <Step title="v1.0.0">
+    - Typography now includes `height` and `letterSpacing` by default
+    - Typography role mappings corrected (`heading` → `headlineMedium`, etc.)
+  </Step>
+  
+  <Step title="v0.3.0">
+    - Translation loading is now async (no consumer changes needed)
+    - Removed `CountryProvider` (use `CountryDecoder`)
+    - Removed `AlphaScroller` widget
+  </Step>
+  
+  <Step title="v0.2.0">
+    - `NbxInputParameters` no longer accepts `context` parameter
+    - `NbxNetworkImage` restructured with config classes
+    - `cacheManager` now properly typed as `BaseCacheManager?`
+  </Step>
+  
+  <Step title="v0.1.18">
+    - `customValidator` → `validator` + `onValidationResult`
+    - Suffix icon boolean flags → `suffixIconType` enum
+  </Step>
+  
+  <Step title="v0.0.12">
+    - `NbxButton` refactored with config classes
+    - Button variant naming: `primary` → `filled`, `secondary` → `text`
+  </Step>
+  
+  <Step title="v0.0.9">
+    - `isDisabled` → `enabled` (inverted boolean)
+  </Step>
+</Steps>
+
+## Version History
+
+Nebux Design System follows [Semantic Versioning](https://semver.org/):
+
+- **Patch (0.0.x)**: Bug fixes and documentation
+- **Minor (0.x.0)**: New features, deprecations (with 1+ minor version runway)
+- **Major (x.0.0)**: Breaking changes, removed deprecated APIs
+
+**Current stable version:** `1.0.2`
+
+**Key milestones:**
+
+- **1.0.0** (Stable release): 81%+ test coverage, frozen public API
+- **0.3.0**: Async translation loading, component cleanup
+- **0.2.0**: API surface stabilization, config class architecture
+- **0.1.18**: Validation API improvements
+- **0.0.12**: Button component modernization
+
+For full version history, see the [CHANGELOG.md](https://github.com/nebux-labs/nebux_design_system/blob/main/CHANGELOG.md) in the source repository.
+
+## Migration Checklist
+
+<Steps>
+  <Step title="Update Dependencies">
+    Update your `pubspec.yaml`:
+    
+    ```yaml
+    dependencies:
+      nebux_design_system: ^1.0.2
+    ```
+    
+    Run `flutter pub get`
+  </Step>
+  
+  <Step title="Review Breaking Changes">
+    Check the breaking changes for versions between your current and target version
+  </Step>
+  
+  <Step title="Update Theme Initialization">
+    Replace Material theme setup with Nebux theme
+  </Step>
+  
+  <Step title="Update Theme Access">
+    Replace `Theme.of(context)` with `context.nebuxColors` and `context.nebuxTypography`
+  </Step>
+  
+  <Step title="Run Tests">
+    Ensure all tests pass. Use `NebuxTypography.custom('Roboto', null)` in tests to avoid Google Fonts network calls
+  </Step>
+  
+  <Step title="Verify UI">
+    Check that colors, typography, and spacing render correctly
+  </Step>
+</Steps>
+
+## Need Help?
+
+If you encounter issues during migration:
+
+1. Check the [CHANGELOG.md](https://github.com/nebux-labs/nebux_design_system/blob/main/CHANGELOG.md) for detailed version notes
+2. Review the [examples](https://github.com/nebux-labs/nebux_design_system/tree/main/example) in the source repository
+3. Open an issue on [GitHub](https://github.com/nebux-labs/nebux_design_system/issues)
+
+## Related Pages
+
+<CardGroup cols={2}>
+  <Card title="Customization Guide" icon="palette" href="/guides/customization">
+    Learn how to customize themes and components
+  </Card>
+  <Card title="Advanced Usage" icon="code" href="/guides/advanced-usage">
+    JSON/TOML configuration and best practices
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get started with Nebux Design System
+  </Card>
+</CardGroup>

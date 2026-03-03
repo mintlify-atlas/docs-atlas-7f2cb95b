@@ -1,0 +1,523 @@
+---
+title: 'NebuxDebouncer'
+description: 'Complete API reference for NebuxDebouncer utility class'
+---
+
+# NebuxDebouncer
+
+A debouncer utility that delays the execution of a function until a specified duration has passed since the last call. Useful for optimizing performance in scenarios like search inputs, API calls, and user input handling.
+
+## Overview
+
+Debouncing is a technique to limit the rate at which a function executes. When you call a debounced function repeatedly, it will only execute after the calls have stopped for a specified duration. This is particularly useful for:
+
+- Search inputs (wait for user to stop typing)
+- Auto-save functionality
+- Window resize handlers
+- Scroll event handlers
+- API call optimization
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+final debouncer = NebuxDebouncer(milliseconds: 500);
+
+debouncer.run(() {
+  // This code executes 500ms after the last call
+  performSearch(query);
+});
+```
+
+## Constructor
+
+<ParamField path="milliseconds" type="int" required>
+  The delay duration in milliseconds before the action fires. The timer resets with each new call, so the action only executes when this duration passes without interruption.
+</ParamField>
+
+```dart
+// Create a debouncer with 300ms delay
+final debouncer = NebuxDebouncer(milliseconds: 300);
+
+// Create a debouncer with 1 second delay
+final slowDebouncer = NebuxDebouncer(milliseconds: 1000);
+```
+
+## Properties
+
+### milliseconds
+
+<ParamField path="milliseconds" type="int" readonly>
+  The delay duration in milliseconds. This value is set in the constructor and cannot be changed.
+</ParamField>
+
+### isActive
+
+<ResponseField name="isActive" type="bool" readonly>
+  Returns `true` if the debouncer is currently waiting to fire (timer is active), `false` otherwise.
+</ResponseField>
+
+```dart
+final debouncer = NebuxDebouncer(milliseconds: 500);
+
+print(debouncer.isActive); // false
+
+debouncer.run(() => print('Hello'));
+print(debouncer.isActive); // true (waiting to fire)
+
+// After 500ms
+print(debouncer.isActive); // false (action has fired)
+```
+
+### onDebounce
+
+<ParamField path="onDebounce" type="VoidCallback?">
+  Optional callback that is called when the debounced action fires. This is called AFTER the main action provided to `run()` executes.
+</ParamField>
+
+```dart
+final debouncer = NebuxDebouncer(milliseconds: 500);
+
+// Set a callback for when debounce completes
+debouncer.onDebounce = () {
+  print('Debounce action completed');
+};
+
+debouncer.run(() {
+  print('Main action');
+});
+
+// After 500ms:
+// Output: "Main action"
+// Output: "Debounce action completed"
+```
+
+## Methods
+
+### run
+
+Runs the provided action after the specified delay. If called again before the duration passes, the timer resets and the previous action is cancelled.
+
+<ParamField path="action" type="VoidCallback" required>
+  The function to execute after the delay period.
+</ParamField>
+
+```dart
+final debouncer = NebuxDebouncer(milliseconds: 500);
+
+// First call - timer starts
+debouncer.run(() => print('Action 1'));
+
+// After 200ms - timer resets, Action 1 is cancelled
+debouncer.run(() => print('Action 2'));
+
+// After 400ms - timer resets again, Action 2 is cancelled
+debouncer.run(() => print('Action 3'));
+
+// After 500ms of no calls - Action 3 executes
+// Output: "Action 3"
+```
+
+---
+
+### cancel
+
+Cancels the current timer if active. The pending action will not execute.
+
+```dart
+final debouncer = NebuxDebouncer(milliseconds: 500);
+
+debouncer.run(() => print('This will not execute'));
+
+print(debouncer.isActive); // true
+
+debouncer.cancel();
+
+print(debouncer.isActive); // false
+// No output after 500ms - action was cancelled
+```
+
+---
+
+### dispose
+
+Disposes the debouncer and cleans up resources. Cancels any active timer and clears callbacks. Should be called when the debouncer is no longer needed (typically in widget disposal).
+
+```dart
+class MyWidget extends StatefulWidget {
+  @override
+  State<MyWidget> createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  late final NebuxDebouncer _debouncer;
+
+  @override
+  void initState() {
+    super.initState();
+    _debouncer = NebuxDebouncer(milliseconds: 500);
+  }
+
+  @override
+  void dispose() {
+    _debouncer.dispose(); // Clean up resources
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+```
+
+## Usage Examples
+
+### Search Input Debouncing
+
+Delay API calls until user stops typing:
+
+```dart
+class SearchWidget extends StatefulWidget {
+  @override
+  State<SearchWidget> createState() => _SearchWidgetState();
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
+  final _debouncer = NebuxDebouncer(milliseconds: 500);
+  final _controller = TextEditingController();
+  List<String> _results = [];
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _performSearch(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        _results = [];
+        _isLoading = false;
+      });
+      return;
+    }
+
+    setState(() => _isLoading = true);
+    
+    try {
+      // Simulate API call
+      final results = await searchApi(query);
+      setState(() {
+        _results = results;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _onSearchChanged(String query) {
+    // Cancel previous search and schedule new one
+    _debouncer.run(() => _performSearch(query));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        NbxTextFieldWidget(
+          NbxInputParameters(
+            hintText: 'Search...',
+            labelText: 'Search',
+            inputType: NbxInputType.text,
+            isRequired: false,
+            onChanged: _onSearchChanged,
+            suffixIcon: _isLoading
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : null,
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _results.length,
+            itemBuilder: (context, index) {
+              return ListTile(title: Text(_results[index]));
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+```
+
+### Auto-Save Functionality
+
+Automatically save form data after user stops editing:
+
+```dart
+class AutoSaveForm extends StatefulWidget {
+  @override
+  State<AutoSaveForm> createState() => _AutoSaveFormState();
+}
+
+class _AutoSaveFormState extends State<AutoSaveForm> {
+  final _debouncer = NebuxDebouncer(milliseconds: 1000);
+  final _titleController = TextEditingController();
+  final _contentController = TextEditingController();
+  DateTime? _lastSaved;
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Set callback to update UI after save
+    _debouncer.onDebounce = () {
+      setState(() {
+        _lastSaved = DateTime.now();
+        _isSaving = false;
+      });
+    };
+  }
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _saveForm() async {
+    setState(() => _isSaving = true);
+    
+    // Simulate API call
+    await Future.delayed(Duration(milliseconds: 500));
+    await saveToApi(
+      title: _titleController.text,
+      content: _contentController.text,
+    );
+  }
+
+  void _onFieldChanged() {
+    _debouncer.run(() => _saveForm());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Save status indicator
+        Container(
+          padding: EdgeInsets.all(8),
+          color: Colors.grey[200],
+          child: Row(
+            children: [
+              if (_isSaving) ..[
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                widthSpace8,
+                Text('Saving...'),
+              ] else if (_lastSaved != null) ..[
+                Icon(Icons.check_circle, size: 16, color: Colors.green),
+                widthSpace8,
+                Text('Saved ${_formatTime(_lastSaved!)}'),
+              ],
+            ],
+          ),
+        ),
+        heightSpace16,
+        
+        // Form fields
+        NbxTextFieldWidget(
+          NbxInputParameters(
+            hintText: 'Enter title',
+            labelText: 'Title',
+            inputType: NbxInputType.text,
+            isRequired: true,
+            controller: _titleController,
+            onChanged: (_) => _onFieldChanged(),
+          ),
+        ),
+        heightSpace16,
+        NbxTextFieldWidget(
+          NbxInputParameters(
+            hintText: 'Enter content',
+            labelText: 'Content',
+            inputType: NbxInputType.text,
+            isRequired: false,
+            minLines: 5,
+            maxLines: 10,
+            controller: _contentController,
+            onChanged: (_) => _onFieldChanged(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _formatTime(DateTime time) {
+    final now = DateTime.now();
+    final difference = now.difference(time);
+    
+    if (difference.inSeconds < 60) return 'just now';
+    if (difference.inMinutes < 60) return '${difference.inMinutes}m ago';
+    return '${difference.inHours}h ago';
+  }
+}
+```
+
+### Multiple Debouncers
+
+Use different debounce delays for different actions:
+
+```dart
+class AdvancedSearch extends StatefulWidget {
+  @override
+  State<AdvancedSearch> createState() => _AdvancedSearchState();
+}
+
+class _AdvancedSearchState extends State<AdvancedSearch> {
+  // Fast debouncer for instant suggestions
+  final _suggestionDebouncer = NebuxDebouncer(milliseconds: 200);
+  
+  // Slower debouncer for full search
+  final _searchDebouncer = NebuxDebouncer(milliseconds: 800);
+  
+  List<String> _suggestions = [];
+  List<String> _results = [];
+
+  @override
+  void dispose() {
+    _suggestionDebouncer.dispose();
+    _searchDebouncer.dispose();
+    super.dispose();
+  }
+
+  void _onQueryChanged(String query) {
+    // Quick suggestions
+    _suggestionDebouncer.run(() {
+      setState(() {
+        _suggestions = getSuggestions(query);
+      });
+    });
+    
+    // Full search (slower)
+    _searchDebouncer.run(() async {
+      final results = await performFullSearch(query);
+      setState(() {
+        _results = results;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Search input
+        NbxTextFieldWidget(
+          NbxInputParameters(
+            hintText: 'Search...',
+            labelText: 'Search',
+            inputType: NbxInputType.text,
+            isRequired: false,
+            onChanged: _onQueryChanged,
+          ),
+        ),
+        
+        // Quick suggestions appear faster
+        if (_suggestions.isNotEmpty) ..[
+          heightSpace8,
+          Text('Suggestions:', 
+            style: context.nebuxTypography.caption),
+          ..._suggestions.map((s) => ListTile(title: Text(s))),
+        ],
+        
+        // Full results appear slower
+        if (_results.isNotEmpty) ..[
+          heightSpace16,
+          Text('Results:', 
+            style: context.nebuxTypography.heading),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _results.length,
+              itemBuilder: (context, index) {
+                return ListTile(title: Text(_results[index]));
+              },
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  List<String> getSuggestions(String query) {
+    // Fast local filtering
+    return [];
+  }
+
+  Future<List<String>> performFullSearch(String query) async {
+    // Slower API call
+    return [];
+  }
+}
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Always dispose debouncers">
+    Call `dispose()` in your widget's dispose method to prevent memory leaks:
+    
+    ```dart
+    @override
+    void dispose() {
+      _debouncer.dispose();
+      super.dispose();
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Choose appropriate delays">
+    - **200-300ms**: Fast feedback (autocomplete, suggestions)
+    - **500-800ms**: Standard search/filter operations
+    - **1000-2000ms**: Auto-save, analytics tracking
+  </Accordion>
+
+  <Accordion title="Handle loading states">
+    Show loading indicators while debounced actions are pending:
+    
+    ```dart
+    if (debouncer.isActive) {
+      return CircularProgressIndicator();
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Cancel when needed">
+    Cancel pending actions when they're no longer relevant:
+    
+    ```dart
+    void onNavigateAway() {
+      _debouncer.cancel(); // Don't execute if user navigated away
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Related Documentation
+
+- [NebuxUtils](/api/nebux-utils) - General utility functions
+- [Text Field Widget](/components/inputs) - Input components that benefit from debouncing
+- [Performance Guide](/guides/advanced-usage) - Optimization patterns and best practices

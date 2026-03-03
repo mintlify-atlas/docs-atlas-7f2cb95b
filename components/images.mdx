@@ -1,0 +1,390 @@
+---
+title: 'Images'
+description: 'Network image component with caching and loading states'
+icon: 'image'
+---
+
+## NbxNetworkImage
+
+A robust network image widget that provides comprehensive image loading, caching, error handling, and customization options.
+
+### Basic Usage
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.jpg',
+  width: 200,
+  height: 200,
+)
+```
+
+## Core Properties
+
+<ParamField path="imageUrl" type="String" required>
+  The URL of the image to load and display
+</ParamField>
+
+<ParamField path="width" type="double?">
+  The width of the image. If null, sizes based on content
+</ParamField>
+
+<ParamField path="height" type="double?">
+  The height of the image. If null, sizes based on content
+</ParamField>
+
+<ParamField path="fit" type="BoxFit" default="BoxFit.cover">
+  How to inscribe the image into the space
+</ParamField>
+
+<ParamField path="placeholder" type="Widget?">
+  Widget displayed while the image is loading
+</ParamField>
+
+<ParamField path="errorWidget" type="Widget?">
+  Widget displayed when an error occurs loading the image
+</ParamField>
+
+<ParamField path="httpHeaders" type="Map<String, String>?">
+  HTTP headers to use when loading the image
+</ParamField>
+
+## Configuration Options
+
+NbxNetworkImage uses four configuration classes:
+
+### NbxImageCacheConfig
+
+Controls image caching behavior:
+
+<ParamField path="memCacheWidth" type="int?">
+  Maximum width for in-memory cache
+</ParamField>
+
+<ParamField path="memCacheHeight" type="int?">
+  Maximum height for in-memory cache
+</ParamField>
+
+<ParamField path="maxWidthDiskCache" type="int?">
+  Maximum width for disk cache
+</ParamField>
+
+<ParamField path="maxHeightDiskCache" type="int?">
+  Maximum height for disk cache
+</ParamField>
+
+<ParamField path="cacheKey" type="String?">
+  Custom cache key (defaults to image URL)
+</ParamField>
+
+<ParamField path="useOldImageOnUrlChange" type="bool" default="false">
+  Whether to keep displaying old image when URL changes
+</ParamField>
+
+<ParamField path="cacheManager" type="BaseCacheManager?">
+  Custom cache manager instance
+</ParamField>
+
+```dart
+NbxNetworkImage(
+  imageUrl: 'https://example.com/large-image.jpg',
+  cacheConfig: NbxImageCacheConfig(
+    memCacheWidth: 800,
+    memCacheHeight: 800,
+    maxWidthDiskCache: 1200,
+    maxHeightDiskCache: 1200,
+  ),
+)
+```
+
+### NbxImageAnimationConfig
+
+Controls fade animations:
+
+<ParamField path="fadeInDuration" type="Duration" default="Duration(milliseconds: 500)">
+  Duration of fade-in animation
+</ParamField>
+
+<ParamField path="fadeOutDuration" type="Duration" default="Duration(milliseconds: 300)">
+  Duration of fade-out animation
+</ParamField>
+
+<ParamField path="fadeInCurve" type="Curve" default="Curves.easeIn">
+  Curve for fade-in animation
+</ParamField>
+
+<ParamField path="fadeOutCurve" type="Curve" default="Curves.easeOut">
+  Curve for fade-out animation
+</ParamField>
+
+```dart
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.jpg',
+  animationConfig: NbxImageAnimationConfig(
+    fadeInDuration: Duration(milliseconds: 800),
+    fadeInCurve: Curves.easeInOut,
+  ),
+)
+```
+
+### NbxImageProgressConfig
+
+Customizes the loading progress indicator:
+
+<ParamField path="progressIndicatorBuilder" type="Widget Function(BuildContext, String, DownloadProgress)?">
+  Custom builder for progress indicator
+</ParamField>
+
+<ParamField path="progressIndicatorCircular" type="bool" default="true">
+  Whether to use circular (true) or linear (false) progress indicator
+</ParamField>
+
+<ParamField path="progressIndicatorSize" type="Size" default="Size(40, 40)">
+  Size of the progress indicator
+</ParamField>
+
+<ParamField path="progressIndicatorStrokeWidth" type="double" default="3.0">
+  Stroke width for circular progress indicator
+</ParamField>
+
+<ParamField path="progressIndicatorColor" type="Color?">
+  Color of the progress indicator
+</ParamField>
+
+<ParamField path="progressIndicatorBackgroundColor" type="Color?">
+  Background color of the progress indicator
+</ParamField>
+
+```dart
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.jpg',
+  progressConfig: NbxImageProgressConfig(
+    progressIndicatorCircular: true,
+    progressIndicatorColor: Colors.blue,
+    progressIndicatorSize: Size(50, 50),
+  ),
+)
+```
+
+### NbxImageStyleConfig
+
+Controls visual styling:
+
+<ParamField path="borderRadius" type="BorderRadius?">
+  Border radius applied to the image container
+</ParamField>
+
+<ParamField path="border" type="BoxBorder?">
+  Border drawn around the image container
+</ParamField>
+
+<ParamField path="shadow" type="List<BoxShadow>?">
+  Box shadows applied to the image container
+</ParamField>
+
+<ParamField path="clipBehavior" type="Clip" default="Clip.antiAlias">
+  Clip behavior for the image container
+</ParamField>
+
+<ParamField path="color" type="Color?">
+  Color filter applied to the image
+</ParamField>
+
+<ParamField path="colorBlendMode" type="BlendMode?">
+  Blend mode for the color filter
+</ParamField>
+
+<ParamField path="filterQuality" type="FilterQuality" default="FilterQuality.low">
+  Filter quality for image rendering
+</ParamField>
+
+<ParamField path="repeat" type="ImageRepeat" default="ImageRepeat.noRepeat">
+  How the image should repeat if it doesn't fill its bounds
+</ParamField>
+
+<ParamField path="matchTextDirection" type="bool" default="false">
+  Whether to match the text direction for the image
+</ParamField>
+
+```dart
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.jpg',
+  styleConfig: NbxImageStyleConfig(
+    borderRadius: BorderRadius.circular(12),
+    border: Border.all(color: Colors.grey, width: 2),
+    shadow: [
+      BoxShadow(
+        color: Colors.black26,
+        blurRadius: 8,
+        offset: Offset(0, 4),
+      ),
+    ],
+  ),
+)
+```
+
+## Convenience Constructors
+
+NbxNetworkImage provides factory constructors for common use cases:
+
+### Circular Image
+
+```dart
+NbxNetworkImageExtensions.circular(
+  imageUrl: 'https://example.com/avatar.jpg',
+  radius: 50,
+  border: Border.all(color: Colors.white, width: 3),
+)
+```
+
+### Square Image
+
+```dart
+NbxNetworkImageExtensions.square(
+  imageUrl: 'https://example.com/thumbnail.jpg',
+  size: 100,
+  borderRadius: BorderRadius.circular(8),
+)
+```
+
+### Rounded Image
+
+```dart
+NbxNetworkImageExtensions.rounded(
+  imageUrl: 'https://example.com/photo.jpg',
+  width: 300,
+  height: 200,
+  borderRadius: 16,
+)
+```
+
+## Advanced Examples
+
+### Profile Avatar
+
+```dart
+NbxNetworkImageExtensions.circular(
+  imageUrl: user.avatarUrl,
+  radius: 40,
+  placeholder: Container(
+    width: 80,
+    height: 80,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.grey[300],
+    ),
+    child: Icon(Icons.person, size: 40, color: Colors.grey[600]),
+  ),
+  errorWidget: Container(
+    width: 80,
+    height: 80,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.red[100],
+    ),
+    child: Icon(Icons.error, size: 40, color: Colors.red),
+  ),
+)
+```
+
+### Image with Custom Loading
+
+```dart
+NbxNetworkImage(
+  imageUrl: 'https://example.com/image.jpg',
+  width: 300,
+  height: 200,
+  progressConfig: NbxImageProgressConfig(
+    progressIndicatorBuilder: (context, url, progress) {
+      return Container(
+        color: Colors.grey[200],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                value: progress.progress,
+              ),
+              SizedBox(height: 8),
+              Text(
+                '${((progress.progress ?? 0) * 100).toInt()}%',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+)
+```
+
+### Image Grid
+
+```dart
+GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 3,
+    crossAxisSpacing: 8,
+    mainAxisSpacing: 8,
+  ),
+  itemCount: images.length,
+  itemBuilder: (context, index) {
+    return NbxNetworkImageExtensions.square(
+      imageUrl: images[index],
+      size: 120,
+      borderRadius: BorderRadius.circular(8),
+    );
+  },
+)
+```
+
+### Header Image with Overlay
+
+```dart
+Stack(
+  children: [
+    NbxNetworkImage(
+      imageUrl: 'https://example.com/header.jpg',
+      width: double.infinity,
+      height: 250,
+      fit: BoxFit.cover,
+      styleConfig: NbxImageStyleConfig(
+        color: Colors.black.withOpacity(0.3),
+        colorBlendMode: BlendMode.darken,
+      ),
+    ),
+    Positioned(
+      bottom: 16,
+      left: 16,
+      child: Text(
+        'Title',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  ],
+)
+```
+
+## Best Practices
+
+<Note>
+  Use `memCacheWidth` and `memCacheHeight` to reduce memory usage for large images by caching a scaled-down version.
+</Note>
+
+<Note>
+  The component uses `cached_network_image` package internally, providing automatic disk and memory caching.
+</Note>
+
+<Note>
+  When displaying multiple images in a list, consider setting appropriate cache dimensions to optimize memory usage.
+</Note>
+
+<Note>
+  The default `filterQuality` is set to `low` for better performance. Increase to `medium` or `high` if image quality is critical.
+</Note>

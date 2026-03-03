@@ -1,0 +1,527 @@
+---
+title: 'Spacing Constants'
+description: 'Complete reference for pre-defined spacing constants in Nebux Design System'
+---
+
+# Spacing Constants
+
+The Nebux Design System provides a comprehensive set of pre-built spacing constants to maintain consistent spacing throughout your application. These constants are implemented as `SizedBox` widgets for both vertical and horizontal spacing.
+
+## Overview
+
+Using consistent spacing is crucial for creating visually harmonious interfaces. Instead of manually creating `SizedBox` widgets with hardcoded values, use these pre-defined constants:
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+Column(
+  children: [
+    Text('Title'),
+    heightSpace16,  // Vertical spacing
+    Text('Subtitle'),
+    heightSpace8,
+    Row(
+      children: [
+        Icon(Icons.star),
+        widthSpace8,  // Horizontal spacing
+        Text('Rating'),
+      ],
+    ),
+  ],
+)
+```
+
+## Default Padding
+
+<ParamField path="defaultPaddingSize" type="double" default="16">
+  The default padding size used across the design system, measured in logical pixels. This value serves as the standard spacing unit.
+</ParamField>
+
+```dart
+const double defaultPaddingSize = 16;
+
+// Usage in custom widgets
+Padding(
+  padding: EdgeInsets.all(defaultPaddingSize),
+  child: MyWidget(),
+)
+```
+
+---
+
+## Vertical Spacing (Height)
+
+All vertical spacing constants are `SizedBox` widgets with specified height values. Use these between vertically stacked widgets.
+
+### Height Space Constants
+
+<ParamField path="heightSpaceDefault" type="SizedBox" default="SizedBox(height: 16)">
+  Default vertical spacing (16 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace2" type="SizedBox" default="SizedBox(height: 2)">
+  Extra small vertical spacing (2 logical pixels). Use for very tight layouts.
+</ParamField>
+
+<ParamField path="heightSpace4" type="SizedBox" default="SizedBox(height: 4)">
+  Minimal vertical spacing (4 logical pixels). Use for tightly grouped elements.
+</ParamField>
+
+<ParamField path="heightSpace6" type="SizedBox" default="SizedBox(height: 6)">
+  Very small vertical spacing (6 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace8" type="SizedBox" default="SizedBox(height: 8)">
+  Small vertical spacing (8 logical pixels). Common for related elements.
+</ParamField>
+
+<ParamField path="heightSpace10" type="SizedBox" default="SizedBox(height: 10)">
+  Small-medium vertical spacing (10 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace12" type="SizedBox" default="SizedBox(height: 12)">
+  Medium-small vertical spacing (12 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace15" type="SizedBox" default="SizedBox(height: 15)">
+  Medium vertical spacing (15 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace16" type="SizedBox" default="SizedBox(height: 16)">
+  Standard vertical spacing (16 logical pixels). Most commonly used.
+</ParamField>
+
+<ParamField path="heightSpace20" type="SizedBox" default="SizedBox(height: 20)">
+  Medium-large vertical spacing (20 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace24" type="SizedBox" default="SizedBox(height: 24)">
+  Large vertical spacing (24 logical pixels). Use between sections.
+</ParamField>
+
+<ParamField path="heightSpace25" type="SizedBox" default="SizedBox(height: 25)">
+  Large vertical spacing (25 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace30" type="SizedBox" default="SizedBox(height: 30)">
+  Extra large vertical spacing (30 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace32" type="SizedBox" default="SizedBox(height: 32)">
+  Extra large vertical spacing (32 logical pixels). Use between major sections.
+</ParamField>
+
+<ParamField path="heightSpace40" type="SizedBox" default="SizedBox(height: 40)">
+  Very large vertical spacing (40 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace48" type="SizedBox" default="SizedBox(height: 48)">
+  Very large vertical spacing (48 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace50" type="SizedBox" default="SizedBox(height: 50)">
+  Very large vertical spacing (50 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace60" type="SizedBox" default="SizedBox(height: 60)">
+  Extremely large vertical spacing (60 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace64" type="SizedBox" default="SizedBox(height: 64)">
+  Extremely large vertical spacing (64 logical pixels).
+</ParamField>
+
+<ParamField path="heightSpace80" type="SizedBox" default="SizedBox(height: 80)">
+  Massive vertical spacing (80 logical pixels). Use for major layout divisions.
+</ParamField>
+
+<ParamField path="heightSpace100" type="SizedBox" default="SizedBox(height: 100)">
+  Huge vertical spacing (100 logical pixels). Use for large empty states.
+</ParamField>
+
+<ParamField path="heightSpace200" type="SizedBox" default="SizedBox(height: 200)">
+  Maximum vertical spacing (200 logical pixels). Use for spacious layouts.
+</ParamField>
+
+### Vertical Spacing Usage Example
+
+```dart
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    // Section title
+    Text('Personal Information', 
+      style: context.nebuxTypography.heading),
+    heightSpace24, // Large space after section title
+    
+    // Form fields
+    NbxTextFieldWidget(
+      NbxInputParameters(
+        labelText: 'Full Name',
+        hintText: 'Enter your name',
+        inputType: NbxInputType.text,
+        isRequired: true,
+      ),
+    ),
+    heightSpace16, // Standard space between fields
+    
+    NbxTextFieldWidget(
+      NbxInputParameters(
+        labelText: 'Email',
+        hintText: 'Enter your email',
+        inputType: NbxInputType.email,
+        isRequired: true,
+      ),
+    ),
+    heightSpace8, // Small space for helper text
+    
+    Text('We\'ll never share your email',
+      style: context.nebuxTypography.caption),
+    heightSpace32, // Large space before next section
+    
+    // Next section
+    Text('Contact Information',
+      style: context.nebuxTypography.heading),
+    heightSpace24,
+    
+    // More fields...
+  ],
+)
+```
+
+---
+
+## Horizontal Spacing (Width)
+
+All horizontal spacing constants are `SizedBox` widgets with specified width values. Use these between horizontally arranged widgets.
+
+### Width Space Constants
+
+<ParamField path="widthSpaceDefault" type="SizedBox" default="SizedBox(width: 16)">
+  Default horizontal spacing (16 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace2" type="SizedBox" default="SizedBox(width: 2)">
+  Extra small horizontal spacing (2 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace4" type="SizedBox" default="SizedBox(width: 4)">
+  Minimal horizontal spacing (4 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace6" type="SizedBox" default="SizedBox(width: 6)">
+  Very small horizontal spacing (6 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace8" type="SizedBox" default="SizedBox(width: 8)">
+  Small horizontal spacing (8 logical pixels). Common for icon-text pairs.
+</ParamField>
+
+<ParamField path="widthSpace10" type="SizedBox" default="SizedBox(width: 10)">
+  Small-medium horizontal spacing (10 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace12" type="SizedBox" default="SizedBox(width: 12)">
+  Medium-small horizontal spacing (12 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace14" type="SizedBox" default="SizedBox(width: 14)">
+  Medium horizontal spacing (14 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace15" type="SizedBox" default="SizedBox(width: 15)">
+  Medium horizontal spacing (15 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace16" type="SizedBox" default="SizedBox(width: 16)">
+  Standard horizontal spacing (16 logical pixels). Most commonly used.
+</ParamField>
+
+<ParamField path="widthSpace18" type="SizedBox" default="SizedBox(width: 18)">
+  Medium-large horizontal spacing (18 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace20" type="SizedBox" default="SizedBox(width: 20)">
+  Large horizontal spacing (20 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace24" type="SizedBox" default="SizedBox(width: 24)">
+  Extra large horizontal spacing (24 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace25" type="SizedBox" default="SizedBox(width: 25)">
+  Extra large horizontal spacing (25 logical pixels).
+</ParamField>
+
+<ParamField path="widthSpace48" type="SizedBox" default="SizedBox(width: 48)">
+  Very large horizontal spacing (48 logical pixels). Use for widely spaced elements.
+</ParamField>
+
+### Horizontal Spacing Usage Example
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.start,
+  children: [
+    // Icon with label
+    Icon(Icons.star, color: Colors.amber),
+    widthSpace8, // Small space between icon and text
+    Text('4.5'),
+    widthSpace16, // Standard space between groups
+    
+    // Another icon with label
+    Icon(Icons.favorite, color: Colors.red),
+    widthSpace8,
+    Text('128'),
+    widthSpace16,
+    
+    // Button
+    Expanded(
+      child: NbxButton(
+        text: 'Rate',
+        onPressed: () {},
+        layoutConfig: ButtonLayoutConfig(isExpanded: true),
+      ),
+    ),
+  ],
+)
+
+// Horizontal button group
+Row(
+  children: [
+    Expanded(
+      child: NbxButton(
+        text: 'Cancel',
+        onPressed: () {},
+        styleConfig: ButtonStyleConfig(variant: ButtonVariant.outline),
+      ),
+    ),
+    widthSpace12, // Space between buttons
+    Expanded(
+      child: NbxButton(
+        text: 'Confirm',
+        onPressed: () {},
+        styleConfig: ButtonStyleConfig(variant: ButtonVariant.filled),
+      ),
+    ),
+  ],
+)
+```
+
+---
+
+## Spacing Guidelines
+
+### When to Use Each Size
+
+<AccordionGroup>
+  <Accordion title="2-6px: Extra Tight">
+    Use for very tightly related elements that should appear as a single unit:
+    - Between icon and adjacent badge/indicator
+    - Between chevron and text in compact lists
+    - Internal chip/tag padding
+  </Accordion>
+
+  <Accordion title="8-12px: Tight">
+    Use for closely related elements:
+    - Between icon and text (icon-text pairs)
+    - Between label and value in key-value pairs
+    - Between form field and inline helper text
+    - Between elements in button content
+  </Accordion>
+
+  <Accordion title="16-20px: Standard">
+    Use for standard element separation:
+    - Between form fields
+    - Between list items
+    - Between card content elements
+    - Standard padding in containers
+  </Accordion>
+
+  <Accordion title="24-32px: Loose">
+    Use for grouping and section separation:
+    - Between form sections
+    - After section headings
+    - Between different content groups
+    - Around major UI elements
+  </Accordion>
+
+  <Accordion title="40-64px: Very Loose">
+    Use for major layout divisions:
+    - Between major page sections
+    - Around hero elements
+    - In spacious marketing layouts
+    - Before/after call-to-action buttons
+  </Accordion>
+
+  <Accordion title="80-200px: Extra Loose">
+    Use for dramatic spacing:
+    - Empty state illustrations
+    - Landing page sections
+    - Full-page centered content
+    - Decorative spacing in marketing pages
+  </Accordion>
+</AccordionGroup>
+
+### Complete Layout Example
+
+```dart
+class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return NbxScaffold(
+      widgetName: 'ProfileScreen',
+      appBarConfig: AppBarConfig(title: 'Profile'),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(defaultPaddingSize),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Profile header
+            Center(
+              child: Column(
+                children: [
+                  CircleAvatar(radius: 50),
+                  heightSpace16, // Standard space
+                  Text('John Doe',
+                    style: context.nebuxTypography.heading),
+                  heightSpace4, // Tight space for subtitle
+                  Text('john.doe@example.com',
+                    style: context.nebuxTypography.caption),
+                ],
+              ),
+            ),
+            heightSpace48, // Large space after header
+            
+            // Statistics row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _StatItem(label: 'Posts', value: '42'),
+                widthSpace24,
+                _StatItem(label: 'Followers', value: '1.2K'),
+                widthSpace24,
+                _StatItem(label: 'Following', value: '234'),
+              ],
+            ),
+            heightSpace32, // Section divider
+            
+            // Account section
+            Text('Account Settings',
+              style: context.nebuxTypography.section),
+            heightSpace16,
+            _SettingsTile(
+              icon: Icons.person,
+              title: 'Edit Profile',
+            ),
+            heightSpace8,
+            _SettingsTile(
+              icon: Icons.security,
+              title: 'Privacy',
+            ),
+            heightSpace8,
+            _SettingsTile(
+              icon: Icons.notifications,
+              title: 'Notifications',
+            ),
+            heightSpace32, // Section divider
+            
+            // Preferences section
+            Text('Preferences',
+              style: context.nebuxTypography.section),
+            heightSpace16,
+            _SettingsTile(
+              icon: Icons.dark_mode,
+              title: 'Dark Mode',
+            ),
+            heightSpace8,
+            _SettingsTile(
+              icon: Icons.language,
+              title: 'Language',
+            ),
+            heightSpace64, // Large space before action
+            
+            // Sign out button
+            NbxButton(
+              text: 'Sign Out',
+              onPressed: () {},
+              styleConfig: ButtonStyleConfig(
+                variant: ButtonVariant.danger,
+              ),
+            ),
+            heightSpace24, // Bottom padding
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatItem extends StatelessWidget {
+  final String label;
+  final String value;
+  
+  const _StatItem({required this.label, required this.value});
+  
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(value, style: context.nebuxTypography.heading),
+        heightSpace4, // Tight space between value and label
+        Text(label, style: context.nebuxTypography.caption),
+      ],
+    );
+  }
+}
+
+class _SettingsTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  
+  const _SettingsTile({required this.icon, required this.title});
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          Icon(icon),
+          widthSpace12, // Space between icon and text
+          Expanded(child: Text(title)),
+          Icon(Icons.chevron_right, color: Colors.grey),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## Best Practices
+
+<Card title="Consistency" icon="check">
+  Always use spacing constants instead of hardcoded values to maintain consistency across your app.
+</Card>
+
+<Card title="Visual Hierarchy" icon="layer-group">
+  Use larger spacing between major sections and smaller spacing between related elements to create clear visual hierarchy.
+</Card>
+
+<Card title="Responsive Design" icon="mobile">
+  Consider adjusting spacing for different screen sizes. The constants work well for most mobile devices, but you may want to increase spacing on tablets.
+</Card>
+
+<Card title="Accessibility" icon="universal-access">
+  Adequate spacing improves accessibility by making touch targets easier to hit and content easier to read.
+</Card>
+
+## Related Documentation
+
+- [Layout Guide](/guides/advanced-usage) - Layout patterns and best practices
+- [Theme System](/core/theme-system) - Overall theming documentation
+- [Design Tokens](/core/spacing) - Other design system tokens

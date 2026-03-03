@@ -1,0 +1,339 @@
+---
+title: 'Inputs'
+description: 'Text fields, phone inputs, and country pickers with validation'
+icon: 'keyboard'
+---
+
+## Text Input Components
+
+Nebux provides form-integrated text input widgets with comprehensive validation and state management.
+
+## NbxTextFormFieldWidget
+
+A text input widget that integrates with Flutter's Form system for validation.
+
+### Basic Usage
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+final _formKey = GlobalKey<FormState>();
+final _controller = TextEditingController();
+
+Form(
+  key: _formKey,
+  child: NbxTextFormFieldWidget(
+    NbxInputParameters(
+      controller: _controller,
+      isRequired: true,
+      inputType: NbxInputType.text,
+      labelText: 'Full Name',
+      hintText: 'Enter your full name',
+      requiredErrorMessage: 'Name is required',
+    ),
+  ),
+)
+```
+
+### NbxInputParameters
+
+All input widgets are configured using `NbxInputParameters`, which provides a comprehensive set of properties:
+
+<ParamField path="labelText" type="String?">
+  Label text displayed above or inside the input
+</ParamField>
+
+<ParamField path="hintText" type="String?">
+  Placeholder text shown when input is empty
+</ParamField>
+
+<ParamField path="isRequired" type="bool" required>
+  Whether the field is required (triggers validation)
+</ParamField>
+
+<ParamField path="inputType" type="NbxInputType" required>
+  Type of input: `text`, `email`, `password`, `number`, etc.
+</ParamField>
+
+<ParamField path="controller" type="TextEditingController?">
+  Controller for managing input value
+</ParamField>
+
+<ParamField path="obscureText" type="bool" default="false">
+  Whether to obscure text (for passwords)
+</ParamField>
+
+<ParamField path="isReadOnly" type="bool" default="false">
+  Whether the field is read-only
+</ParamField>
+
+<ParamField path="isEnabled" type="bool" default="true">
+  Whether the field is enabled
+</ParamField>
+
+<ParamField path="maxLines" type="int?">
+  Maximum number of lines for multi-line inputs
+</ParamField>
+
+<ParamField path="maxLength" type="int?">
+  Maximum character length
+</ParamField>
+
+<ParamField path="validator" type="String? Function(String?)?">
+  Custom validation function
+</ParamField>
+
+<ParamField path="onValidationResult" type="void Function(String?)?">
+  Callback with final validation error (null = valid)
+</ParamField>
+
+<ParamField path="onChanged" type="ValueChanged<String>?">
+  Callback when input value changes
+</ParamField>
+
+<ParamField path="suffixIcon" type="Widget?">
+  Custom suffix icon widget
+</ParamField>
+
+<ParamField path="prefixIcon" type="Widget?">
+  Custom prefix icon widget
+</ParamField>
+
+<ParamField path="decorationStyle" type="NbxInputDecorationStyle" default="outlined">
+  Decoration style for the input field
+</ParamField>
+
+<ParamField path="inputState" type="NbxInputState" default="neutral">
+  Visual state: `neutral`, `success`, or `error`
+</ParamField>
+
+<ParamField path="helperText" type="String?">
+  Supporting text displayed below the input
+</ParamField>
+
+<ParamField path="showCharacterCounter" type="bool" default="false">
+  Whether to show character counter when maxLength is set
+</ParamField>
+
+## Input Types
+
+Common input configurations:
+
+<Tabs>
+  <Tab title="Email">
+    ```dart
+    NbxTextFormFieldWidget(
+      NbxInputParameters(
+        controller: emailController,
+        isRequired: true,
+        inputType: NbxInputType.email,
+        labelText: 'Email',
+        hintText: 'Enter your email',
+        requiredErrorMessage: 'Email is required',
+      ),
+    )
+    ```
+  </Tab>
+  
+  <Tab title="Password">
+    ```dart
+    NbxTextFormFieldWidget(
+      NbxInputParameters(
+        controller: passwordController,
+        isRequired: true,
+        inputType: NbxInputType.password,
+        labelText: 'Password',
+        hintText: 'Enter your password',
+        obscureText: true,
+        requiredErrorMessage: 'Password is required',
+      ),
+    )
+    ```
+  </Tab>
+  
+  <Tab title="Multi-line">
+    ```dart
+    NbxTextFormFieldWidget(
+      NbxInputParameters(
+        controller: bioController,
+        isRequired: false,
+        inputType: NbxInputType.text,
+        labelText: 'Bio',
+        hintText: 'Tell us about yourself',
+        maxLines: 5,
+        maxLength: 500,
+        showCharacterCounter: true,
+      ),
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## NbxPhoneFieldWidget
+
+A specialized widget that combines country picker and phone number input with automatic validation.
+
+### Basic Usage
+
+```dart
+final countryCodeController = TextEditingController();
+final phoneController = TextEditingController();
+Country? selectedCountry;
+
+NbxPhoneFieldWidget(
+  countrySelected: selectedCountry,
+  countryCodeInputParameters: NbxCountryPickerParameters(
+    controller: countryCodeController,
+    isRequired: true,
+    inputType: NbxInputType.text,
+    labelText: 'Country',
+    hintText: 'Select',
+    requiredErrorMessage: 'Country is required',
+  ),
+  phoneNumberInputParameters: NbxInputParameters(
+    controller: phoneController,
+    isRequired: true,
+    inputType: NbxInputType.phone,
+    labelText: 'Phone Number',
+    hintText: 'Enter phone',
+    requiredErrorMessage: 'Phone is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    countries: allCountries,
+    showPhoneCode: true,
+    appBarTitle: 'Select Country',
+    onSelect: (country) {
+      setState(() {
+        selectedCountry = country;
+      });
+    },
+  ),
+)
+```
+
+### Features
+
+- Automatic validation based on country-specific phone number lengths
+- Phone input is read-only until a country is selected
+- Clears phone number when country changes
+- Validates min/max length based on selected country
+
+<Note>
+  The phone field automatically validates the phone number length based on the `minLength` and `maxLength` properties of the selected `Country` object.
+</Note>
+
+## NbxCountryPickerInput
+
+A read-only input that opens a country picker dialog on tap.
+
+### Basic Usage
+
+```dart
+final controller = TextEditingController();
+
+NbxCountryPickerInput(
+  inputParameters: NbxCountryPickerParameters(
+    controller: controller,
+    isRequired: true,
+    inputType: NbxInputType.text,
+    labelText: 'Country',
+    hintText: 'Select country',
+    requiredErrorMessage: 'Country is required',
+  ),
+  modal: NbxCountryPickerModalParameters(
+    countries: allCountries,
+    showPhoneCode: false,
+    appBarTitle: 'Select Country',
+    onSelect: (country) {
+      controller.text = country.name;
+    },
+  ),
+)
+```
+
+### NbxCountryPickerModalParameters
+
+Configuration for the country picker modal:
+
+<ParamField path="countries" type="List<Country>" required>
+  List of countries to display
+</ParamField>
+
+<ParamField path="showPhoneCode" type="bool" default="false">
+  Whether to show phone codes in the list
+</ParamField>
+
+<ParamField path="appBarTitle" type="String" default="'Select Country'">
+  Title for the picker modal
+</ParamField>
+
+<ParamField path="onSelect" type="void Function(Country)" required>
+  Callback when a country is selected
+</ParamField>
+
+<ParamField path="showSearchBox" type="bool" default="true">
+  Whether to show search functionality
+</ParamField>
+
+## Validation Examples
+
+### Custom Validation
+
+```dart
+NbxTextFormFieldWidget(
+  NbxInputParameters(
+    controller: usernameController,
+    isRequired: true,
+    inputType: NbxInputType.text,
+    labelText: 'Username',
+    hintText: 'Enter username',
+    requiredErrorMessage: 'Username is required',
+    validator: (value) {
+      if (value == null || value.isEmpty) return null;
+      if (value.length < 3) {
+        return 'Username must be at least 3 characters';
+      }
+      if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+        return 'Username can only contain letters, numbers, and underscores';
+      }
+      return null;
+    },
+  ),
+)
+```
+
+### Validation Result Callback
+
+```dart
+String? errorMessage;
+
+NbxTextFormFieldWidget(
+  NbxInputParameters(
+    controller: emailController,
+    isRequired: true,
+    inputType: NbxInputType.email,
+    labelText: 'Email',
+    hintText: 'Enter email',
+    requiredErrorMessage: 'Email is required',
+    onValidationResult: (error) {
+      setState(() {
+        errorMessage = error;
+      });
+    },
+  ),
+)
+```
+
+## Best Practices
+
+<Note>
+  When using `isRequired: true`, you must provide a `requiredErrorMessage`. This is enforced by compile-time assertions.
+</Note>
+
+<Note>
+  For outlined decoration style, both `labelText` and `hintText` must be provided.
+</Note>
+
+<Note>
+  Use `onValidationResult` for reactive UI updates based on validation state, not for implementing validation logic.
+</Note>

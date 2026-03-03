@@ -1,0 +1,557 @@
+---
+title: "Advanced Usage"
+description: "Advanced patterns, techniques, and best practices"
+---
+
+## Overview
+
+This guide covers advanced usage patterns for Nebux Design System, including configuration file management, theme interpolation, performance optimization, and architectural patterns.
+
+## JSON/TOML Theme Configuration
+
+### JSON Configuration
+
+Define your entire theme in a JSON file for easy management and version control.
+
+**Structure:**
+
+```json theme.json
+{
+  "light": {
+    "primary": "#6200EE",
+    "secondary": "#03DAC6",
+    "secondaryVariant": "#018786",
+    "background": "#FFFBFE",
+    "surface": "#FFFFFF",
+    "textPrimary": "#000000",
+    "textSecondary": "#666666",
+    "actionPrimary": "#6200EE",
+    "actionSecondary": "#03DAC6",
+    "cardColor": "#F5F5F5",
+    "divider": "#E0E0E0",
+    "overlay": "#52000000",
+    "focus": "#6200EE",
+    "success": "#4CAF50",
+    "warning": "#FFC107",
+    "error": "#B00020",
+    "info": "#2196F3",
+    "disabled": "#BDBDBD",
+    "white": "#FFFFFF",
+    "black": "#000000",
+    "primaryGradient": {
+      "colors": ["#6200EE", "#03DAC6"]
+    },
+    "secondaryGradient": {
+      "colors": ["#03DAC6", "#00BCD4"]
+    }
+  },
+  "dark": {
+    "primary": "#BB86FC",
+    "secondary": "#03DAC6",
+    "secondaryVariant": "#018786",
+    "background": "#121212",
+    "surface": "#1E1E1E",
+    "textPrimary": "#FFFFFF",
+    "textSecondary": "#B3B3B3",
+    "actionPrimary": "#BB86FC",
+    "actionSecondary": "#03DAC6",
+    "cardColor": "#2C2C2C",
+    "divider": "#373737",
+    "overlay": "#78000000",
+    "focus": "#BB86FC",
+    "success": "#81C784",
+    "warning": "#FFD54F",
+    "error": "#CF6679",
+    "info": "#90CAF9",
+    "disabled": "#5F5F5F",
+    "white": "#FFFFFF",
+    "black": "#000000",
+    "primaryGradient": {
+      "colors": ["#BB86FC", "#03DAC6"]
+    },
+    "secondaryGradient": {
+      "colors": ["#03DAC6", "#00BCD4"]
+    }
+  }
+}
+```
+
+**Loading:**
+
+```dart
+import 'dart:convert';
+import 'package:flutter/services.dart';
+
+class ThemeManager {
+  static Future<NebuxColorThemes> loadThemeFromJson() async {
+    final jsonString = await rootBundle.loadString('assets/theme.json');
+    final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+    
+    return NebuxColorThemes(
+      light: NebuxColors.fromJson(jsonMap['light']),
+      dark: NebuxColors.fromJson(jsonMap['dark']),
+    );
+  }
+}
+
+// Usage
+final colorThemes = await ThemeManager.loadThemeFromJson();
+```
+
+### TOML Configuration
+
+Nebux supports TOML configuration files via the `toml` package.
+
+**Install dependency:**
+
+```yaml pubspec.yaml
+dependencies:
+  toml: ^0.18.0
+```
+
+**Structure:**
+
+```toml theme.toml
+[light]
+primary = "#6200EE"
+secondary = "#03DAC6"
+secondaryVariant = "#018786"
+background = "#FFFBFE"
+surface = "#FFFFFF"
+textPrimary = "#000000"
+textSecondary = "#666666"
+actionPrimary = "#6200EE"
+actionSecondary = "#03DAC6"
+cardColor = "#F5F5F5"
+divider = "#E0E0E0"
+overlay = "#52000000"
+focus = "#6200EE"
+success = "#4CAF50"
+warning = "#FFC107"
+error = "#B00020"
+info = "#2196F3"
+disabled = "#BDBDBD"
+white = "#FFFFFF"
+black = "#000000"
+
+[light.primaryGradient]
+colors = ["#6200EE", "#03DAC6"]
+
+[light.secondaryGradient]
+colors = ["#03DAC6", "#00BCD4"]
+
+[dark]
+primary = "#BB86FC"
+secondary = "#03DAC6"
+# ... rest of dark theme
+```
+
+**Loading:**
+
+```dart
+import 'package:flutter/services.dart';
+import 'package:toml/toml.dart';
+
+class ThemeManager {
+  static Future<NebuxColorThemes> loadThemeFromToml() async {
+    final tomlString = await rootBundle.loadString('assets/theme.toml');
+    final tomlMap = TomlDocument.parse(tomlString).toMap();
+    
+    return NebuxColorThemes(
+      light: NebuxColors.fromJson(tomlMap['light']),
+      dark: NebuxColors.fromJson(tomlMap['dark']),
+    );
+  }
+}
+```
+
+## Theme Interpolation
+
+Nebux supports smooth theme transitions using the `lerp` (linear interpolation) method.
+
+### Basic Interpolation
+
+```dart
+class AnimatedThemeScreen extends StatefulWidget {
+  const AnimatedThemeScreen({super.key});
+
+  @override
+  State<AnimatedThemeScreen> createState() => _AnimatedThemeScreenState();
+}
+
+class _AnimatedThemeScreenState extends State<AnimatedThemeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _toggleTheme() {
+    if (_controller.isCompleted) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        final lightColors = NebuxColors.standardLight();
+        final darkColors = NebuxColors.standardDark();
+        
+        // Interpolate between light and dark colors
+        final interpolatedColors = NebuxColorsLerp.lerp(
+          lightColors,
+          darkColors,
+          _animation.value,
+        );
+
+        return Container(
+          color: interpolatedColors?.background,
+          child: Center(
+            child: ElevatedButton(
+              onPressed: _toggleTheme,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: interpolatedColors?.primary,
+              ),
+              child: const Text('Toggle Theme'),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+}
+```
+
+### Theme Extension Interpolation
+
+Nebux's `NebuxTheme` automatically supports interpolation through Flutter's `ThemeExtension.lerp`:
+
+```dart
+class InterpolatedThemeApp extends StatefulWidget {
+  const InterpolatedThemeApp({super.key});
+
+  @override
+  State<InterpolatedThemeApp> createState() => _InterpolatedThemeAppState();
+}
+
+class _InterpolatedThemeAppState extends State<InterpolatedThemeApp> {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      themeMode: _themeMode,
+      // Theme interpolation happens automatically
+      themeAnimationDuration: const Duration(milliseconds: 400),
+      themeAnimationCurve: Curves.easeInOut,
+      theme: NebuxTheme.createThemeData(
+        isDark: false,
+        colors: NebuxColors.standardLight(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      darkTheme: NebuxTheme.createThemeData(
+        isDark: true,
+        colors: NebuxColors.standardDark(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      home: HomeScreen(
+        onToggleTheme: () {
+          setState(() {
+            _themeMode = _themeMode == ThemeMode.light
+                ? ThemeMode.dark
+                : ThemeMode.light;
+          });
+        },
+      ),
+    );
+  }
+}
+```
+
+## Performance Best Practices
+
+### 1. Use const Constructors
+
+```dart
+// Good: const constructor
+const Text('Hello').nbxPaddingAll(16.0);
+
+// Better: Pre-defined spacing constants
+const heightSpace16;  // SizedBox(height: 16)
+const widthSpace16;   // SizedBox(width: 16)
+```
+
+### 2. Cache Theme Access
+
+```dart
+// Bad: Multiple theme lookups
+Widget build(BuildContext context) {
+  return Column(
+    children: [
+      Text('Title', style: TextStyle(color: context.nebuxColors.textPrimary)),
+      Text('Subtitle', style: TextStyle(color: context.nebuxColors.textSecondary)),
+      Divider(color: context.nebuxColors.divider),
+    ],
+  );
+}
+
+// Good: Cache theme access
+Widget build(BuildContext context) {
+  final colors = context.nebuxColors;
+  final typography = context.nebuxTypography;
+  
+  return Column(
+    children: [
+      Text('Title', style: typography.heading.copyWith(color: colors.textPrimary)),
+      Text('Subtitle', style: typography.section.copyWith(color: colors.textSecondary)),
+      Divider(color: colors.divider),
+    ],
+  );
+}
+```
+
+### 3. Optimize List Performance
+
+```dart
+// For large lists, minimize wrapper widgets
+class OptimizedListItem extends StatelessWidget {
+  final String title;
+  
+  const OptimizedListItem({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    // Cache theme access outside of builder
+    final colors = context.nebuxColors;
+    final typography = context.nebuxTypography;
+
+    return ListTile(
+      title: Text(title, style: typography.paragraph),
+      tileColor: colors.surface,
+    );
+  }
+}
+
+// Use ListView.builder for large lists
+ListView.builder(
+  itemCount: items.length,
+  itemBuilder: (context, index) {
+    return OptimizedListItem(title: items[index]);
+  },
+);
+```
+
+### 4. Debounce User Input
+
+```dart
+class SearchField extends StatefulWidget {
+  const SearchField({super.key});
+
+  @override
+  State<SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<SearchField> {
+  final _debouncer = NebuxDebouncer(milliseconds: 300);
+  final _controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      _debouncer.run(() {
+        performSearch(_controller.text);
+      });
+    });
+  }
+
+  void performSearch(String query) {
+    // Expensive search operation
+  }
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NbxTextFieldWidget(
+      NbxInputParameters(
+        hintText: 'Search...',
+        inputType: NbxInputType.text,
+      ),
+      controller: _controller,
+    );
+  }
+}
+```
+
+## Architectural Patterns
+
+### Theme Repository Pattern
+
+```dart
+class ThemeRepository {
+  final _prefs = SharedPreferences.getInstance();
+
+  Future<ThemeMode> getThemeMode() async {
+    final prefs = await _prefs;
+    final isDark = prefs.getBool('isDark') ?? false;
+    return isDark ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  Future<void> setThemeMode(ThemeMode mode) async {
+    final prefs = await _prefs;
+    await prefs.setBool('isDark', mode == ThemeMode.dark);
+  }
+
+  Future<NebuxColorThemes> loadCustomTheme() async {
+    try {
+      final jsonString = await rootBundle.loadString('assets/theme.json');
+      final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+      return NebuxColorThemes(
+        light: NebuxColors.fromJson(jsonMap['light']),
+        dark: NebuxColors.fromJson(jsonMap['dark']),
+      );
+    } catch (e) {
+      // Fallback to standard themes
+      return NebuxColorThemes.standard();
+    }
+  }
+}
+```
+
+### Theme Provider with State Management
+
+```dart
+class ThemeProvider extends ChangeNotifier {
+  final ThemeRepository _repository;
+  ThemeMode _themeMode = ThemeMode.light;
+  NebuxColorThemes? _colorThemes;
+
+  ThemeProvider(this._repository) {
+    _init();
+  }
+
+  ThemeMode get themeMode => _themeMode;
+  NebuxColorThemes get colorThemes => 
+      _colorThemes ?? NebuxColorThemes.standard();
+
+  Future<void> _init() async {
+    _themeMode = await _repository.getThemeMode();
+    _colorThemes = await _repository.loadCustomTheme();
+    notifyListeners();
+  }
+
+  Future<void> toggleTheme() async {
+    _themeMode = _themeMode == ThemeMode.light 
+        ? ThemeMode.dark 
+        : ThemeMode.light;
+    await _repository.setThemeMode(_themeMode);
+    notifyListeners();
+  }
+}
+```
+
+## Testing Strategies
+
+### Test with Custom Typography
+
+Avoid Google Fonts network calls in tests:
+
+```dart
+final testTypography = NebuxTypography.custom('Roboto', null);
+
+testWidgets('Button shows correct text', (tester) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: NebuxTheme.createThemeData(
+        isDark: false,
+        colors: NebuxColors.standardLight(),
+        fontSize: NebuxFontSize.standard(),
+        typography: testTypography,
+      ),
+      home: Scaffold(
+        body: NbxButton(
+          text: 'Test',
+          onPressed: () {},
+        ),
+      ),
+    ),
+  );
+
+  expect(find.text('Test'), findsOneWidget);
+});
+```
+
+### Mock Theme Extensions
+
+```dart
+Widget buildTestWidget(Widget child) {
+  return MaterialApp(
+    theme: NebuxTheme.createThemeData(
+      isDark: false,
+      colors: NebuxColors.standardLight(),
+      fontSize: NebuxFontSize.standard(),
+      typography: NebuxTypography.custom('Roboto', null),
+    ),
+    home: Scaffold(body: child),
+  );
+}
+
+testWidgets('Component uses correct colors', (tester) async {
+  await tester.pumpWidget(
+    buildTestWidget(
+      Builder(
+        builder: (context) {
+          final colors = context.nebuxColors;
+          return Container(color: colors.primary);
+        },
+      ),
+    ),
+  );
+
+  // Test color is applied correctly
+});
+```
+
+## Related Pages
+
+<CardGroup cols={2}>
+  <Card title="Customization Guide" icon="palette" href="/guides/customization">
+    Learn how to customize themes and components
+  </Card>
+  <Card title="Migration Guide" icon="arrow-right" href="/guides/migration">
+    Migrate from other design systems
+  </Card>
+  <Card title="Utilities" icon="wrench" href="/extensions/utilities">
+    NebuxUtils and NebuxDebouncer classes
+  </Card>
+</CardGroup>

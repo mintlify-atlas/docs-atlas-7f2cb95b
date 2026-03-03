@@ -1,0 +1,244 @@
+---
+title: Installation
+description: Add Nebux Design System to your Flutter project and get started building beautiful UIs
+---
+
+# Installation
+
+Get started with Nebux Design System in your Flutter project.
+
+## Requirements
+
+<Note>
+  Nebux Design System requires Flutter 3.29.0 or higher and Dart SDK 3.9.0 or higher.
+</Note>
+
+Before installing, make sure your environment meets these requirements:
+
+- Flutter SDK: `>=3.29.0`
+- Dart SDK: `^3.9.0`
+- Material 3 support
+
+## Add dependency
+
+<Steps>
+  <Step title="Add to pubspec.yaml">
+    Add `nebux_design_system` to your `pubspec.yaml` file:
+
+    ```yaml pubspec.yaml
+    dependencies:
+      flutter:
+        sdk: flutter
+      nebux_design_system: ^1.0.2
+    ```
+
+    <Tip>
+      Always use the latest version available on [pub.dev](https://pub.dev/packages/nebux_design_system) for the newest features and bug fixes.
+    </Tip>
+  </Step>
+
+  <Step title="Install packages">
+    Run the following command in your terminal to install the package:
+
+    ```bash
+    flutter pub get
+    ```
+
+    This will download Nebux Design System and all its dependencies, including:
+    - `google_fonts` - For typography support
+    - `cached_network_image` - For network image caching
+    - `freezed_annotation` - For immutable data models
+  </Step>
+
+  <Step title="Import the package">
+    Import the package in your Dart files:
+
+    ```dart
+    import 'package:nebux_design_system/nebux_design_system.dart';
+    ```
+
+    This single import gives you access to all components, theme utilities, and extensions.
+  </Step>
+
+  <Step title="Configure theme">
+    Set up the theme in your `MaterialApp`:
+
+    ```dart main.dart
+    import 'package:flutter/material.dart';
+    import 'package:nebux_design_system/nebux_design_system.dart';
+
+    void main() {
+      runApp(const MyApp());
+    }
+
+    class MyApp extends StatelessWidget {
+      const MyApp({super.key});
+
+      @override
+      Widget build(BuildContext context) {
+        return MaterialApp(
+          title: 'My App',
+          theme: NebuxTheme.createThemeData(
+            isDark: false,
+            colors: NebuxColors.standardLight(),
+            fontSize: NebuxFontSize.standard(),
+            typography: NebuxTypography.standard(),
+          ),
+          darkTheme: NebuxTheme.createThemeData(
+            isDark: true,
+            colors: NebuxColors.standardDark(),
+            fontSize: NebuxFontSize.standard(),
+            typography: NebuxTypography.standard(),
+          ),
+          themeMode: ThemeMode.system,
+          home: MyHomePage(),
+        );
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+## Verify installation
+
+Create a simple widget to verify everything is working:
+
+```dart
+class TestScreen extends StatelessWidget {
+  const TestScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return NbxScaffold(
+      widgetName: 'TestScreen',
+      appBarConfig: AppBarConfig(
+        title: 'Nebux Design System',
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Welcome to Nebux!',
+              style: context.nebuxTypography.heading,
+            ),
+            heightSpace16,
+            NbxButton(
+              text: 'Get Started',
+              onPressed: () {},
+              styleConfig: const ButtonStyleConfig(
+                variant: ButtonVariant.filled,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+If you see a properly styled screen with the theme colors applied, you're all set!
+
+## Custom font configuration (optional)
+
+<Accordion title="Using a custom Google Font">
+  The default typography uses Montserrat. To use a different font:
+
+  ```dart
+  NebuxTheme.createThemeData(
+    isDark: false,
+    colors: NebuxColors.standardLight(),
+    fontSize: NebuxFontSize.standard(),
+    typography: NebuxTypography.custom('Roboto', null),
+  )
+  ```
+
+  The `custom` factory accepts any Google Fonts family name.
+</Accordion>
+
+<Accordion title="Loading theme from JSON/TOML">
+  You can define your color scheme in a configuration file:
+
+  ```dart
+  final themeJson = {
+    "light": {
+      "primary": "#6200EE",
+      "secondary": "#03DAC6",
+      "background": "#FAFAFA",
+      // ... other colors
+    },
+    "dark": {
+      "primary": "#BB86FC",
+      "secondary": "#03DAC6",
+      "background": "#121212",
+      // ... other colors
+    }
+  };
+
+  final colorThemes = NebuxColorThemes.fromJson(themeJson);
+  final theme = NebuxTheme.fromColorThemes(
+    colorThemes: colorThemes,
+    brightness: Brightness.light,
+  );
+  ```
+</Accordion>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Version conflicts">
+    If you encounter version conflicts with `google_fonts` or other dependencies:
+
+    ```bash
+    flutter pub upgrade
+    flutter clean
+    flutter pub get
+    ```
+  </Accordion>
+
+  <Accordion title="Context extensions not working">
+    Make sure you've properly registered the theme in your `MaterialApp`:
+
+    ```dart
+    MaterialApp(
+      theme: NebuxTheme.createThemeData(...),
+      // ...
+    )
+    ```
+
+    The `createThemeData` method automatically registers the theme extension.
+  </Accordion>
+
+  <Accordion title="Colors not showing correctly">
+    Ensure you're using the correct brightness setting:
+
+    ```dart
+    // For light theme
+    NebuxTheme.createThemeData(
+      isDark: false,
+      colors: NebuxColors.standardLight(),
+      // ...
+    )
+
+    // For dark theme
+    NebuxTheme.createThemeData(
+      isDark: true,
+      colors: NebuxColors.standardDark(),
+      // ...
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quick start guide" icon="rocket" href="/quickstart">
+    Build your first screen with Nebux components
+  </Card>
+  
+  <Card title="Components" icon="grid" href="/core/components/buttons">
+    Explore all available UI components
+  </Card>
+</CardGroup>

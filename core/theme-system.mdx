@@ -1,0 +1,258 @@
+---
+title: Theme system
+description: Learn how to set up and customize the NebuxTheme system with light and dark themes
+---
+
+The NebuxTheme system provides a comprehensive design system for Flutter applications, integrating colors, typography, and spacing into a cohesive theme structure.
+
+## Overview
+
+NebuxTheme extends Flutter's `ThemeExtension` to provide a complete Material 3 theme with custom design tokens. It includes:
+
+- **Colors**: Comprehensive color palette with light and dark mode support
+- **Typography**: Text styles for different UI elements
+- **Font sizes**: Consistent font size scale
+- **Material components**: Pre-configured themes for buttons, cards, inputs, and more
+
+## Basic setup
+
+Use `NebuxTheme.createThemeData()` to create a complete `ThemeData` for your MaterialApp:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: NebuxTheme.createThemeData(
+        isDark: false,
+        colors: NebuxColors.standardLight(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+```
+
+## Light and dark themes
+
+Set up both light and dark themes by providing separate `ThemeData` configurations:
+
+```dart
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.light;
+
+  void _toggleTheme() {
+    setState(() {
+      _themeMode =
+          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      themeMode: _themeMode,
+      theme: NebuxTheme.createThemeData(
+        isDark: false,
+        colors: NebuxColors.standardLight(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      darkTheme: NebuxTheme.createThemeData(
+        isDark: true,
+        colors: NebuxColors.standardDark(),
+        fontSize: NebuxFontSize.standard(),
+        typography: NebuxTypography.standard(),
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+```
+
+## Accessing theme in widgets
+
+Use the BuildContext extensions to access theme properties anywhere in your widget tree:
+
+```dart
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Access the entire theme
+    final theme = context.nebuxTheme;
+    
+    // Access colors directly
+    final colors = context.nebuxColors;
+    
+    // Access typography directly
+    final typography = context.nebuxTypography;
+    
+    return Container(
+      color: context.nebuxColors.background,
+      child: Text(
+        'Hello World',
+        style: context.nebuxTypography.heading,
+      ),
+    );
+  }
+}
+```
+
+<Note>
+The context extensions (`context.nebuxTheme`, `context.nebuxColors`, `context.nebuxTypography`) provide convenient access to theme properties without verbose `Theme.of(context).extension<NebuxTheme>()` calls.
+</Note>
+
+## Custom themes
+
+Create custom themes using factory constructors:
+
+### Custom colors only
+
+```dart
+final customTheme = NebuxTheme.custom(
+  colors: NebuxColors(
+    primary: Color(0xFF6200EE),
+    secondary: Color(0xFF03DAC6),
+    // ... other color properties
+  ),
+);
+```
+
+### From JSON configuration
+
+```dart
+final themeFromJson = NebuxTheme.fromJson(
+  {
+    'primary': '#6200EE',
+    'secondary': '#03DAC6',
+    'background': '#FFFFFF',
+    // ... other color properties
+  },
+  typography: NebuxTypography.standard(),
+);
+```
+
+### From color themes
+
+```dart
+final colorThemes = NebuxColorThemes(
+  light: NebuxColors.standardLight(),
+  dark: NebuxColors.standardDark(),
+);
+
+final theme = NebuxTheme.fromColorThemes(
+  colorThemes: colorThemes,
+  brightness: Brightness.light,
+  typography: NebuxTypography.standard(),
+);
+```
+
+## Theme properties
+
+<ParamField path="colors" type="NebuxColors">
+  The color palette for this theme. See [Colors](/core/colors) for details.
+</ParamField>
+
+<ParamField path="fontSize" type="NebuxFontSize">
+  The font size scale for this theme. Includes sizes from 8px to 36px.
+</ParamField>
+
+<ParamField path="typography" type="NebuxTypography">
+  The typography styles for this theme. See [Typography](/core/typography) for details.
+</ParamField>
+
+## Material component themes
+
+The `createThemeData()` method automatically configures Material 3 components:
+
+### AppBar theme
+
+- Background: `surface` color
+- Foreground: `textPrimary` color
+- Elevation: 0 (1 when scrolled)
+- Title style: `heading` typography
+
+### Card theme
+
+- Background: `cardColor`
+- Elevation: 2
+- Border radius: 16px
+- Margin: 8px
+
+### Button themes
+
+**ElevatedButton**: Primary action color background with white text
+
+**OutlinedButton**: Border with primary action color
+
+**TextButton**: Primary action color text, no background
+
+**FilledButton**: Primary action color background with white text
+
+### Input decoration theme
+
+- Filled background with `surface` color
+- Border radius: 12px
+- Focus border: 2px with `focus` color
+- Error border: `error` color
+- Content padding: 16px horizontal, 12px vertical
+
+<Warning>
+Always call `NebuxTheme.createThemeData()` to ensure all Material components are properly themed. Using `NebuxTheme.custom()` alone won't configure Material components.
+</Warning>
+
+## Color scheme mapping
+
+NebuxColors are mapped to Flutter's ColorScheme:
+
+| ColorScheme | NebuxColors |
+|-------------|-------------|
+| primary | primary |
+| onPrimary | white |
+| secondary | secondary |
+| onSecondary | white |
+| surface | surface |
+| onSurface | textPrimary |
+| error | error |
+| onError | white |
+| background | background |
+| outline | divider |
+
+## Theme interpolation
+
+NebuxTheme supports smooth transitions between themes using the `lerp` method:
+
+```dart
+final lightTheme = NebuxTheme.custom(
+  colors: NebuxColors.standardLight(),
+);
+
+final darkTheme = NebuxTheme.custom(
+  colors: NebuxColors.standardDark(),
+);
+
+// Interpolate 50% between light and dark
+final interpolatedTheme = lightTheme.lerp(darkTheme, 0.5);
+```
+
+This enables animated theme transitions when switching between light and dark modes.

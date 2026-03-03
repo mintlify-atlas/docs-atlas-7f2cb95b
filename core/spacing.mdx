@@ -1,0 +1,348 @@
+---
+title: Spacing
+description: Consistent spacing utilities and constants for layout and component spacing
+---
+
+The spacing system provides pre-built spacing constants for consistent vertical and horizontal spacing throughout your application.
+
+## Overview
+
+Nebux Design System includes spacing constants as `SizedBox` widgets for convenient use in Flutter layouts. All spacing values are in logical pixels and follow an 8-point grid system.
+
+## Default spacing
+
+The default padding size is 16 logical pixels, used as the standard spacing unit:
+
+```dart
+const double defaultPaddingSize = 16;
+
+const SizedBox heightSpaceDefault = SizedBox(height: 16);
+const SizedBox widthSpaceDefault = SizedBox(width: 16);
+```
+
+## Vertical spacing
+
+Use height spacing constants for vertical space between widgets:
+
+```dart
+Column(
+  children: [
+    Text('First item'),
+    heightSpace8,
+    Text('Second item'),
+    heightSpace16,
+    Text('Third item'),
+  ],
+)
+```
+
+### Available height constants
+
+<CodeGroup>
+
+```dart Small spacing (2-12px)
+const SizedBox heightSpace2 = SizedBox(height: 2);
+const SizedBox heightSpace4 = SizedBox(height: 4);
+const SizedBox heightSpace6 = SizedBox(height: 6);
+const SizedBox heightSpace8 = SizedBox(height: 8);
+const SizedBox heightSpace10 = SizedBox(height: 10);
+const SizedBox heightSpace12 = SizedBox(height: 12);
+```
+
+```dart Medium spacing (15-32px)
+const SizedBox heightSpace15 = SizedBox(height: 15);
+const SizedBox heightSpace16 = SizedBox(height: 16);
+const SizedBox heightSpace20 = SizedBox(height: 20);
+const SizedBox heightSpace24 = SizedBox(height: 24);
+const SizedBox heightSpace25 = SizedBox(height: 25);
+const SizedBox heightSpace30 = SizedBox(height: 30);
+const SizedBox heightSpace32 = SizedBox(height: 32);
+```
+
+```dart Large spacing (40-200px)
+const SizedBox heightSpace40 = SizedBox(height: 40);
+const SizedBox heightSpace48 = SizedBox(height: 48);
+const SizedBox heightSpace50 = SizedBox(height: 50);
+const SizedBox heightSpace60 = SizedBox(height: 60);
+const SizedBox heightSpace64 = SizedBox(height: 64);
+const SizedBox heightSpace80 = SizedBox(height: 80);
+const SizedBox heightSpace100 = SizedBox(height: 100);
+const SizedBox heightSpace200 = SizedBox(height: 200);
+```
+
+</CodeGroup>
+
+## Horizontal spacing
+
+Use width spacing constants for horizontal space between widgets:
+
+```dart
+Row(
+  children: [
+    Icon(Icons.star),
+    widthSpace8,
+    Text('Rating'),
+    widthSpace16,
+    Text('4.5'),
+  ],
+)
+```
+
+### Available width constants
+
+<CodeGroup>
+
+```dart Small spacing (2-12px)
+const SizedBox widthSpace2 = SizedBox(width: 2);
+const SizedBox widthSpace4 = SizedBox(width: 4);
+const SizedBox widthSpace6 = SizedBox(width: 6);
+const SizedBox widthSpace8 = SizedBox(width: 8);
+const SizedBox widthSpace10 = SizedBox(width: 10);
+const SizedBox widthSpace12 = SizedBox(width: 12);
+const SizedBox widthSpace14 = SizedBox(width: 14);
+```
+
+```dart Medium spacing (15-25px)
+const SizedBox widthSpace15 = SizedBox(width: 15);
+const SizedBox widthSpace16 = SizedBox(width: 16);
+const SizedBox widthSpace18 = SizedBox(width: 18);
+const SizedBox widthSpace20 = SizedBox(width: 20);
+const SizedBox widthSpace24 = SizedBox(width: 24);
+const SizedBox widthSpace25 = SizedBox(width: 25);
+```
+
+```dart Large spacing (48px)
+const SizedBox widthSpace48 = SizedBox(width: 48);
+```
+
+</CodeGroup>
+
+## Real-world example
+
+Here's how spacing constants are used in the Nebux Design System showcase:
+
+```dart
+class ExampleScreen extends StatelessWidget {
+  const ExampleScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text('Typography Roles', style: context.nebuxTypography.heading),
+            heightSpace8,
+            Text('Section header', style: context.nebuxTypography.section),
+            heightSpace4,
+            Text(
+              'Content text for articles and descriptions.',
+              style: context.nebuxTypography.content,
+            ),
+            heightSpace4,
+            Text(
+              'Paragraph text for default body content.',
+              style: context.nebuxTypography.paragraph,
+            ),
+            heightSpace4,
+            Text('Caption / metadata', style: context.nebuxTypography.caption),
+            heightSpace24,
+            Text('Button Variants', style: context.nebuxTypography.heading),
+            heightSpace12,
+            NbxButton(
+              text: 'Filled Button',
+              onPressed: () {},
+            ),
+            heightSpace8,
+            NbxButton(
+              text: 'Outline Button',
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+<Note>
+Spacing constants create visual hierarchy and rhythm in layouts. Use smaller spacing (4-8px) between related items and larger spacing (16-24px) between sections.
+</Note>
+
+## Spacing scale reference
+
+### Common spacing values
+
+| Size | Value | Use Case |
+|------|-------|----------|
+| 2px | `Space2` | Minimal spacing, tight layouts |
+| 4px | `Space4` | Between closely related items |
+| 8px | `Space8` | Between related content |
+| 12px | `Space12` | Between form fields |
+| 16px | `Space16` | Default spacing, between sections |
+| 24px | `Space24` | Between major sections |
+| 32px | `Space32` | Large section separation |
+| 48px | `Space48` | Extra large gaps |
+
+## Padding patterns
+
+Common padding patterns using spacing constants:
+
+<Tabs>
+  <Tab title="Card content">
+    ```dart
+    Card(
+      child: Padding(
+        padding: const EdgeInsets.all(defaultPaddingSize),
+        child: Column(
+          children: [
+            Text('Title'),
+            heightSpace8,
+            Text('Description'),
+          ],
+        ),
+      ),
+    )
+    ```
+  </Tab>
+  
+  <Tab title="Form fields">
+    ```dart
+    Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(labelText: 'Email'),
+        ),
+        heightSpace12,
+        TextField(
+          decoration: InputDecoration(labelText: 'Password'),
+        ),
+        heightSpace16,
+        ElevatedButton(
+          onPressed: () {},
+          child: Text('Submit'),
+        ),
+      ],
+    )
+    ```
+  </Tab>
+  
+  <Tab title="List items">
+    ```dart
+    Column(
+      children: [
+        ListTile(
+          title: Text('Item 1'),
+          subtitle: Text('Description'),
+        ),
+        heightSpace4,
+        Divider(),
+        heightSpace4,
+        ListTile(
+          title: Text('Item 2'),
+          subtitle: Text('Description'),
+        ),
+      ],
+    )
+    ```
+  </Tab>
+  
+  <Tab title="Button groups">
+    ```dart
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          onPressed: () {},
+          child: Text('Cancel'),
+        ),
+        widthSpace16,
+        ElevatedButton(
+          onPressed: () {},
+          child: Text('Confirm'),
+        ),
+      ],
+    )
+    ```
+  </Tab>
+</Tabs>
+
+## Spacing best practices
+
+### 8-point grid system
+
+Most spacing values follow an 8-point grid (8, 16, 24, 32, 40, 48, etc.) for consistent alignment:
+
+```dart
+// Good: Uses 8-point grid
+heightSpace8, heightSpace16, heightSpace24
+
+// Also available: Fine-tuned spacing for special cases
+heightSpace4, heightSpace12, heightSpace20
+```
+
+### Content hierarchy
+
+Use spacing to establish visual hierarchy:
+
+- **4-8px**: Between tightly related items (e.g., label and value)
+- **12-16px**: Between form fields or list items
+- **24-32px**: Between major sections
+- **48px+**: Between distinct page sections
+
+### Responsive spacing
+
+For responsive layouts, consider using MediaQuery to adjust spacing:
+
+```dart
+final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
+Column(
+  children: [
+    Text('Title'),
+    isSmallScreen ? heightSpace8 : heightSpace16,
+    Text('Content'),
+  ],
+)
+```
+
+## Custom spacing
+
+If you need custom spacing not provided by the constants:
+
+```dart
+// Custom vertical spacing
+SizedBox(height: 18)
+
+// Custom horizontal spacing
+SizedBox(width: 22)
+
+// Using EdgeInsets for padding
+Padding(
+  padding: EdgeInsets.symmetric(
+    horizontal: 20,
+    vertical: 12,
+  ),
+  child: Text('Custom padding'),
+)
+```
+
+<Warning>
+While custom spacing is supported, prefer using the provided spacing constants for consistency across your application.
+</Warning>
+
+## Import
+
+Spacing constants are exported from the main package:
+
+```dart
+import 'package:nebux_design_system/nebux_design_system.dart';
+
+// All spacing constants are now available
+heightSpace8
+widthSpace16
+defaultPaddingSize
+```

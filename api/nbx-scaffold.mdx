@@ -1,0 +1,347 @@
+---
+title: 'NbxScaffold'
+description: 'A custom scaffold widget providing consistent layout structure with enhanced functionality'
+icon: 'window'
+---
+
+## Overview
+
+`NbxScaffold` provides a consistent layout structure for Nebux applications with enhanced functionality including configurable app bars, safe areas, body decoration, and double-back-to-exit behavior.
+
+## Basic Usage
+
+```dart
+NbxScaffold(
+  widgetName: 'HomeScreen',
+  body: Column(
+    children: [
+      Text('Hello World'),
+    ],
+  ),
+)
+```
+
+## Widget Properties
+
+### Required Properties
+
+<ParamField path="body" type="Widget" required>
+  The main content widget to be displayed in the scaffold body.
+</ParamField>
+
+<ParamField path="widgetName" type="String" required>
+  Name of the widget to be used for debugging purposes.
+</ParamField>
+
+### App Bar Properties
+
+<ParamField path="appBar" type="PreferredSizeWidget?">
+  Custom app bar widget. If provided, overrides the built-in app bar.
+</ParamField>
+
+<ParamField path="appBarConfig" type="AppBarConfig?">
+  Configuration for the built-in app bar properties. The app bar is only shown if this is provided and contains at least a title, actions, or leading button.
+</ParamField>
+
+### Layout Properties
+
+<ParamField path="safeAreaConfig" type="SafeAreaConfig?" default="SafeAreaConfig()">
+  Configuration for safe area properties (top, bottom, minimum padding).
+</ParamField>
+
+<ParamField path="bodyConfig" type="BodyConfig?" default="BodyConfig(wrapInContainer: true)">
+  Configuration for body properties including container wrapping, decoration, and resize behavior.
+</ParamField>
+
+<ParamField path="backgroundColor" type="Color?">
+  Background color for the scaffold. Defaults to `context.nebuxColors.background`.
+</ParamField>
+
+<ParamField path="decoration" type="Decoration?">
+  Gradient or decoration for the scaffold background.
+</ParamField>
+
+### Navigation Properties
+
+<ParamField path="bottomNavigationBar" type="Widget?">
+  Bottom navigation bar widget.
+</ParamField>
+
+<ParamField path="floatingActionButton" type="Widget?">
+  Floating action button widget.
+</ParamField>
+
+<ParamField path="floatingActionButtonLocation" type="FloatingActionButtonLocation?">
+  Location of the floating action button.
+</ParamField>
+
+## Configuration Classes
+
+### AppBarConfig
+
+Configuration for the built-in app bar.
+
+<ParamField path="title" type="String?">
+  Title text to display in the app bar.
+</ParamField>
+
+<ParamField path="actions" type="List<Widget>?">
+  Action widgets to display in the app bar.
+</ParamField>
+
+<ParamField path="leadingButton" type="Widget?">
+  Custom leading button widget for the app bar.
+</ParamField>
+
+<ParamField path="centerTitle" type="bool" default="false">
+  Whether to center the title in the app bar.
+</ParamField>
+
+<ParamField path="showDivider" type="bool" default="false">
+  Whether to show a divider below the app bar.
+</ParamField>
+
+<ParamField path="dividerThickness" type="double" default="0.2">
+  Thickness of the divider below the app bar.
+</ParamField>
+
+<ParamField path="backgroundColor" type="Color?">
+  Background color for the app bar.
+</ParamField>
+
+### SafeAreaConfig
+
+Configuration for safe area behavior.
+
+<ParamField path="top" type="bool" default="true">
+  Whether to apply safe area to the top of the screen.
+</ParamField>
+
+<ParamField path="bottom" type="bool" default="true">
+  Whether to apply safe area to the bottom of the screen.
+</ParamField>
+
+<ParamField path="minimum" type="EdgeInsets?" default="EdgeInsets.only(bottom: 20)">
+  Minimum padding for the safe area.
+</ParamField>
+
+### BodyConfig
+
+Configuration for scaffold body behavior.
+
+<ParamField path="wrapInContainer" type="bool" default="true">
+  Whether to wrap the body in a container with decoration and horizontal padding.
+</ParamField>
+
+<ParamField path="decoration" type="Decoration?">
+  Decoration to apply to the body container when `wrapInContainer` is true.
+</ParamField>
+
+<ParamField path="resizeToAvoidBottomInset" type="bool" default="false">
+  Whether the body should resize to avoid the bottom inset (keyboard).
+</ParamField>
+
+<ParamField path="exitMessage" type="String?">
+  Message to display when double back to exit is triggered. If provided, enables double-back-to-exit behavior.
+</ParamField>
+
+<ParamField path="extendBodyBehindAppBar" type="bool" default="true">
+  Whether the body should extend behind the app bar.
+</ParamField>
+
+## Examples
+
+### Basic Scaffold
+
+```dart
+NbxScaffold(
+  widgetName: 'HomePage',
+  body: Center(
+    child: Text('Welcome to Nebux'),
+  ),
+)
+```
+
+### With App Bar
+
+```dart
+NbxScaffold(
+  widgetName: 'ProfilePage',
+  appBarConfig: AppBarConfig(
+    title: 'Profile',
+    centerTitle: true,
+    showDivider: true,
+    actions: [
+      IconButton(
+        icon: Icon(Icons.settings),
+        onPressed: () => _openSettings(),
+      ),
+    ],
+  ),
+  body: ProfileContent(),
+)
+```
+
+### With Custom Leading Button
+
+```dart
+NbxScaffold(
+  widgetName: 'DetailsPage',
+  appBarConfig: AppBarConfig(
+    title: 'Details',
+    leadingButton: IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () => Navigator.pop(context),
+    ),
+  ),
+  body: DetailsContent(),
+)
+```
+
+### Without Container Wrapper
+
+```dart
+NbxScaffold(
+  widgetName: 'FullScreenMap',
+  bodyConfig: BodyConfig(
+    wrapInContainer: false,
+  ),
+  body: MapWidget(),
+)
+```
+
+### With Double Back to Exit
+
+```dart
+NbxScaffold(
+  widgetName: 'MainScreen',
+  bodyConfig: BodyConfig(
+    exitMessage: 'Press back again to exit',
+  ),
+  body: MainContent(),
+)
+```
+
+### With Bottom Navigation
+
+```dart
+NbxScaffold(
+  widgetName: 'HomeScreen',
+  body: _pages[_currentIndex],
+  bottomNavigationBar: BottomNavigationBar(
+    currentIndex: _currentIndex,
+    onTap: (index) => setState(() => _currentIndex = index),
+    items: [
+      BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: 'Home',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.search),
+        label: 'Search',
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: 'Profile',
+      ),
+    ],
+  ),
+)
+```
+
+### With Floating Action Button
+
+```dart
+NbxScaffold(
+  widgetName: 'TasksScreen',
+  appBarConfig: AppBarConfig(title: 'Tasks'),
+  body: TasksList(),
+  floatingActionButton: FloatingActionButton(
+    onPressed: () => _addTask(),
+    child: Icon(Icons.add),
+  ),
+  floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+)
+```
+
+### With Gradient Background
+
+```dart
+NbxScaffold(
+  widgetName: 'WelcomeScreen',
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [Colors.blue, Colors.purple],
+    ),
+  ),
+  body: WelcomeContent(),
+)
+```
+
+### With Keyboard Resize
+
+```dart
+NbxScaffold(
+  widgetName: 'ChatScreen',
+  appBarConfig: AppBarConfig(title: 'Chat'),
+  bodyConfig: BodyConfig(
+    resizeToAvoidBottomInset: true,
+  ),
+  body: ChatContent(),
+)
+```
+
+### Custom Safe Area
+
+```dart
+NbxScaffold(
+  widgetName: 'VideoPlayer',
+  safeAreaConfig: SafeAreaConfig(
+    top: false,
+    bottom: false,
+  ),
+  bodyConfig: BodyConfig(
+    wrapInContainer: false,
+  ),
+  body: VideoPlayerWidget(),
+)
+```
+
+### With Custom App Bar Widget
+
+```dart
+NbxScaffold(
+  widgetName: 'CustomScreen',
+  appBar: PreferredSize(
+    preferredSize: Size.fromHeight(100),
+    child: CustomAppBar(),
+  ),
+  body: Content(),
+)
+```
+
+## Behavior Notes
+
+### App Bar Display
+
+The built-in app bar is only displayed if `appBarConfig` is provided and contains at least one of:
+- `title`
+- `actions`
+- `leadingButton`
+
+### Body Container
+
+When `bodyConfig.wrapInContainer` is true (default), the body is wrapped in a container with:
+- Horizontal padding of `defaultPaddingSize`
+- Optional decoration from `bodyConfig.decoration`
+
+### Default Padding
+
+The default horizontal padding is controlled by `defaultPaddingSize` constant from the design system.
+
+## See Also
+
+- [NbxAppBar](https://github.com/joicodev/nebux_design_system/tree/main) - Custom app bar implementation
+- [Scaffold params](https://github.com/joicodev/nebux_design_system/tree/main) - Configuration classes

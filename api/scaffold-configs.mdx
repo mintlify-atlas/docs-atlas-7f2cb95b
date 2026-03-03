@@ -1,0 +1,387 @@
+---
+title: 'Scaffold Configuration Classes'
+description: 'Complete API reference for NbxScaffold configuration classes'
+---
+
+# Scaffold Configuration Classes
+
+The Nebux Design System provides three configuration classes for the `NbxScaffold` widget, allowing you to customize the app bar, safe area behavior, and body properties.
+
+## AppBarConfig
+
+Configuration class for AppBar properties in `NbxScaffold`. Controls the title, actions, leading button, and visual styling of the application bar.
+
+### Properties
+
+<ParamField path="title" type="String?" default="null">
+  Title text to display in the app bar. When null, no title is shown.
+</ParamField>
+
+<ParamField path="actions" type="List<Widget>?" default="null">
+  List of action widgets to display on the right side of the app bar. Typically contains `IconButton` widgets.
+</ParamField>
+
+<ParamField path="leadingButton" type="Widget?" default="null">
+  Custom leading button widget for the app bar (typically appears on the left). When null, default back button behavior is used if applicable.
+</ParamField>
+
+<ParamField path="centerTitle" type="bool" default="false">
+  Whether to center the title in the app bar. When false, title is aligned to the start (left in LTR languages).
+</ParamField>
+
+<ParamField path="showDivider" type="bool" default="false">
+  Whether to show a divider line below the app bar. Useful for visual separation from body content.
+</ParamField>
+
+<ParamField path="dividerThickness" type="double" default="0.2">
+  Thickness of the divider below the app bar in logical pixels. Only visible when `showDivider` is true.
+</ParamField>
+
+<ParamField path="backgroundColor" type="Color?" default="null">
+  Background color for the app bar. When null, uses theme default.
+</ParamField>
+
+### Constructor
+
+```dart
+const AppBarConfig({
+  this.title,
+  this.actions,
+  this.leadingButton,
+  this.centerTitle = false,
+  this.showDivider = false,
+  this.dividerThickness = 0.2,
+  this.backgroundColor,
+})
+```
+
+### Usage Examples
+
+#### Basic App Bar
+
+```dart
+NbxScaffold(
+  widgetName: 'HomeScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Home',
+  ),
+  body: Container(),
+)
+```
+
+#### App Bar with Actions
+
+```dart
+NbxScaffold(
+  widgetName: 'SettingsScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Settings',
+    centerTitle: true,
+    actions: [
+      IconButton(
+        icon: Icon(Icons.search),
+        onPressed: () => print('Search'),
+      ),
+      IconButton(
+        icon: Icon(Icons.more_vert),
+        onPressed: () => print('More'),
+      ),
+    ],
+  ),
+  body: Container(),
+)
+```
+
+#### App Bar with Custom Leading and Divider
+
+```dart
+NbxScaffold(
+  widgetName: 'ProfileScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Profile',
+    leadingButton: IconButton(
+      icon: Icon(Icons.menu),
+      onPressed: () => print('Open drawer'),
+    ),
+    showDivider: true,
+    dividerThickness: 1.0,
+    backgroundColor: Colors.white,
+  ),
+  body: Container(),
+)
+```
+
+---
+
+## SafeAreaConfig
+
+Configuration class for SafeArea properties in `NbxScaffold`. Controls how the body content respects device safe areas (notches, status bars, navigation bars).
+
+### Properties
+
+<ParamField path="top" type="bool" default="true">
+  Whether to apply safe area padding to the top of the screen. When true, content avoids the status bar and notch area.
+</ParamField>
+
+<ParamField path="bottom" type="bool" default="true">
+  Whether to apply safe area padding to the bottom of the screen. When true, content avoids the home indicator and navigation bar area.
+</ParamField>
+
+<ParamField path="minimum" type="EdgeInsets?" default="null">
+  Minimum padding to apply even if safe area insets are smaller. Useful for ensuring minimum spacing.
+</ParamField>
+
+### Constructor
+
+```dart
+const SafeAreaConfig({
+  this.top = true,
+  this.bottom = true,
+  this.minimum,
+})
+```
+
+### Usage Examples
+
+#### Default Safe Area
+
+```dart
+NbxScaffold(
+  widgetName: 'DefaultScreen',
+  safeAreaConfig: SafeAreaConfig(
+    top: true,
+    bottom: true,
+  ),
+  body: Container(),
+)
+```
+
+#### No Bottom Safe Area (for bottom navigation)
+
+```dart
+NbxScaffold(
+  widgetName: 'MainScreen',
+  safeAreaConfig: SafeAreaConfig(
+    top: true,
+    bottom: false, // Content extends to bottom edge
+  ),
+  body: Container(),
+  bottomNavigationBar: BottomNavigationBar(
+    items: [
+      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+    ],
+  ),
+)
+```
+
+#### Minimum Padding
+
+```dart
+NbxScaffold(
+  widgetName: 'CustomScreen',
+  safeAreaConfig: SafeAreaConfig(
+    top: true,
+    bottom: true,
+    minimum: EdgeInsets.all(16.0), // Ensure minimum 16px padding
+  ),
+  body: Container(),
+)
+```
+
+---
+
+## BodyConfig
+
+Configuration class for body properties in `NbxScaffold`. Controls container wrapping, keyboard behavior, exit functionality, and app bar extension.
+
+### Properties
+
+<ParamField path="wrapInContainer" type="bool" default="true">
+  Whether to wrap the body in a container with decoration and padding. When true, body is wrapped in a `Container` widget that can receive `decoration`.
+</ParamField>
+
+<ParamField path="decoration" type="Decoration?" default="null">
+  Decoration to apply to the body container when `wrapInContainer` is true. Useful for background gradients, images, or borders.
+</ParamField>
+
+<ParamField path="resizeToAvoidBottomInset" type="bool" default="false">
+  Whether the body should resize when keyboard appears. When true, body shrinks to avoid keyboard. When false, body may be covered by keyboard (use with `SingleChildScrollView` for proper behavior).
+</ParamField>
+
+<ParamField path="extendBodyBehindAppBar" type="bool" default="true">
+  Whether the body should extend behind the app bar. When true, body starts from top of screen (useful for transparent app bars or hero images).
+</ParamField>
+
+<ParamField path="exitMessage" type="String?" default="null">
+  Message to display when double-back-to-exit is triggered. When set, enables double back press to exit functionality with a snackbar showing this message.
+</ParamField>
+
+### Constructor
+
+```dart
+const BodyConfig({
+  this.wrapInContainer = true,
+  this.decoration,
+  this.resizeToAvoidBottomInset = false,
+  this.extendBodyBehindAppBar = true,
+  this.exitMessage,
+})
+```
+
+### Usage Examples
+
+#### Basic Body Configuration
+
+```dart
+NbxScaffold(
+  widgetName: 'SimpleScreen',
+  bodyConfig: BodyConfig(
+    wrapInContainer: true,
+    resizeToAvoidBottomInset: true, // Resize for keyboard
+  ),
+  body: SingleChildScrollView(
+    child: Column(children: [...]),
+  ),
+)
+```
+
+#### Background Gradient
+
+```dart
+NbxScaffold(
+  widgetName: 'GradientScreen',
+  bodyConfig: BodyConfig(
+    wrapInContainer: true,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Colors.blue, Colors.purple],
+      ),
+    ),
+  ),
+  body: Center(child: Text('Content')),
+)
+```
+
+#### Double Back to Exit
+
+```dart
+NbxScaffold(
+  widgetName: 'HomeScreen',
+  bodyConfig: BodyConfig(
+    exitMessage: 'Press back again to exit',
+  ),
+  body: Container(),
+)
+```
+
+#### Extended Body Behind App Bar
+
+```dart
+NbxScaffold(
+  widgetName: 'HeroScreen',
+  appBarConfig: AppBarConfig(
+    title: 'Hero Image',
+    backgroundColor: Colors.transparent,
+  ),
+  bodyConfig: BodyConfig(
+    extendBodyBehindAppBar: true,
+    wrapInContainer: false,
+  ),
+  body: Column(
+    children: [
+      Image.network('https://example.com/hero.jpg',
+        height: 300,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+      Expanded(child: Content()),
+    ],
+  ),
+)
+```
+
+#### No Container Wrapper
+
+```dart
+NbxScaffold(
+  widgetName: 'CustomLayoutScreen',
+  bodyConfig: BodyConfig(
+    wrapInContainer: false, // Full control over body widget
+  ),
+  body: Stack(
+    children: [
+      // Custom layout without container constraints
+    ],
+  ),
+)
+```
+
+---
+
+## Complete NbxScaffold Example
+
+Here's a comprehensive example using all three configuration classes:
+
+```dart
+class CompleteScaffoldExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return NbxScaffold(
+      widgetName: 'CompleteExample',
+      
+      // App Bar Configuration
+      appBarConfig: AppBarConfig(
+        title: 'My App',
+        centerTitle: true,
+        showDivider: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () => print('Notifications'),
+          ),
+        ],
+        backgroundColor: Colors.white,
+      ),
+      
+      // Safe Area Configuration
+      safeAreaConfig: SafeAreaConfig(
+        top: true,
+        bottom: true,
+        minimum: EdgeInsets.symmetric(horizontal: 16),
+      ),
+      
+      // Body Configuration
+      bodyConfig: BodyConfig(
+        wrapInContainer: true,
+        resizeToAvoidBottomInset: true,
+        extendBodyBehindAppBar: false,
+        exitMessage: 'Press back again to exit',
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+        ),
+      ),
+      
+      // Body Content
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Text('Welcome to Nebux Design System!'),
+            heightSpace16,
+            // More content...
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+## Related Documentation
+
+- [NbxScaffold Widget](/components/layout) - Main scaffold component documentation
+- [Layout Guide](/guides/advanced-usage) - Layout patterns and best practices
+- [Navigation](/guides/advanced-usage) - Navigation implementation guide

@@ -1,0 +1,322 @@
+---
+title: 'Button Configuration Classes'
+description: 'Complete API reference for button configuration classes in Nebux Design System'
+---
+
+# Button Configuration Classes
+
+The Nebux Design System provides four specialized configuration classes for buttons, allowing you to customize every aspect of button appearance, behavior, and state management.
+
+## ButtonStyleConfig
+
+Configuration class for button visual styling and appearance. Encapsulates all style-related properties for the `NbxButton` widget, including variant, colors, border radius, and text styling.
+
+### Properties
+
+<ParamField path="variant" type="ButtonVariant" default="ButtonVariant.filled">
+  The visual variant of the button. Available options:
+  - `ButtonVariant.filled` - Filled button with solid background
+  - `ButtonVariant.outline` - Button with border outline
+  - `ButtonVariant.text` - Text-only button with underline
+  - `ButtonVariant.danger` - Danger button with error color
+</ParamField>
+
+<ParamField path="customBackgroundColor" type="Color?" default="null">
+  Custom background color for the button. When null, uses the theme's default color for the selected variant.
+</ParamField>
+
+<ParamField path="borderRadius" type="double?" default="8.0">
+  Custom border radius for the button corners in logical pixels. When null, defaults to 8.0.
+</ParamField>
+
+<ParamField path="textStyle" type="TextStyle?" default="null">
+  Custom text style for the button text. When null, uses theme typography defaults based on variant.
+</ParamField>
+
+<ParamField path="customBorderSide" type="BorderSide?" default="null">
+  Custom border configuration for outline buttons. When null, uses default border styling.
+</ParamField>
+
+### Constructor
+
+```dart
+const ButtonStyleConfig({
+  this.variant = ButtonVariant.filled,
+  this.customBackgroundColor,
+  this.borderRadius,
+  this.textStyle,
+  this.customBorderSide,
+})
+```
+
+### Methods
+
+<ResponseField name="copyWith" type="ButtonStyleConfig">
+  Creates a copy of this configuration with specified fields replaced.
+  
+  ```dart
+  ButtonStyleConfig copyWith({
+    ButtonVariant? variant,
+    Color? customBackgroundColor,
+    double? borderRadius,
+    TextStyle? textStyle,
+  })
+  ```
+</ResponseField>
+
+### Usage Example
+
+```dart
+NbxButton(
+  text: 'Submit',
+  onPressed: () {},
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.filled,
+    customBackgroundColor: Colors.blue,
+    borderRadius: 12.0,
+    textStyle: TextStyle(fontWeight: FontWeight.bold),
+  ),
+)
+```
+
+---
+
+## ButtonIconConfig
+
+Configuration class for button icons and their styling. Encapsulates all icon-related properties including leading and trailing icons with their respective colors.
+
+### Properties
+
+<ParamField path="icon" type="IconData?" default="null">
+  Icon to display before the button text (leading icon). When null, no leading icon is shown.
+</ParamField>
+
+<ParamField path="iconColor" type="Color?" default="null">
+  The color of the leading icon. When null, uses the button's foreground color.
+</ParamField>
+
+<ParamField path="trailingIcon" type="IconData?" default="null">
+  Icon to display after the button text (trailing icon). When null, no trailing icon is shown.
+</ParamField>
+
+<ParamField path="trailingIconColor" type="Color?" default="null">
+  The color of the trailing icon. When null, uses the button's foreground color.
+</ParamField>
+
+### Constructor
+
+```dart
+const ButtonIconConfig({
+  this.icon,
+  this.iconColor,
+  this.trailingIcon,
+  this.trailingIconColor,
+})
+```
+
+### Methods
+
+<ResponseField name="copyWith" type="ButtonIconConfig">
+  Creates a copy of this configuration with specified fields replaced.
+  
+  ```dart
+  ButtonIconConfig copyWith({
+    IconData? icon,
+    Color? iconColor,
+    IconData? trailingIcon,
+    Color? trailingIconColor,
+  })
+  ```
+</ResponseField>
+
+### Usage Example
+
+```dart
+NbxButton(
+  text: 'Add Item',
+  onPressed: () {},
+  iconConfig: ButtonIconConfig(
+    icon: Icons.add,
+    iconColor: Colors.white,
+    trailingIcon: Icons.arrow_forward,
+    trailingIconColor: Colors.white,
+  ),
+)
+```
+
+---
+
+## ButtonLayoutConfig
+
+Configuration class for button layout properties. Encapsulates all layout-related properties including expansion behavior and sizing.
+
+### Properties
+
+<ParamField path="isExpanded" type="bool" default="true">
+  Whether the button should expand to fill available width. When true, button width is set to `double.infinity`. When false, button takes only the space needed for its content.
+</ParamField>
+
+### Constructor
+
+```dart
+const ButtonLayoutConfig({
+  this.isExpanded = true,
+})
+```
+
+### Methods
+
+<ResponseField name="copyWith" type="ButtonLayoutConfig">
+  Creates a copy of this configuration with specified fields replaced.
+  
+  ```dart
+  ButtonLayoutConfig copyWith({bool? isExpanded})
+  ```
+</ResponseField>
+
+### Usage Example
+
+```dart
+// Full-width button
+NbxButton(
+  text: 'Full Width',
+  onPressed: () {},
+  layoutConfig: ButtonLayoutConfig(isExpanded: true),
+)
+
+// Compact button
+NbxButton(
+  text: 'Compact',
+  onPressed: () {},
+  layoutConfig: ButtonLayoutConfig(isExpanded: false),
+)
+```
+
+---
+
+## ButtonStateConfig
+
+Configuration class for button state management. Encapsulates all state-related properties including loading state, enabled state, and selection state.
+
+### Properties
+
+<ParamField path="isLoading" type="bool" default="false">
+  Whether to show a loading indicator instead of button text. When true, displays a circular progress indicator and disables the button.
+</ParamField>
+
+<ParamField path="enabled" type="bool" default="true">
+  Whether the button is enabled and can respond to user interactions. When false, button appears disabled and `onPressed` callback is ignored.
+</ParamField>
+
+<ParamField path="isSelected" type="bool" default="false">
+  Whether the button is in selected state. Primarily affects outline variant buttons by changing background and foreground colors.
+</ParamField>
+
+<ParamField path="loadingColor" type="Color?" default="null">
+  Custom color for the loading spinner. When null, the spinner color is automatically derived from the button variant for proper contrast.
+</ParamField>
+
+### Constructor
+
+```dart
+const ButtonStateConfig({
+  this.isLoading = false,
+  this.enabled = true,
+  this.isSelected = false,
+  this.loadingColor,
+})
+```
+
+### Methods
+
+<ResponseField name="copyWith" type="ButtonStateConfig">
+  Creates a copy of this configuration with specified fields replaced.
+  
+  ```dart
+  ButtonStateConfig copyWith({
+    bool? isLoading,
+    bool? enabled,
+    bool? isSelected,
+    Color? loadingColor,
+  })
+  ```
+</ResponseField>
+
+### Usage Example
+
+```dart
+class SubmitButton extends StatefulWidget {
+  @override
+  State<SubmitButton> createState() => _SubmitButtonState();
+}
+
+class _SubmitButtonState extends State<SubmitButton> {
+  bool _isLoading = false;
+
+  Future<void> _handleSubmit() async {
+    setState(() => _isLoading = true);
+    // Perform async operation
+    await Future.delayed(Duration(seconds: 2));
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return NbxButton(
+      text: 'Submit',
+      onPressed: _handleSubmit,
+      stateConfig: ButtonStateConfig(
+        isLoading: _isLoading,
+        loadingColor: Colors.white,
+      ),
+    );
+  }
+}
+```
+
+---
+
+## Complete Example
+
+Here's a complete example showing all four configuration classes working together:
+
+```dart
+NbxButton(
+  text: 'Advanced Button',
+  onPressed: () => print('Button pressed'),
+  
+  // Style configuration
+  styleConfig: ButtonStyleConfig(
+    variant: ButtonVariant.filled,
+    customBackgroundColor: Colors.deepPurple,
+    borderRadius: 16.0,
+    textStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    ),
+  ),
+  
+  // Icon configuration
+  iconConfig: ButtonIconConfig(
+    icon: Icons.send,
+    iconColor: Colors.white,
+  ),
+  
+  // Layout configuration
+  layoutConfig: ButtonLayoutConfig(
+    isExpanded: true,
+  ),
+  
+  // State configuration
+  stateConfig: ButtonStateConfig(
+    isLoading: false,
+    enabled: true,
+  ),
+)
+```
+
+## Related Documentation
+
+- [NbxButton Widget](/api/nbx-button) - Main button component documentation
+- [Components Overview](/components/overview) - All available components
+- [Color System](/core/colors) - Available color tokens

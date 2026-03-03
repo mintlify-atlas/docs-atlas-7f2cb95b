@@ -1,0 +1,592 @@
+---
+title: 'NebuxColors'
+description: 'Color system with semantic color definitions for light and dark themes'
+---
+
+## Overview
+
+The `NebuxColors` class defines the complete color palette for the NebuX Design System. It provides semantic color definitions for all UI elements including branding, text, actions, states, and surfaces.
+
+Built with Freezed for immutability and JSON serialization support, it enables theme customization via configuration files.
+
+**Source:** `lib/src/core/theme/colors/nebux_colors.dart`
+
+---
+
+## Class Definition
+
+```dart
+@freezed
+abstract class NebuxColors with _$NebuxColors
+```
+
+---
+
+## Properties
+
+All color properties are annotated with `@ColorConverter()` for JSON serialization support.
+
+### Brand Colors
+
+<ParamField path="primary" type="Color" required>
+  Primary brand color - used for main actions and branding
+  
+  **Light default:** `Color(0xFF2196F3)` (Material Blue 500)
+  
+  **Dark default:** `Color(0xFFD0BCFF)` (Material Purple 200)
+</ParamField>
+
+<ParamField path="secondary" type="Color" required>
+  Secondary color - used for secondary actions
+  
+  **Light default:** `Color(0xFF03A9F4)` (Light Blue 500)
+  
+  **Dark default:** `Color(0xFFCCC2DC)` (Material Purple 100)
+</ParamField>
+
+<ParamField path="secondaryVariant" type="Color" required>
+  Secondary variant color - darker shade of secondary
+  
+  **Light default:** `Color(0xFF0288D1)` (Light Blue 700)
+  
+  **Dark default:** `Color(0xFF9A82DB)` (Darker Purple)
+</ParamField>
+
+### Surface Colors
+
+<ParamField path="background" type="Color" required>
+  Background color for the app scaffold
+  
+  **Light default:** `Color(0xFFFFFBFE)` (Material Surface Light)
+  
+  **Dark default:** `Color(0xFF1C1B1F)` (Material Surface Dark)
+</ParamField>
+
+<ParamField path="surface" type="Color" required>
+  Surface color - for cards and elevated surfaces
+  
+  **Light default:** `Color(0xFFFFFBFE)`
+  
+  **Dark default:** `Color(0xFF1C1B1F)`
+</ParamField>
+
+<ParamField path="cardColor" type="Color" required>
+  Card color - specific color for card components
+  
+  **Light default:** `Color(0xFFF7F2FA)` (Light Purple Tint)
+  
+  **Dark default:** `Color(0xFF2B2930)` (Dark Purple Tint)
+</ParamField>
+
+### Text Colors
+
+<ParamField path="textPrimary" type="Color" required>
+  Primary text color - for headings and important text
+  
+  **Light default:** `Color(0xFF1C1B1F)` (Near Black)
+  
+  **Dark default:** `Color(0xFFE6E1E5)` (Near White)
+</ParamField>
+
+<ParamField path="textSecondary" type="Color" required>
+  Secondary text color - for supporting text and descriptions
+  
+  **Light default:** `Color(0xFF49454F)` (Gray)
+  
+  **Dark default:** `Color(0xFFCAC4D0)` (Light Gray)
+</ParamField>
+
+### Action Colors
+
+<ParamField path="actionPrimary" type="Color" required>
+  Action primary color - for primary buttons and interactive elements
+  
+  **Light default:** `Color(0xFF2196F3)` (Blue)
+  
+  **Dark default:** `Color(0xFFD0BCFF)` (Purple)
+</ParamField>
+
+<ParamField path="actionSecondary" type="Color" required>
+  Action secondary color - for secondary buttons
+  
+  **Light default:** `Color(0xFF03A9F4)` (Light Blue)
+  
+  **Dark default:** `Color(0xFFCCC2DC)` (Light Purple)
+</ParamField>
+
+### UI Element Colors
+
+<ParamField path="divider" type="Color" required>
+  Divider color - for separators and borders
+  
+  **Light default:** `Color(0xFFCAC4D0)` (Gray)
+  
+  **Dark default:** `Color(0xFF49454F)` (Dark Gray)
+</ParamField>
+
+<ParamField path="overlay" type="Color" required>
+  Overlay color - for scrim and modal backdrop
+  
+  **Light default:** `Color(0x52000000)` (32% black)
+  
+  **Dark default:** `Color(0x78000000)` (47% black)
+</ParamField>
+
+<ParamField path="focus" type="Color" required>
+  Focus color - for focus rings and accessibility indicators
+  
+  **Light default:** `Color(0xFF2196F3)` (Blue)
+  
+  **Dark default:** `Color(0xFFD0BCFF)` (Purple)
+</ParamField>
+
+### State Colors
+
+<ParamField path="success" type="Color" required>
+  Success color - for positive actions and successful states
+  
+  **Light default:** `Color(0xFF4CAF50)` (Green 500)
+  
+  **Dark default:** `Color(0xFF81C784)` (Green 300)
+</ParamField>
+
+<ParamField path="warning" type="Color" required>
+  Warning color - for caution states and alerts
+  
+  **Light default:** `Color(0xFFFFC107)` (Amber 500)
+  
+  **Dark default:** `Color(0xFFFFD54F)` (Amber 300)
+</ParamField>
+
+<ParamField path="error" type="Color" required>
+  Error color - for error states and destructive actions
+  
+  **Light default:** `Color(0xFFB3261E)` (Material Error Light)
+  
+  **Dark default:** `Color(0xFFF2B8B5)` (Material Error Dark)
+</ParamField>
+
+<ParamField path="info" type="Color" required>
+  Info color - for informational states and messages
+  
+  **Light default:** `Color(0xFF2196F3)` (Blue)
+  
+  **Dark default:** `Color(0xFF90CAF9)` (Light Blue 200)
+</ParamField>
+
+<ParamField path="disabled" type="Color" required>
+  Disabled color - for disabled states and inactive elements
+  
+  **Light default:** `Color(0xFF1C1B1F)` (Dark)
+  
+  **Dark default:** `Color(0xFFE6E1E5)` (Light)
+</ParamField>
+
+### Base Colors
+
+<ParamField path="white" type="Color" required>
+  White color - for light elements and text on dark backgrounds
+  
+  **Default:** `Color(0xFFFFFFFF)`
+</ParamField>
+
+<ParamField path="black" type="Color" required>
+  Black color - for dark elements and shadows
+  
+  **Default:** `Color(0xFF000000)`
+</ParamField>
+
+### Gradients
+
+<ParamField path="primaryGradient" type="LinearGradient" required>
+  Primary gradient - from primary to secondary color
+  
+  **Light default:** Blue to Light Blue gradient
+  
+  **Dark default:** Purple gradient
+</ParamField>
+
+<ParamField path="secondaryGradient" type="LinearGradient" required>
+  Secondary gradient - from secondary to accent color
+  
+  **Light default:** Light Blue to Cyan gradient
+  
+  **Dark default:** Purple gradient
+</ParamField>
+
+---
+
+## Constructors
+
+### NebuxColors (default)
+
+Creates a new `NebuxColors` instance with all color properties.
+
+```dart
+const factory NebuxColors({
+  @ColorConverter() required Color primary,
+  @ColorConverter() required Color secondary,
+  @ColorConverter() required Color secondaryVariant,
+  @ColorConverter() required Color background,
+  @ColorConverter() required Color surface,
+  @ColorConverter() required Color textPrimary,
+  @ColorConverter() required Color textSecondary,
+  @ColorConverter() required Color actionPrimary,
+  @ColorConverter() required Color actionSecondary,
+  @ColorConverter() required Color cardColor,
+  @ColorConverter() required Color divider,
+  @ColorConverter() required Color overlay,
+  @ColorConverter() required Color focus,
+  @ColorConverter() required Color success,
+  @ColorConverter() required Color warning,
+  @ColorConverter() required Color error,
+  @ColorConverter() required Color info,
+  @ColorConverter() required Color disabled,
+  @ColorConverter() required Color white,
+  @ColorConverter() required Color black,
+  @LinearGradientConverter() required LinearGradient primaryGradient,
+  @LinearGradientConverter() required LinearGradient secondaryGradient,
+})
+```
+
+---
+
+## Factory Constructors
+
+### fromJson
+
+Creates a `NebuxColors` instance from JSON data. Supports hex color strings.
+
+```dart
+factory NebuxColors.fromJson(Map<String, dynamic> json)
+```
+
+<ParamField path="json" type="Map<String, dynamic>" required>
+  JSON object containing color definitions. Colors can be specified as hex strings (e.g., "#2196F3") or color values.
+</ParamField>
+
+#### Example
+
+```dart
+final colorsJson = {
+  'primary': '#2196F3',
+  'secondary': '#03A9F4',
+  'background': '#FFFBFE',
+  'textPrimary': '#1C1B1F',
+  // ... other properties
+};
+
+final colors = NebuxColors.fromJson(colorsJson);
+```
+
+### standardLight
+
+Creates a standard light color palette inspired by Material Design 3.
+
+```dart
+static NebuxColors standardLight()
+```
+
+#### Example
+
+```dart
+final lightColors = NebuxColors.standardLight();
+```
+
+### standardDark
+
+Creates a standard dark color palette inspired by Material Design 3.
+
+```dart
+static NebuxColors standardDark()
+```
+
+#### Example
+
+```dart
+final darkColors = NebuxColors.standardDark();
+```
+
+---
+
+## Instance Methods
+
+### forBrightness
+
+Returns the appropriate standard color palette based on brightness.
+
+```dart
+NebuxColors forBrightness(Brightness brightness)
+```
+
+<ParamField path="brightness" type="Brightness" required>
+  The brightness mode (Brightness.light or Brightness.dark)
+</ParamField>
+
+#### Example
+
+```dart
+final colors = NebuxColors.standardLight();
+final darkColors = colors.forBrightness(Brightness.dark);
+// Returns NebuxColors.standardDark()
+```
+
+### copyWith
+
+Creates a copy with optional property overrides. Generated by Freezed.
+
+```dart
+NebuxColors copyWith({
+  Color? primary,
+  Color? secondary,
+  // ... all other properties
+})
+```
+
+#### Example
+
+```dart
+final original = NebuxColors.standardLight();
+final modified = original.copyWith(
+  primary: Color(0xFFFF5722),
+  secondary: Color(0xFFFF9800),
+);
+```
+
+---
+
+## NebuxColorThemes
+
+A collection class that holds both light and dark color themes.
+
+```dart
+@freezed
+abstract class NebuxColorThemes with _$NebuxColorThemes
+```
+
+### Properties
+
+<ParamField path="light" type="NebuxColors" required>
+  Light theme colors
+</ParamField>
+
+<ParamField path="dark" type="NebuxColors" required>
+  Dark theme colors
+</ParamField>
+
+### Factory Constructors
+
+#### NebuxColorThemes.standard
+
+Creates standard color themes with Material 3 inspired palettes.
+
+```dart
+factory NebuxColorThemes.standard()
+```
+
+#### NebuxColorThemes.fromJson
+
+Creates color themes from JSON data.
+
+```dart
+factory NebuxColorThemes.fromJson(Map<String, dynamic> json)
+```
+
+### Methods
+
+#### getColorsByBrightness
+
+Returns the appropriate color palette based on brightness.
+
+```dart
+NebuxColors getColorsByBrightness(Brightness brightness)
+```
+
+<ParamField path="brightness" type="Brightness" required>
+  The brightness mode
+</ParamField>
+
+#### Example
+
+```dart
+final colorThemes = NebuxColorThemes.standard();
+final currentColors = colorThemes.getColorsByBrightness(
+  MediaQuery.of(context).platformBrightness,
+);
+```
+
+---
+
+## NebuxColorsLerp Extension
+
+Extension providing color interpolation support for smooth theme transitions.
+
+### lerp
+
+Interpolates between two color schemes.
+
+```dart
+static NebuxColors? lerp(NebuxColors? c, NebuxColors? o, double t)
+```
+
+<ParamField path="c" type="NebuxColors">
+  Starting color scheme (can be null)
+</ParamField>
+
+<ParamField path="o" type="NebuxColors">
+  Target color scheme (can be null)
+</ParamField>
+
+<ParamField path="t" type="double" required>
+  Interpolation value from 0.0 to 1.0
+</ParamField>
+
+#### Example
+
+```dart
+final lightColors = NebuxColors.standardLight();
+final darkColors = NebuxColors.standardDark();
+
+// 30% transition from light to dark
+final blendedColors = NebuxColorsLerp.lerp(lightColors, darkColors, 0.3);
+```
+
+---
+
+## Usage Examples
+
+### Basic Color Usage
+
+```dart
+class ColorExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final colors = NebuxColors.standardLight();
+    
+    return Container(
+      color: colors.background,
+      child: Column(
+        children: [
+          Container(
+            color: colors.surface,
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Primary Text',
+              style: TextStyle(color: colors.textPrimary),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.actionPrimary,
+              foregroundColor: colors.white,
+            ),
+            onPressed: () {},
+            child: Text('Action'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+### Using Gradients
+
+```dart
+class GradientExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final colors = NebuxColors.standardLight();
+    
+    return Container(
+      decoration: BoxDecoration(
+        gradient: colors.primaryGradient,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: EdgeInsets.all(24),
+      child: Text(
+        'Gradient Background',
+        style: TextStyle(color: colors.white),
+      ),
+    );
+  }
+}
+```
+
+### State Colors
+
+```dart
+class StateIndicator extends StatelessWidget {
+  final String status;
+  
+  const StateIndicator({required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NebuxColors.standardLight();
+    
+    Color getStatusColor() {
+      switch (status) {
+        case 'success':
+          return colors.success;
+        case 'warning':
+          return colors.warning;
+        case 'error':
+          return colors.error;
+        case 'info':
+          return colors.info;
+        default:
+          return colors.disabled;
+      }
+    }
+    
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: getStatusColor().withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: getStatusColor()),
+      ),
+      child: Text(
+        status.toUpperCase(),
+        style: TextStyle(color: getStatusColor(), fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+```
+
+### Loading from JSON
+
+```dart
+future<void> loadCustomColors() async {
+  final jsonString = await rootBundle.loadString('assets/colors.json');
+  final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+  
+  final customColors = NebuxColors.fromJson(jsonData);
+  
+  // Use custom colors
+  print('Primary: ${customColors.primary}');
+}
+```
+
+**JSON format example:**
+
+```json
+{
+  "primary": "#2196F3",
+  "secondary": "#03A9F4",
+  "background": "#FFFBFE",
+  "surface": "#FFFBFE",
+  "textPrimary": "#1C1B1F",
+  "textSecondary": "#49454F"
+}
+```
+
+---
+
+## See Also
+
+- [NebuxTheme](/api/nebux-theme) - Main theme integration
+- [NebuxTypography](/api/nebux-typography) - Typography system
+- [NebuxFontSize](/api/nebux-font-size) - Font size scale

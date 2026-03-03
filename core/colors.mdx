@@ -1,0 +1,388 @@
+---
+title: Colors
+description: Comprehensive color system with semantic tokens for light and dark themes
+---
+
+The NebuxColors class provides a complete color palette designed for both light and dark themes, following Material 3 design principles.
+
+## Overview
+
+NebuxColors uses semantic color tokens that adapt to different themes. Each color has a specific purpose in the design system, ensuring consistent UI across your application.
+
+## Color properties
+
+All color properties are required and use Flutter's `Color` type:
+
+<ParamField path="primary" type="Color">
+  Primary brand color - used for main actions and branding
+</ParamField>
+
+<ParamField path="secondary" type="Color">
+  Secondary color - used for secondary actions
+</ParamField>
+
+<ParamField path="secondaryVariant" type="Color">
+  Secondary variant color - darker shade of secondary
+</ParamField>
+
+<ParamField path="background" type="Color">
+  Background color for the entire screen
+</ParamField>
+
+<ParamField path="surface" type="Color">
+  Surface color - for cards and elevated surfaces
+</ParamField>
+
+<ParamField path="textPrimary" type="Color">
+  Primary text color for main content
+</ParamField>
+
+<ParamField path="textSecondary" type="Color">
+  Secondary text color for supporting text
+</ParamField>
+
+<ParamField path="actionPrimary" type="Color">
+  Primary action color for buttons and interactive elements
+</ParamField>
+
+<ParamField path="actionSecondary" type="Color">
+  Secondary action color for less prominent actions
+</ParamField>
+
+<ParamField path="cardColor" type="Color">
+  Background color for card components
+</ParamField>
+
+<ParamField path="divider" type="Color">
+  Color for dividers and borders
+</ParamField>
+
+<ParamField path="overlay" type="Color">
+  Semi-transparent color for scrim and modal backdrop
+</ParamField>
+
+<ParamField path="focus" type="Color">
+  Focus color for focus rings and accessibility highlights
+</ParamField>
+
+<ParamField path="success" type="Color">
+  Success color for positive actions and states
+</ParamField>
+
+<ParamField path="warning" type="Color">
+  Warning color for caution states
+</ParamField>
+
+<ParamField path="error" type="Color">
+  Error color for error states and validation
+</ParamField>
+
+<ParamField path="info" type="Color">
+  Info color for informational states and messages
+</ParamField>
+
+<ParamField path="disabled" type="Color">
+  Color for disabled states
+</ParamField>
+
+<ParamField path="white" type="Color">
+  Pure white color
+</ParamField>
+
+<ParamField path="black" type="Color">
+  Pure black color
+</ParamField>
+
+<ParamField path="primaryGradient" type="LinearGradient">
+  Primary gradient - from primary to secondary colors
+</ParamField>
+
+<ParamField path="secondaryGradient" type="LinearGradient">
+  Secondary gradient - from secondary to accent colors
+</ParamField>
+
+## Standard light colors
+
+The `standardLight()` factory method provides a Material 3 inspired light color palette:
+
+```dart
+final lightColors = NebuxColors.standardLight();
+
+// Use in theme
+final theme = NebuxTheme.createThemeData(
+  isDark: false,
+  colors: NebuxColors.standardLight(),
+  fontSize: NebuxFontSize.standard(),
+  typography: NebuxTypography.standard(),
+);
+```
+
+### Light theme palette
+
+- **Primary**: `#2196F3` (Blue 500)
+- **Secondary**: `#03A9F4` (Light Blue 500)
+- **Background**: `#FFFBFE` (Neutral 99)
+- **Surface**: `#FFFBFE` (Neutral 99)
+- **Text Primary**: `#1C1B1F` (Neutral 10)
+- **Text Secondary**: `#49454F` (Neutral Variant 30)
+- **Success**: `#4CAF50` (Green 500)
+- **Warning**: `#FFC107` (Amber 500)
+- **Error**: `#B3261E` (Error 40)
+
+## Standard dark colors
+
+The `standardDark()` factory method provides a Material 3 inspired dark color palette:
+
+```dart
+final darkColors = NebuxColors.standardDark();
+
+// Use in theme
+final theme = NebuxTheme.createThemeData(
+  isDark: true,
+  colors: NebuxColors.standardDark(),
+  fontSize: NebuxFontSize.standard(),
+  typography: NebuxTypography.standard(),
+);
+```
+
+### Dark theme palette
+
+- **Primary**: `#D0BCFF` (Primary 80)
+- **Secondary**: `#CCC2DC` (Secondary 80)
+- **Background**: `#1C1B1F` (Neutral 10)
+- **Surface**: `#1C1B1F` (Neutral 10)
+- **Text Primary**: `#E6E1E5` (Neutral 90)
+- **Text Secondary**: `#CAC4D0` (Neutral Variant 80)
+- **Success**: `#81C784` (Green 300)
+- **Warning**: `#FFD54F` (Amber 300)
+- **Error**: `#F2B8B5` (Error 80)
+
+## Accessing colors
+
+Use the BuildContext extension to access colors in your widgets:
+
+```dart
+class ColorExample extends StatelessWidget {
+  const ColorExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: context.nebuxColors.background,
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: context.nebuxColors.primaryGradient,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Primary Gradient',
+              style: TextStyle(color: context.nebuxColors.white),
+            ),
+          ),
+          Divider(color: context.nebuxColors.divider),
+          Icon(
+            Icons.check_circle,
+            color: context.nebuxColors.success,
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+## Color gradients
+
+NebuxColors includes pre-configured gradients for common use cases:
+
+```dart
+// Primary gradient (blue to light blue)
+Container(
+  decoration: BoxDecoration(
+    gradient: context.nebuxColors.primaryGradient,
+  ),
+)
+
+// Secondary gradient (light blue to cyan)
+Container(
+  decoration: BoxDecoration(
+    gradient: context.nebuxColors.secondaryGradient,
+  ),
+)
+```
+
+### Light theme gradients
+
+```dart
+primaryGradient: LinearGradient(
+  colors: [Color(0xFF2196F3), Color(0xFF03A9F4)],
+),
+secondaryGradient: LinearGradient(
+  colors: [Color(0xFF03A9F4), Color(0xFF00BCD4)],
+),
+```
+
+### Dark theme gradients
+
+```dart
+primaryGradient: LinearGradient(
+  colors: [Color(0xFFD0BCFF), Color(0xFFCCC2DC)],
+),
+secondaryGradient: LinearGradient(
+  colors: [Color(0xFFCCC2DC), Color(0xFF9A82DB)],
+),
+```
+
+## Custom colors
+
+Create custom color palettes by instantiating NebuxColors directly:
+
+```dart
+final customColors = NebuxColors(
+  primary: Color(0xFF6200EE),
+  secondary: Color(0xFF03DAC6),
+  secondaryVariant: Color(0xFF018786),
+  background: Color(0xFFFFFFFF),
+  surface: Color(0xFFFFFFFF),
+  textPrimary: Color(0xFF000000),
+  textSecondary: Color(0xFF666666),
+  actionPrimary: Color(0xFF6200EE),
+  actionSecondary: Color(0xFF03DAC6),
+  cardColor: Color(0xFFF5F5F5),
+  divider: Color(0xFFE0E0E0),
+  overlay: Color(0x52000000),
+  focus: Color(0xFF6200EE),
+  success: Color(0xFF4CAF50),
+  warning: Color(0xFFFFC107),
+  error: Color(0xFFB00020),
+  info: Color(0xFF2196F3),
+  disabled: Color(0xFF9E9E9E),
+  white: Color(0xFFFFFFFF),
+  black: Color(0xFF000000),
+  primaryGradient: LinearGradient(
+    colors: [Color(0xFF6200EE), Color(0xFF03DAC6)],
+  ),
+  secondaryGradient: LinearGradient(
+    colors: [Color(0xFF03DAC6), Color(0xFF00BCD4)],
+  ),
+);
+```
+
+## Loading from JSON
+
+NebuxColors supports JSON serialization for loading colors from configuration files:
+
+```dart
+final colorsFromJson = NebuxColors.fromJson({
+  'primary': '#6200EE',
+  'secondary': '#03DAC6',
+  'secondaryVariant': '#018786',
+  'background': '#FFFFFF',
+  'surface': '#FFFFFF',
+  'textPrimary': '#000000',
+  'textSecondary': '#666666',
+  'actionPrimary': '#6200EE',
+  'actionSecondary': '#03DAC6',
+  'cardColor': '#F5F5F5',
+  'divider': '#E0E0E0',
+  'overlay': '#52000000',
+  'focus': '#6200EE',
+  'success': '#4CAF50',
+  'warning': '#FFC107',
+  'error': '#B00020',
+  'info': '#2196F3',
+  'disabled': '#9E9E9E',
+  'white': '#FFFFFF',
+  'black': '#000000',
+  'primaryGradient': {
+    'colors': ['#6200EE', '#03DAC6']
+  },
+  'secondaryGradient': {
+    'colors': ['#03DAC6', '#00BCD4']
+  },
+});
+```
+
+<Note>
+Colors in JSON should be specified as hex strings with `#` prefix (e.g., `#6200EE`). The `@ColorConverter()` annotation handles conversion from hex strings to Flutter Color objects.
+</Note>
+
+## Color themes
+
+Use `NebuxColorThemes` to manage both light and dark color palettes:
+
+```dart
+final colorThemes = NebuxColorThemes(
+  light: NebuxColors.standardLight(),
+  dark: NebuxColors.standardDark(),
+);
+
+// Get colors by brightness
+final colors = colorThemes.getColorsByBrightness(Brightness.dark);
+```
+
+### Standard color themes
+
+```dart
+// Creates themes with standard light and dark palettes
+final colorThemes = NebuxColorThemes.standard();
+```
+
+### From JSON
+
+```dart
+final colorThemes = NebuxColorThemes.fromJson({
+  'light': {
+    'primary': '#2196F3',
+    // ... other light colors
+  },
+  'dark': {
+    'primary': '#D0BCFF',
+    // ... other dark colors
+  },
+});
+```
+
+## Color interpolation
+
+NebuxColors supports smooth color transitions using the `lerp` extension:
+
+```dart
+final lightColors = NebuxColors.standardLight();
+final darkColors = NebuxColors.standardDark();
+
+// Interpolate 30% toward dark colors
+final interpolatedColors = NebuxColorsLerp.lerp(
+  lightColors,
+  darkColors,
+  0.3,
+);
+```
+
+This is useful for creating animated theme transitions.
+
+<Warning>
+Gradients are not interpolated during `lerp` operations. The source gradient is used for any interpolation value.
+</Warning>
+
+## Semantic color usage
+
+Follow these guidelines for consistent color usage:
+
+| Use Case | Color Token |
+|----------|-------------|
+| Primary actions | `actionPrimary` |
+| Secondary actions | `actionSecondary` |
+| Body text | `textPrimary` |
+| Supporting text | `textSecondary` |
+| Success messages | `success` |
+| Error states | `error` |
+| Warning alerts | `warning` |
+| Info messages | `info` |
+| Disabled states | `disabled` |
+| Borders | `divider` |
+| Modal backdrop | `overlay` |
+| Focus indicators | `focus` |
