@@ -1,0 +1,139 @@
+{
+  "projectType": "sdk-library",
+  "projectName": "Nebux Design System",
+  "projectDescription": "A production-ready Flutter design system providing consistent theming, typography, spacing, and UI components.",
+  "theme": "willow",
+  "primaryColor": "#6B46C1",
+  "lightColor": "#9F7AEA",
+  "darkColor": "#553C9A",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "installation",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "core/theme-system",
+              "core/colors",
+              "core/typography",
+              "core/spacing"
+            ]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              "components/overview",
+              "components/buttons",
+              "components/inputs",
+              "components/layout",
+              "components/images",
+              "components/loading-states"
+            ]
+          },
+          {
+            "group": "Extensions & Utilities",
+            "pages": [
+              "extensions/context",
+              "extensions/widgets",
+              "extensions/utilities"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/customization",
+              "guides/advanced-usage",
+              "guides/migration"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Theme",
+            "pages": [
+              "api/nebux-theme",
+              "api/nebux-colors",
+              "api/nebux-typography",
+              "api/nebux-font-size"
+            ]
+          },
+          {
+            "group": "Components",
+            "pages": [
+              "api/nbx-button",
+              "api/nbx-text-field",
+              "api/nbx-phone-field",
+              "api/nbx-country-picker",
+              "api/nbx-scaffold",
+              "api/nbx-network-image",
+              "api/nbx-shimmers"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "api/button-configs",
+              "api/input-parameters",
+              "api/scaffold-configs"
+            ]
+          },
+          {
+            "group": "Utilities",
+            "pages": [
+              "api/nebux-utils",
+              "api/nebux-debouncer",
+              "api/spacing-constants"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Comprehensive theming system with light and dark mode support",
+    "Pre-built UI components (buttons, inputs, scaffolds, images)",
+    "Typography system with Google Fonts integration",
+    "Built-in validation for common input types",
+    "International country picker with 25+ languages",
+    "Shimmer loading states for better UX",
+    "Context extensions for easy theme access",
+    "Spacing and layout utilities"
+  ],
+  "publicApiSurface": [
+    "NebuxTheme",
+    "NebuxColors",
+    "NebuxTypography",
+    "NebuxFontSize",
+    "NbxButton",
+    "NbxTextFieldWidget",
+    "NbxPhoneFieldWidget",
+    "NbxCountryPickerInput",
+    "NbxScaffold",
+    "NbxNetworkImage",
+    "NbxShimmerContainer",
+    "NbxShimmerListTile",
+    "NbxShimmerGrid",
+    "NbxInputParameters",
+    "ButtonStyleConfig",
+    "ButtonVariant",
+    "NbxInputType",
+    "AppBarConfig",
+    "SafeAreaConfig",
+    "NebuxUtils",
+    "NebuxDebouncer",
+    "heightSpace*",
+    "widthSpace*"
+  ]
+}
