@@ -265,6 +265,85 @@ NbxButton(
 )
 ```
 
+## NbxSocialLoginButton
+
+A specialized button for social login providers (Google, Apple, Facebook, etc.) with icon and text layout.
+
+### Basic Usage
+
+```dart
+NbxSocialLoginButton(
+  text: 'Continue with Google',
+  icon: Icon(Icons.g_mobiledata, size: 24),
+  onPressed: () {
+    // Handle Google login
+  },
+)
+```
+
+### Properties
+
+<ParamField path="text" type="String" required>
+  The button label text (e.g., "Continue with Google")
+</ParamField>
+
+<ParamField path="icon" type="Widget" required>
+  The social provider icon widget
+</ParamField>
+
+<ParamField path="onPressed" type="VoidCallback?">
+  Callback invoked when the button is pressed
+</ParamField>
+
+<ParamField path="isOutlined" type="bool" default="false">
+  Whether to render as an outlined button (border-only)
+</ParamField>
+
+<ParamField path="backgroundColor" type="Color?">
+  Custom background color (defaults to black for filled, transparent for outlined)
+</ParamField>
+
+<ParamField path="textColor" type="Color?">
+  Custom text color (defaults to white for filled, black for outlined)
+</ParamField>
+
+<ParamField path="borderColor" type="Color?">
+  Custom border color for outlined style (defaults to black)
+</ParamField>
+
+### Examples
+
+<Tabs>
+  <Tab title="Filled">
+    ```dart
+    NbxSocialLoginButton(
+      text: 'Continue with Apple',
+      icon: Icon(Icons.apple, size: 24),
+      onPressed: () {},
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+    )
+    ```
+  </Tab>
+  
+  <Tab title="Outlined">
+    ```dart
+    NbxSocialLoginButton(
+      text: 'Continue with Facebook',
+      icon: Icon(Icons.facebook, size: 24),
+      onPressed: () {},
+      isOutlined: true,
+      borderColor: Color(0xFF1877F2),
+      textColor: Color(0xFF1877F2),
+    )
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  Social login buttons are always full-width (double.infinity) with a fixed height of 56 pixels and border radius of 16.
+</Note>
+
 ## Best Practices
 
 <Note>

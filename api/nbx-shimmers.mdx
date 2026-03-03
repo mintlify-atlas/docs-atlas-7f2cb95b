@@ -498,6 +498,101 @@ class ProductList extends StatelessWidget {
 }
 ```
 
+## NbxShimmerContainerExpanded
+
+A shimmer container that expands to fill available vertical space in its parent.
+
+### Properties
+
+<ParamField path="style" type="ShimmerSkeletonStyle" required>
+  Style configuration for the shimmer container appearance
+</ParamField>
+
+### Usage Example
+
+```dart
+Row(
+  children: [
+    NbxShimmerContainer(
+      style: ShimmerSkeletonStyle(width: 100, height: 200),
+    ),
+    SizedBox(width: 16),
+    NbxShimmerContainerExpanded(
+      style: ShimmerSkeletonStyle(borderRadiusDouble: 8),
+    ),
+  ],
+)
+```
+
+This is useful when you need a shimmer container to fill remaining space in a row or column layout.
+
+---
+
+## NbxShimmerTwiceContainerList
+
+A shimmer widget that displays two separate lists of skeleton containers, useful for complex loading states with multiple content sections.
+
+### Properties
+
+<ParamField path="heightFull" type="double" required>
+  Total height of the widget
+</ParamField>
+
+<ParamField path="axis" type="Axis" required>
+  Layout axis direction (horizontal or vertical)
+</ParamField>
+
+<ParamField path="skeletonListOneStyle" type="ShimmerSkeletonStyle" required>
+  Style configuration for the first list of containers
+</ParamField>
+
+<ParamField path="itemCountListOne" type="int" required>
+  Number of containers in the first list
+</ParamField>
+
+<ParamField path="isColumnListOne" type="bool" required>
+  Whether the first list uses vertical layout
+</ParamField>
+
+<ParamField path="skeletonListTwoStyle" type="ShimmerSkeletonStyle" required>
+  Style configuration for the second list of containers
+</ParamField>
+
+<ParamField path="itemCountListTwo" type="int" required>
+  Number of containers in the second list
+</ParamField>
+
+<ParamField path="isColumnListTwo" type="bool" required>
+  Whether the second list uses vertical layout
+</ParamField>
+
+### Usage Example
+
+```dart
+NbxShimmerTwiceContainerList(
+  heightFull: 300,
+  axis: Axis.horizontal,
+  skeletonListOneStyle: ShimmerSkeletonStyle(
+    width: 100,
+    height: 100,
+    borderRadiusDouble: 8,
+  ),
+  itemCountListOne: 3,
+  isColumnListOne: false,
+  skeletonListTwoStyle: ShimmerSkeletonStyle(
+    width: 80,
+    height: 80,
+    borderRadiusDouble: 8,
+  ),
+  itemCountListTwo: 4,
+  isColumnListTwo: false,
+)
+```
+
+This component is ideal for creating complex loading states with multiple distinct content areas, such as horizontal scrolling lists with different item types.
+
+---
+
 ## Customization
 
 ### Custom Gradient
